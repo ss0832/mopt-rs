@@ -1,0 +1,38 @@
+# mopt-py PyO3 bindings crate manifest
+# Copyright (C) 2023-2026 ss0832
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[package]
+name = "mopt-py"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "PyO3 Python bindings for mopt-rs"
+repository.workspace = true
+# Not for a crate registry (only mopt-rs is): maturin builds the Python distribution of the
+# same name, mopt-py, from pyproject.toml.
+publish = false
+
+[lib]
+name = "_core"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+mopt-rs = { path = "../mopt-rs" }
+pyo3.workspace = true
+faer.workspace = true
+
+[features]
+# Enabled by maturin (see pyproject.toml) so that `cargo test --workspace` links normally.
+extension-module = ["pyo3/extension-module"]
+
+# pyo3 macro expansions contain `unsafe` blocks; `forbid` cannot be overridden locally, so this
+# crate uses `deny` and hand-written code remains free of `unsafe`.
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"

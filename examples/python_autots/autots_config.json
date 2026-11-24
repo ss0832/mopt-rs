@@ -1,0 +1,29 @@
+{
+  "work_dir": "autots_command",
+  "top_n_candidates": 3,
+  "step1_settings": {
+    "othersoft": "gfn1xtb",
+    "manual_AFIR": ["150", "1", "6"],
+    "opt_method": ["rsirfo_block_fsb"],
+    "use_model_hessian": "fischerd3"
+  },
+  "step2_settings": {
+    "othersoft": "gfn1xtb",
+    "NSTEP": 30
+  },
+  "step3_settings": {
+    "othersoft": "gfn1xtb",
+    "opt_method": ["rsirfo_block_bofill"],
+    "calc_exact_hess": 5,
+    "tight_convergence_criteria": true,
+    "max_trust_radius": 0.2
+  },
+  "step4_settings": {
+    "othersoft": "gfn1xtb",
+    "opt_method": ["rsirfo_block_bofill"],
+    "calc_exact_hess": 10,
+    "tight_convergence_criteria": true,
+    "intrinsic_reaction_coordinates": ["0.5", "200", "lqa"],
+    "step4b_opt_method": ["rsirfo_block_fsb"]
+  }
+}

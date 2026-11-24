@@ -1,0 +1,613 @@
+{
+  "about": "Where each MultiOptPy 1.21.2 feature lives in mopt-rs. Keys are prefixes of inventory ids (tests/coverage/multioptpy_inventory.json); the longest matching key applies. status: done (implemented, possibly improved), pending (not implemented yet). Methods inherit the entry of their class or module unless listed.",
+  "entries": {
+    "cli:": {
+      "status": "done",
+      "where": "crates/mopt-rs/src/cli/spec.rs (every option parsed; implemented ones marked in docs/source/cli_reference.md)"
+    },
+    "multioptpy/Calculator/": {
+      "status": "pending",
+      "where": "python/mopt_rs/calculators"
+    },
+    "multioptpy/Calculator/__init__.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/__init__.py"
+    },
+    "multioptpy/Calculator/ase_calculation_tools.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/ase.py, profiles.py, bridges.py"
+    },
+    "multioptpy/Calculator/ase_tools/": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/ase.py (any ASE calculator), profiles.py"
+    },
+    "multioptpy/Calculator/ase_tools/gamess.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/programs.py (-os gamessus)"
+    },
+    "multioptpy/Calculator/ase_tools/gaussian.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/programs.py (-os gaussian; Hessians of frequency jobs)"
+    },
+    "multioptpy/Calculator/ase_tools/mopac.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/programs.py (-os mopac)"
+    },
+    "multioptpy/Calculator/ase_tools/nwchem.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/programs.py (-os nwchem)"
+    },
+    "multioptpy/Calculator/ase_tools/orca.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/programs.py (-os orca; input blocks, basis fix, Hessians)"
+    },
+    "multioptpy/Calculator/dxtb_calculation_tools.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/xtb.py:DxtbEngine"
+    },
+    "multioptpy/Calculator/emt_calculation_tools.py": {
+      "status": "done",
+      "where": "pes::native::Emt"
+    },
+    "multioptpy/Calculator/gpaw_calculation_tools.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/programs.py (-os gpaw)"
+    },
+    "multioptpy/Calculator/lj_calculation_tools.py": {
+      "status": "done",
+      "where": "pes::native::LennardJones"
+    },
+    "multioptpy/Calculator/psi4_calculation_tools.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/psi4.py"
+    },
+    "multioptpy/Calculator/pwscf_calculation_tools.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/programs.py (-os espresso)"
+    },
+    "multioptpy/Calculator/pyscf_calculation_tools.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/pyscf.py"
+    },
+    "multioptpy/Calculator/sqm1_calculation_tools.py": {
+      "status": "dropped",
+      "where": "not provided (decided 2026-11-10): SQM1 is not part of mopt-rs"
+    },
+    "multioptpy/Calculator/sqm2_calculation_tools.py": {
+      "status": "dropped",
+      "where": "not provided (decided 2026-11-10): SQM2 is not part of mopt-rs"
+    },
+    "multioptpy/Calculator/tblite_calculation_tools.py": {
+      "status": "done",
+      "where": "python/mopt_rs/calculators/xtb.py:TbliteEngine"
+    },
+    "multioptpy/Calculator/tersoff_calculation_tools.py": {
+      "status": "done",
+      "where": "pes::native::Tersoff"
+    },
+    "multioptpy/Constraint/": {
+      "status": "done",
+      "where": "pes::constraint, opt::constrained, cli::constraints"
+    },
+    "multioptpy/Constraint/constraint_condition.py:SHAKE": {
+      "status": "done",
+      "where": "md::constraints::Rattle (SHAKE and RATTLE for every constraint)"
+    },
+    "multioptpy/Constraint/constraint_condition.py:shake_parser": {
+      "status": "done",
+      "where": "cli::mdmain_settings::parse_constraint_conditions (-cc)"
+    },
+    "multioptpy/Coordinate/__init__.py": {
+      "status": "done",
+      "where": "package marker (no content)"
+    },
+    "multioptpy/Coordinate/polar_coordinate.py": {
+      "status": "done",
+      "where": "coord::hyperspherical, coord::system::spherical (-coord hyperspherical, polar, spherical)"
+    },
+    "multioptpy/Coordinate/redundant_coordinate.py": {
+      "status": "done",
+      "where": "coord::internal (RIC, DIC); legacy pair coordinates in model_hessian::legacy"
+    },
+    "multioptpy/Entrypoints/__init__.py": {
+      "status": "done",
+      "where": "package marker (no content)"
+    },
+    "multioptpy/Entrypoints/autots.py": {
+      "status": "pending",
+      "where": "workflow::autots"
+    },
+    "multioptpy/Entrypoints/conformation_search.py": {
+      "status": "done",
+      "where": "cli::confsearch, cli::confsearch_settings, cli::confsearch_jobs, cli::confsearch_files; workflow::confsearch (afir: MultiOptPy's sampling); workflow::explore (priority, priority_rules, stop, ensemble); coord::graph, coord::invariant_rmsd"
+    },
+    "multioptpy/Entrypoints/core.py": {
+      "status": "done",
+      "where": "crates/mopt-rs/src/cli/mod.rs, python/mopt_rs/cli.py"
+    },
+    "multioptpy/Entrypoints/mapper.py": {
+      "status": "pending",
+      "where": "cli::mapper, cli::mapper_settings, workflow::mapper (first version; the RCMC options select the priority kinetics; see mapper.md for what is not done)"
+    },
+    "multioptpy/Entrypoints/orientation_search.py": {
+      "status": "done",
+      "where": "cli::orientsearch, workflow::explore::orient (MultiOptPy's sampling with its errors corrected, uniform rotations, van der Waals contact, the pool of distinct minima; see migration.md, orientsearch)"
+    },
+    "multioptpy/Entrypoints/relaxed_scan.py": {
+      "status": "done",
+      "where": "cli::relaxedscan (the points with optmain: cli::relaxedscan_points; workflow::scan: grid, rigid structures, stationary points, figures; maps and ReSPer coordinates are new; see migration.md, relaxedscan)"
+    },
+    "multioptpy/IRC/": {
+      "status": "done",
+      "where": "irc (one integrator per file: lqa, hpc with dwi, dvv, euler, rk4, modekill; convergence; files and log in workflow::irc_output; see migration.md, IRC)"
+    },
+    "multioptpy/Interpolation/": {
+      "status": "pending",
+      "where": "path::interp"
+    },
+    "multioptpy/MD/": {
+      "status": "done",
+      "where": "md::thermostat (Nose-Hoover chains, Langevin, and more), md::integrator (velocity Verlet, BAOAB), md::space (masses, kinetic energy, starting velocities)"
+    },
+    "multioptpy/MEP/": {
+      "status": "pending",
+      "where": "path"
+    },
+    "multioptpy/MEP/pathopt_dmf_force.py": {
+      "status": "done",
+      "where": "path::dmf, cli::nebmain_dmf (the direct MaxFlux method written anew from its authors' definitions; MultiOptPy's force on the images is not ported, see migration.md)"
+    },
+    "multioptpy/MEP/pathopt_ewbneb_force.py": {
+      "status": "done",
+      "where": "path::band::springs (MultiOptPy's form with -neb_opt form=multioptpy)"
+    },
+    "multioptpy/ModelFunction/": {
+      "status": "done",
+      "where": "pes::combine::model_function"
+    },
+    "multioptpy/ModelFunction/binary_image_ts_search_model_function.py": {
+      "status": "done",
+      "where": "path::bitss (as published; see migration.md, BITSS)"
+    },
+    "multioptpy/ModelHessian/": {
+      "status": "pending",
+      "where": "model_hessian, model_hessian::legacy"
+    },
+    "multioptpy/ModelHessian/__init__.py": {
+      "status": "done",
+      "where": "model_hessian"
+    },
+    "multioptpy/ModelHessian/approx_hessian.py": {
+      "status": "done",
+      "where": "model_hessian::resolve (names and the ts, clip, sr modifiers)"
+    },
+    "multioptpy/ModelHessian/calc_params.py": {
+      "status": "done",
+      "where": "model_hessian::legacy::common, legacy::swartd2"
+    },
+    "multioptpy/ModelHessian/fischer.py": {
+      "status": "done",
+      "where": "model_hessian::fischer, legacy::fischer"
+    },
+    "multioptpy/ModelHessian/fischerd3.py": {
+      "status": "done",
+      "where": "model_hessian::fischer (D3(BJ)), legacy::fischerd3"
+    },
+    "multioptpy/ModelHessian/fischerd3old.py": {
+      "status": "done",
+      "where": "model_hessian::fischer (D3(BJ)), legacy::fischerd3old"
+    },
+    "multioptpy/ModelHessian/fischerd4.py": {
+      "status": "done",
+      "where": "model_hessian::fischer (D4), legacy::fischerd4"
+    },
+    "multioptpy/ModelHessian/gfn0xtb.py": {
+      "status": "done",
+      "where": "model_hessian::legacy::gfn0xtb (legacy_gfn0xtb, H to Xe); the published GFN0-xTB is pes::native::gfn0 (-os gfn0xtb, -modelhess gfn0xtb)"
+    },
+    "multioptpy/ModelHessian/gfnff.py": {
+      "status": "done",
+      "where": "model_hessian::legacy::gfnff (legacy_gfnff, H to Rn); the published GFN-FF is pes::native::gfnff (-os gfnff, -modelhess gfnff), a port of xtb 6.7.1"
+    },
+    "multioptpy/ModelHessian/lindh.py": {
+      "status": "done",
+      "where": "model_hessian::internal (Lindh 1995), legacy::lindh"
+    },
+    "multioptpy/ModelHessian/lindh2007d2.py": {
+      "status": "done",
+      "where": "model_hessian::internal (Lindh 2007, D2), legacy::lindh2007"
+    },
+    "multioptpy/ModelHessian/lindh2007d3.py": {
+      "status": "done",
+      "where": "model_hessian::internal (Lindh 2007, D3(BJ)), legacy::lindh2007d3"
+    },
+    "multioptpy/ModelHessian/lindh2007d4.py": {
+      "status": "done",
+      "where": "model_hessian::internal (Lindh 2007, D4), legacy::lindh2007d3 (lindh2007d4)"
+    },
+    "multioptpy/ModelHessian/morse.py": {
+      "status": "done",
+      "where": "model_hessian::morse"
+    },
+    "multioptpy/ModelHessian/o1numhess.py": {
+      "status": "done",
+      "where": "pes::o1numhess (the published O1NumHess; -modelhess o1numhess asks the calculator for it every -mfc iterations)"
+    },
+    "multioptpy/ModelHessian/schlegel.py": {
+      "status": "done",
+      "where": "model_hessian::schlegel, legacy::schlegel"
+    },
+    "multioptpy/ModelHessian/schlegeld3.py": {
+      "status": "done",
+      "where": "model_hessian::schlegel (D3(BJ)), legacy::schlegeld3"
+    },
+    "multioptpy/ModelHessian/schlegeld4.py": {
+      "status": "done",
+      "where": "model_hessian::schlegel (D4), legacy::schlegeld4"
+    },
+    "multioptpy/ModelHessian/shortrange.py": {
+      "status": "done",
+      "where": "model_hessian::legacy::shortrange (the sr modifier)"
+    },
+    "multioptpy/ModelHessian/swart.py": {
+      "status": "done",
+      "where": "model_hessian::swart_o1, legacy::swart"
+    },
+    "multioptpy/ModelHessian/swartd2.py": {
+      "status": "done",
+      "where": "model_hessian::internal (xtb Swart), legacy::swartd2"
+    },
+    "multioptpy/ModelHessian/swartd3.py": {
+      "status": "done",
+      "where": "model_hessian::internal (xtb Swart, D3(BJ)), legacy::swartd3"
+    },
+    "multioptpy/ModelHessian/swartd4.py": {
+      "status": "done",
+      "where": "model_hessian::internal (xtb Swart, D4), legacy::swartd4"
+    },
+    "multioptpy/ModelHessian/tshess.py": {
+      "status": "done",
+      "where": "model_hessian::modifiers::ts_reflect"
+    },
+    "multioptpy/Optimizer/": {
+      "status": "pending",
+      "where": "path::optimizer (the *_neb.py optimizers of reaction paths)"
+    },
+    "multioptpy/Optimizer/__init__.py": {
+      "status": "done",
+      "where": "package marker (no content)"
+    },
+    "multioptpy/Optimizer/abc_fire.py": {
+      "status": "done",
+      "where": "opt::step::abc_fire"
+    },
+    "multioptpy/Optimizer/adabelief.py": {
+      "status": "done",
+      "where": "opt::step::adabelief"
+    },
+    "multioptpy/Optimizer/adam.py": {
+      "status": "done",
+      "where": "opt::step::adam"
+    },
+    "multioptpy/Optimizer/adiis.py": {
+      "status": "done",
+      "where": "opt::enhance::adiis, math::simplex_qp"
+    },
+    "multioptpy/Optimizer/block_hessian_update.py": {
+      "status": "done",
+      "where": "opt::update::block"
+    },
+    "multioptpy/Optimizer/c2diis.py": {
+      "status": "done",
+      "where": "opt::enhance::c2diis"
+    },
+    "multioptpy/Optimizer/component_wise_scaling.py": {
+      "status": "done",
+      "where": "opt::enhance::component_wise_scaling"
+    },
+    "multioptpy/Optimizer/conjugate_gradient.py": {
+      "status": "done",
+      "where": "opt::step::conjugate_gradient, math::line_search"
+    },
+    "multioptpy/Optimizer/coordinate_locking.py": {
+      "status": "done",
+      "where": "opt::enhance::coordinate_locking"
+    },
+    "multioptpy/Optimizer/crsirfo.py": {
+      "status": "done",
+      "where": "opt::step::rsirfo with opt::constrained (constraints are held for every method)"
+    },
+    "multioptpy/Optimizer/dic_rsirfo.py": {
+      "status": "done",
+      "where": "coord::system (delocalized internal coordinates, -coord dic) with opt::step::rsirfo"
+    },
+    "multioptpy/Optimizer/ediis.py": {
+      "status": "done",
+      "where": "opt::enhance::ediis, math::simplex_qp"
+    },
+    "multioptpy/Optimizer/eve.py": {
+      "status": "done",
+      "where": "opt::step::eve"
+    },
+    "multioptpy/Optimizer/fire.py": {
+      "status": "done",
+      "where": "opt::step::fire"
+    },
+    "multioptpy/Optimizer/fire2.py": {
+      "status": "done",
+      "where": "opt::step::fire2"
+    },
+    "multioptpy/Optimizer/gan_step.py": {
+      "status": "done",
+      "where": "opt::enhance::gan_step, math::mlp"
+    },
+    "multioptpy/Optimizer/gdiis.py": {
+      "status": "done",
+      "where": "opt::enhance::gdiis, opt::enhance::diis_core"
+    },
+    "multioptpy/Optimizer/gediis.py": {
+      "status": "done",
+      "where": "opt::enhance::gediis"
+    },
+    "multioptpy/Optimizer/geodesic_step.py": {
+      "status": "done",
+      "where": "opt::enhance::geodesic_step"
+    },
+    "multioptpy/Optimizer/gpmin.py": {
+      "status": "done",
+      "where": "opt::step::gpmin, math::gp, math::minimize"
+    },
+    "multioptpy/Optimizer/gpr_step.py": {
+      "status": "done",
+      "where": "opt::enhance::gpr_step, math::gp"
+    },
+    "multioptpy/Optimizer/gradientdescent.py": {
+      "status": "done",
+      "where": "opt::step::gradient_descent"
+    },
+    "multioptpy/Optimizer/hessian_update.py": {
+      "status": "done",
+      "where": "opt::update::formulas"
+    },
+    "multioptpy/Optimizer/kdiis.py": {
+      "status": "done",
+      "where": "opt::enhance::kdiis"
+    },
+    "multioptpy/Optimizer/lars.py": {
+      "status": "done",
+      "where": "opt::enhance::lars"
+    },
+    "multioptpy/Optimizer/lbfgs.py": {
+      "status": "done",
+      "where": "opt::step::lbfgs"
+    },
+    "multioptpy/Optimizer/linesearch.py": {
+      "status": "done",
+      "where": "opt::enhance::linesearch, math::line_search"
+    },
+    "multioptpy/Optimizer/lookahead.py": {
+      "status": "done",
+      "where": "opt::enhance::lookahead"
+    },
+    "multioptpy/Optimizer/mf_rsirfo.py": {
+      "status": "done",
+      "where": "opt::step::mf_rsirfo"
+    },
+    "multioptpy/Optimizer/mode_following.py": {
+      "status": "done",
+      "where": "opt::step::mode_following, math::assignment"
+    },
+    "multioptpy/Optimizer/newton.py": {
+      "status": "done",
+      "where": "opt::step::newton"
+    },
+    "multioptpy/Optimizer/prodigy.py": {
+      "status": "done",
+      "where": "opt::step::prodigy"
+    },
+    "multioptpy/Optimizer/purtubation.py": {
+      "status": "done",
+      "where": "opt::enhance::perturbation"
+    },
+    "multioptpy/Optimizer/radam.py": {
+      "status": "done",
+      "where": "opt::step::radam"
+    },
+    "multioptpy/Optimizer/rl_step.py": {
+      "status": "done",
+      "where": "opt::enhance::rl_step"
+    },
+    "multioptpy/Optimizer/rsirfo.py": {
+      "status": "done",
+      "where": "opt::step::rsirfo, opt::step::rfo_core"
+    },
+    "multioptpy/Optimizer/rsprfo.py": {
+      "status": "done",
+      "where": "opt::step::rsprfo, opt::step::prfo"
+    },
+    "multioptpy/Optimizer/tr_lbfgs.py": {
+      "status": "done",
+      "where": "opt::step::tr_lbfgs"
+    },
+    "multioptpy/Optimizer/trim.py": {
+      "status": "done",
+      "where": "opt::enhance::trim"
+    },
+    "multioptpy/Optimizer/trust_radius.py": {
+      "status": "done",
+      "where": "opt::trust"
+    },
+    "multioptpy/OtherMethod/": {
+      "status": "done",
+      "where": "package marker (no content)"
+    },
+    "multioptpy/OtherMethod/addf.py": {
+      "status": "done",
+      "where": "workflow::explore::addf (scaled hypersphere geometry in path::shs); driver workflow::pair_search::addf_run; ieipmain -addf (see migration.md, ieipmain)"
+    },
+    "multioptpy/OtherMethod/dimer.py": {
+      "status": "done",
+      "where": "path::dimer (rotation in path::dimer::rotation); driver workflow::pair_search::point_runs::run_dimer; ieipmain -use_dimer"
+    },
+    "multioptpy/OtherMethod/elastic_image_pair.py": {
+      "status": "done",
+      "where": "path::ieip (forces, AdaBelief, microiterations in hyperspherical coordinates); driver workflow::pair_search::ieip_run; ieipmain"
+    },
+    "multioptpy/OtherMethod/modelfunction.py": {
+      "status": "done",
+      "where": "pes::combine::model_function"
+    },
+    "multioptpy/OtherMethod/newton_traj.py": {
+      "status": "done",
+      "where": "path::newton_trajectory; driver workflow::pair_search::point_runs::run_newton_trajectory; ieipmain -gnt"
+    },
+    "multioptpy/OtherMethod/spring_pair_method.py": {
+      "status": "done",
+      "where": "path::spring_pair; driver workflow::pair_search::point_runs::run_spring_pair; ieipmain -use_spm"
+    },
+    "multioptpy/OtherMethod/twopshs.py": {
+      "status": "done",
+      "where": "path::twopshs (scaled hypersphere geometry in path::shs); driver workflow::pair_search::point_runs::run_two_point_shs; ieipmain -2pshs"
+    },
+    "multioptpy/PESAnalyzer/": {
+      "status": "done",
+      "where": "analysis::path_map (-cmds, -pca), analysis::koopman (-km), workflow::path_analysis; the IRC curvature is in vib::path (freqmain -path)"
+    },
+    "multioptpy/Parameters/": {
+      "status": "done",
+      "where": "crates/mopt-rs/src/parameters (incl. multioptpy_tables.rs, isotope_masses.rs)"
+    },
+    "multioptpy/Potential/": {
+      "status": "done",
+      "where": "pes::bias (all bias potentials, 0D-3D cells)"
+    },
+    "multioptpy/SQM/": {
+      "status": "dropped",
+      "where": "not provided (decided 2026-11-10): the experimental SQM1/SQM2 methods are not part of mopt-rs"
+    },
+    "multioptpy/Thermo/": {
+      "status": "done",
+      "where": "vib::normal_modes, vib::thermo, vib::report (optmain -freq)"
+    },
+    "multioptpy/Utils/__init__.py": {
+      "status": "done",
+      "where": "package marker (no content)"
+    },
+    "multioptpy/Utils/bond_connectivity.py": {
+      "status": "done",
+      "where": "coord::connectivity, model_hessian::legacy::common::Connectivity"
+    },
+    "multioptpy/Utils/calc_tools.py": {
+      "status": "done",
+      "where": "math, coord, model_hessian::legacy::common"
+    },
+    "multioptpy/Utils/oniom.py": {
+      "status": "done",
+      "where": "pes::oniom::layout (link atoms at a share of the bond or at MultiOptPy's fixed distance), cli::oniom"
+    },
+    "multioptpy/Utils/pbc.py": {
+      "status": "done",
+      "where": "domain::pbc"
+    },
+    "multioptpy/Utils/rcmc.py": {
+      "status": "done",
+      "where": "kinetics (rates, contraction, the solvers rcmc and legacy_rcmc among others), workflow::kinetics, cli::run_kinetics (run_rcmc, run_kinetics), workflow::mapper::priority (priority=kinetics, --use_rcmc)"
+    },
+    "multioptpy/Utils/riemann_curvature.py": {
+      "status": "pending",
+      "where": "analysis"
+    },
+    "multioptpy/Utils/symmetry_analyzer.py": {
+      "status": "done",
+      "where": "vib::symmetry (all operations from the images of two atoms; symmetry.txt)"
+    },
+    "multioptpy/Visualization/": {
+      "status": "done",
+      "where": "core_infra::viz, workflow::observers"
+    },
+    "multioptpy/WFAnalyzer/": {
+      "status": "done",
+      "where": "analysis::orbitals (tracking, nro, roet), workflow::orbital_analysis, cli::orbital_path (freqmain -nro, -roet)"
+    },
+    "multioptpy/Wrapper/__init__.py": {
+      "status": "done",
+      "where": "package marker (no content)"
+    },
+    "multioptpy/Wrapper/autots.py": {
+      "status": "pending",
+      "where": "Python AutoTS API"
+    },
+    "multioptpy/Wrapper/ieip_wrapper.py": {
+      "status": "done",
+      "where": "python/mopt_rs/ieip.py (IeipJob; the searches on plain variables)"
+    },
+    "multioptpy/Wrapper/mapper.py": {
+      "status": "pending",
+      "where": "workflow::mapper (Rust; the RCMC queue is the priority kinetics; the Python Mapper API is not done)"
+    },
+    "multioptpy/Wrapper/md_wrapper.py": {
+      "status": "done",
+      "where": "python/mopt_rs/md.py (run_md, MolecularDynamics); mopt_rs._core.run_cli('mdmain', [...])"
+    },
+    "multioptpy/Wrapper/neb_wrapper.py": {
+      "status": "pending",
+      "where": "Python path API"
+    },
+    "multioptpy/Wrapper/optimize_wrapper.py": {
+      "status": "done",
+      "where": "python/mopt_rs/optimize.py"
+    },
+    "multioptpy/__init__.py": {
+      "status": "done",
+      "where": "python/mopt_rs/__init__.py"
+    },
+    "multioptpy/fileio.py": {
+      "status": "done",
+      "where": "crates/mopt-rs/src/io"
+    },
+    "multioptpy/ieip.py": {
+      "status": "done",
+      "where": "cli::ieipmain, cli::ieipmain_settings, cli::ieipmain_methods; workflow::pair_search (files, figures, log)"
+    },
+    "multioptpy/interface.py": {
+      "status": "done",
+      "where": "crates/mopt-rs/src/cli (generated option tables, cli/spec.rs)"
+    },
+    "multioptpy/irc.py": {
+      "status": "done",
+      "where": "irc::machine, irc::start (saddle_check), irc::registry; cli::irc (optmain -irc) and cli::ircmain; the combined files in workflow::irc_output"
+    },
+    "multioptpy/moleculardynamics.py": {
+      "status": "done",
+      "where": "md::machine (ask/tell), workflow::md (driver), workflow::md_files and workflow::md_log (files, log), cli::mdmain"
+    },
+    "multioptpy/neb.py": {
+      "status": "pending",
+      "where": "path"
+    },
+    "multioptpy/optimization.py": {
+      "status": "done",
+      "where": "crates/mopt-rs/src/opt, workflow, cli/optmain.rs"
+    },
+    "multioptpy/optimization.py:EDEELHandler": {
+      "status": "done",
+      "where": "pes::combine (EDEEL states, caps of bridged fragments); workflow::electron_transfer, cli::etmain (etmain: SAES, Scher-Holstein, Mulliken-Hush, Zhu-Nakamura)"
+    },
+    "multioptpy/optimization.py:ModelFunctionHandler": {
+      "status": "done",
+      "where": "pes::combine::model_function (-mf); cli::bitss (-mf bitss)"
+    },
+    "multioptpy/optimization.py:ONIOMHandler": {
+      "status": "done",
+      "where": "pes::oniom::OniomCalculator (subtractive N-level ONIOM, mechanical or electronic embedding (pes::oniom::embedding); MultiOptPy's handler raises before it computes anything); microiterations in pes::oniom::micro"
+    },
+    "multioptpy/optimization.py:Optimize._perform_vibrational_analysis": {
+      "status": "done",
+      "where": "cli::optmain::write_frequency_analysis"
+    },
+    "multioptpy/optimizer.py": {
+      "status": "done",
+      "where": "crates/mopt-rs/src/opt/registry.rs, opt/state_machine.rs"
+    }
+  }
+}

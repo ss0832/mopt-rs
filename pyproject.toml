@@ -1,0 +1,129 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "mopt-py"
+version = "2.1.0"
+description = "Successor implementation of MultiOptPy: extensible geometry optimization and reaction path exploration in Rust and Python"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    { name = "ss0832" },
+]
+keywords = [
+    "quantum-chemistry",
+    "geometry-optimization",
+    "transition-state",
+    "reaction-path",
+    "oniom",
+    "pbc",
+    "afir",
+    "neb",
+    "gsm",
+    "irc",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+# The engines of electronic structure are optional: the built-in calculators need none of
+# them, and each is imported only when a calculation uses it. Install the ones you use.
+pyscf = [
+    "pyscf>=2.4",
+]
+tblite = [
+    "tblite>=0.3",
+]
+dxtb = [
+    "dxtb>=0.1",
+]
+ase = [
+    "ase>=3.22",
+]
+qm = [
+    "pyscf>=2.4",
+    "tblite>=0.3",
+    "ase>=3.22",
+]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.10",
+    "ruff>=0.5",
+]
+docs = [
+    "sphinx>=7.2",
+    "myst-parser>=3.0",
+    "sphinx-rtd-theme>=2.0",
+]
+
+[project.scripts]
+mopt-py = "mopt_rs.cli:main"
+optmain = "mopt_rs.cli:optmain"
+ieipmain = "mopt_rs.cli:ieipmain"
+mdmain = "mopt_rs.cli:mdmain"
+nebmain = "mopt_rs.cli:nebmain"
+confsearch = "mopt_rs.cli:confsearch"
+relaxedscan = "mopt_rs.cli:relaxedscan"
+run_autots = "mopt_rs.cli:run_autots"
+orientsearch = "mopt_rs.cli:orientsearch"
+run_mapper = "mopt_rs.cli:run_mapper"
+run_rcmc = "mopt_rs.cli:run_rcmc"
+run_kinetics = "mopt_rs.cli:run_kinetics"
+run_automecp = "mopt_rs.cli:run_automecp"
+freqmain = "mopt_rs.cli:freqmain"
+etmain = "mopt_rs.cli:etmain"
+ircmain = "mopt_rs.cli:ircmain"
+mopt-mcp = "mopt_rs.mcp:main"
+
+[tool.maturin]
+manifest-path = "crates/mopt-py/Cargo.toml"
+python-source = "python"
+module-name = "mopt_rs._core"
+bindings = "pyo3"
+features = ["extension-module"]
+strip = true
+# Files of the source distribution that lie outside the two crates and the Python package: the
+# licence, and the pages of docs/source, which the stand-alone `mopt` binary embeds at compile time
+# (crates/mopt-rs/src/bin/mopt.rs).
+include = [
+    { path = "LICENSE", format = "sdist" },
+    { path = "docs/source/*.md", format = "sdist" },
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+mypy_path = "python"
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["python", "tests"]
+# The documentation shipped with the package is a byte copy of docs/source
+# (tools/docs/sync_package_docs.py); its code examples are not reformatted.
+extend-exclude = ["python/mopt_rs/docs/*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]

@@ -1,0 +1,24 @@
+# mopt-rs core crate manifest
+# Copyright (C) 2023-2026 ss0832
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[package]
+name = "mopt-rs"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description.workspace = true
+repository.workspace = true
+
+[dependencies]
+faer.workspace = true
+rayon.workspace = true
+libm.workspace = true
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "mopt"
+path = "src/bin/mopt.rs"

@@ -1,0 +1,4307 @@
+{
+ "source": "MultiOptPy 1.21.2",
+ "commands": {
+  "optmain": {
+   "sources": [
+    "interface.py:call_optimizeparser",
+    "interface.py:parser_for_biasforce"
+   ],
+   "options": [
+    {
+     "names": [
+      "INPUT"
+     ],
+     "line": 141,
+     "help": "input xyz file name",
+     "nargs": "*",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-bs",
+      "--basisset"
+     ],
+     "line": 142,
+     "default": "6-31G(d)",
+     "help": "basisset (ex. 6-31G*)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-func",
+      "--functional"
+     ],
+     "line": 143,
+     "default": "b3lyp",
+     "help": "functional(ex. b3lyp)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-sub_bs",
+      "--sub_basisset"
+     ],
+     "line": 144,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "sub_basisset (ex. I LanL2DZ)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-ecp",
+      "--effective_core_potential"
+     ],
+     "line": 145,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "ECP (ex. I LanL2DZ) (notice) If you assign ECP to all atoms of inputs, type \"default (basis_set name)\". ",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-es",
+      "--excited_state"
+     ],
+     "line": 146,
+     "type": "int",
+     "default": 0,
+     "help": "calculate excited state (default: 0) (e.g.) if you set spin_multiplicity as 1 and set this option as \"n\", this program calculate S\"n\" state.",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-ns",
+      "--NSTEP"
+     ],
+     "line": 147,
+     "type": "int",
+     "default": "1000",
+     "help": "number of iteration (default: 1000)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-core",
+      "--N_THREAD"
+     ],
+     "line": 148,
+     "type": "int",
+     "default": "8",
+     "help": "threads",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-mem",
+      "--SET_MEMORY"
+     ],
+     "line": 149,
+     "type": "str",
+     "default": "2GB",
+     "help": "use mem(ex. 1GB)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-d",
+      "--DELTA"
+     ],
+     "line": 150,
+     "type": "str",
+     "default": "x",
+     "help": "move step",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-tr",
+      "--max_trust_radius"
+     ],
+     "line": 151,
+     "type": "float",
+     "default": null,
+     "help": "max trust radius to restrict step size (unit: ang.) (default: 0.1 for n-th order saddle point optimization, 0.5 for minimum point optimization) (notice: default minimum trust radius is 0.01)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-mintr",
+      "--min_trust_radius"
+     ],
+     "line": 152,
+     "type": "float",
+     "default": 0.01,
+     "help": "min trust radius to restrict step size (unit: ang.) (default: 0.01) ",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-u",
+      "--unrestrict"
+     ],
+     "line": 153,
+     "help": "use unrestricted method (for radical reaction and excite state etc.)",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-fix",
+      "--fix_atoms"
+     ],
+     "line": 156,
+     "nargs": "*",
+     "type": "str",
+     "default": "",
+     "help": "fix atoms (ex.) [atoms (ex.) 1,2,3-6]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-gi",
+      "--geom_info"
+     ],
+     "line": 157,
+     "nargs": "*",
+     "type": "str",
+     "default": "1",
+     "help": "calculate atom distances, angles, and dihedral angles in every iteration (energy_profile is also saved.) (ex.) [atoms (ex.) 1,2,3-6]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-dc",
+      "--dissociate_check"
+     ],
+     "line": 158,
+     "nargs": "*",
+     "type": "str",
+     "default": "10",
+     "help": "Terminate calculation if distance between two fragments is exceed this value. (default) 10 [ang.]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-opt",
+      "--opt_method"
+     ],
+     "line": 159,
+     "nargs": "*",
+     "type": "str",
+     "default": [
+      "FIRELARS"
+     ],
+     "help": "optimization method for QM calculation (default: FIRE) (mehod_list:(steepest descent method group) FIRE, CG etc. (quasi-Newton method group) rsirfo_fsb rsirfo_bofill  etc.) (notice you can combine two methods, steepest descent family and quasi-Newton method family. The later method is used if gradient is small enough. [[steepest descent] [quasi-Newton method]]) (ex.) [opt_method]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-fc",
+      "--calc_exact_hess"
+     ],
+     "line": 160,
+     "type": "int",
+     "default": -1,
+     "help": "calculate exact hessian per geometry optimization steps and IRC steps (ex.) [steps per one hess calculation]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-mfc",
+      "--calc_model_hess"
+     ],
+     "line": 161,
+     "type": "int",
+     "default": 50,
+     "help": "calculate model hessian per steps (ex.) [steps per one hess calculation]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-xtb",
+      "--usextb"
+     ],
+     "line": 162,
+     "type": "str",
+     "default": "None",
+     "help": "use extended tight bonding method to calculate. default is not using extended tight binding method (ex.) GFN1-xTB, GFN2-xTB ",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-dxtb",
+      "--usedxtb"
+     ],
+     "line": 163,
+     "type": "str",
+     "default": "None",
+     "help": "use extended tight bonding method to calculate. default is not using extended tight binding method (This option is for dxtb module (hessian calculated by autograd differential method is available.)) (ex.) GFN1-xTB, GFN2-xTB ",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-sqm1",
+      "--sqm1"
+     ],
+     "line": 164,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-sqm2",
+      "--sqm2"
+     ],
+     "line": 165,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-cpcm",
+      "--cpcm_solv_model"
+     ],
+     "line": 166,
+     "type": "str",
+     "default": null,
+     "help": "use CPCM solvent model for xTB (Default setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-alpb",
+      "--alpb_solv_model"
+     ],
+     "line": 167,
+     "type": "str",
+     "default": null,
+     "help": "use ALPB solvent model for xTB (Default setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-pyscf",
+      "--pyscf"
+     ],
+     "line": 169,
+     "help": "use pyscf module.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-elec",
+      "--electronic_charge"
+     ],
+     "line": 170,
+     "type": "int",
+     "default": 0,
+     "help": "formal electronic charge (ex.) [charge (0)]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-spin",
+      "--spin_multiplicity"
+     ],
+     "line": 171,
+     "type": "int",
+     "default": 1,
+     "help": "spin multiplicity (if you use pyscf, please input S value (mol.spin = 2S = Nalpha - Nbeta)) (ex.) [multiplicity (0)]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-order",
+      "--saddle_order"
+     ],
+     "line": 172,
+     "type": "int",
+     "default": 0,
+     "help": "optimization for (n-1)-th order saddle point (Newton group of opt method (RFO) is only available.) (ex.) [order (0)]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-cmds",
+      "--cmds"
+     ],
+     "line": 173,
+     "help": "Apply classical multidimensional scaling to calculated approx. reaction path.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-pca",
+      "--pca"
+     ],
+     "line": 174,
+     "help": "Apply principal component analysis to calculated approx. reaction path.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-km",
+      "--koopman"
+     ],
+     "line": 175,
+     "help": "Apply Koopman model to analyze the convergence",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-irc",
+      "--intrinsic_reaction_coordinates"
+     ],
+     "line": 176,
+     "help": "Calculate intrinsic reaction coordinates. (ex.) [[step_size], [max_step], [IRC_method]] (Recommended) [0.5 300 lqa]",
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-of",
+      "--opt_fragment"
+     ],
+     "line": 177,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Several atoms are grouped together as fragments and optimized. (This method does not work if you use quasi-newton method for optimazation.) (ex.) [[atoms (ex.) 1-4] ...] ",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-grid",
+      "--dft_grid"
+     ],
+     "line": 178,
+     "type": "int",
+     "default": 3,
+     "help": "fineness of grid for DFT calculation (default: 3 (0~9))",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-os",
+      "--othersoft"
+     ],
+     "line": 179,
+     "type": "str",
+     "default": "None",
+     "help": "use other QM software. default is not using other QM software. (require python module, ASE (Atomic Simulation Environment)) (ex.) orca, gaussian, gamessus, mace_mp etc.",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-osp",
+      "--software_path_file"
+     ],
+     "line": 180,
+     "type": "str",
+     "default": "./software_path.conf",
+     "help": "read the list of file directory of other QM softwares to use them. default is current directory. (require python module, ASE (Atomic Simulation Environment)) (ex.) ./software_path.conf",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-tcc",
+      "--tight_convergence_criteria"
+     ],
+     "line": 181,
+     "help": "apply tight opt criteria.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-lcc",
+      "--loose_convergence_criteria"
+     ],
+     "line": 182,
+     "help": "apply loose opt criteria.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-modelhess",
+      "--use_model_hessian"
+     ],
+     "line": 191,
+     "nargs": "?",
+     "help": "use model hessian. (Default: not using model hessian If you specify only option, Improved Lindh + Grimme's D3 dispersion model hessian is used.) (ex. lindh, gfnff, gfn0xtb, fischer, fischerd3, fischerd4, schlegel, swart, lindh2007, lindh2007d3, lindh2007d4)",
+     "action": {
+      "expr": "ModelhessAction"
+     },
+     "default": null,
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-sc",
+      "--shape_conditions"
+     ],
+     "line": 192,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Exit optimization if these conditions are not satisfied. (e.g.) [[(ang.) gt(lt) 2,3 (bond)] [(deg.) gt(lt) 2,3,4 (bend)] ...] [[(deg.) gt(lt) 2,3,4,5 (torsion)] ...]",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-pc",
+      "--projection_constrain"
+     ],
+     "line": 193,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply constrain conditions with projection of gradient and hessian (ex.) [[(constraint condition name) (atoms(ex. 1,2))] ...] ",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-oniom",
+      "--oniom_flag"
+     ],
+     "line": 194,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply ONIOM method (Warning: This option is unavailable.)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-freq",
+      "--frequency_analysis"
+     ],
+     "line": 195,
+     "help": "Perform normal vibrational analysis after converging geometry optimization.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-freq_cutoff",
+      "--frequency_analysis_cutoff"
+     ],
+     "line": 196,
+     "type": "float",
+     "default": 100.0,
+     "help": "A cutoff frequency of input value is applied to the low-frequency vibrational modes. (default: 100.0 cm^-1)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-freq_corr",
+      "--frequency_correction_method"
+     ],
+     "line": 197,
+     "help": "Applies frequency correction using either Truhlar's or Grimme's method. (default: grimme)",
+     "type": "str",
+     "default": "grimme",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-force_freq",
+      "--force_frequency_analysis"
+     ],
+     "line": 198,
+     "help": "Execute normal vibrational analysis after geometry optimization, regardless of convergence status.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-temp",
+      "--temperature"
+     ],
+     "line": 199,
+     "type": "float",
+     "default": "298.15",
+     "help": "temperatrue to calculate thermochemistry (Unit: K) (default: 298.15K)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-press",
+      "--pressure"
+     ],
+     "line": 200,
+     "type": "float",
+     "default": "101325",
+     "help": "pressure to calculate thermochemistry (Unit: Pa) (default: 101325Pa)",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-negeigval",
+      "--detect_negative_eigenvalues"
+     ],
+     "line": 201,
+     "help": "Detect negative eigenvalues in the Hessian matrix at ITR. 0 if you calculate exact hessian (-fc >0). If negative eigenvalues are not detected and saddle_order > 0, the optimization is stopped.",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-mf",
+      "--model_function"
+     ],
+     "line": 202,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "minimize model function(ex.) [[model function type (seam, avoid, conical etc.)] [electronic charge] [spin multiplicity]] ",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-nosymm",
+      "--no_symmetry_analyzer"
+     ],
+     "line": 203,
+     "help": "Do not apply the symmetry analyzer after convergence. (Treat as C1 symmetry)",
+     "action": "store_true",
+     "origin": "interface.py:call_optimizeparser"
+    },
+    {
+     "names": [
+      "-ma",
+      "--manual_AFIR"
+     ],
+     "line": 208,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "manual-AFIR (ex.) [[Gamma(kJ/mol)] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rp",
+      "--repulsive_potential"
+     ],
+     "line": 209,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ex.) [[well_scale] [dist_scale] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpv2",
+      "--repulsive_potential_v2"
+     ],
+     "line": 210,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε[A * (σ/r)^(rep) - B * (σ/r)^(attr)]) (ex.) [[well_scale] [dist_scale] [length (ang.)] [const. (rep)] [const. (attr)] [order (rep)] [order (attr)] [LJ center atom (1,2)] [target atoms (3-5,8)] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpg",
+      "--repulsive_potential_gaussian"
+     ],
+     "line": 211,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε_LJ[(σ/r)^(12) - 2 * (σ/r)^(6)] - ε_gau * exp(-((r-σ_gau)/b)^2)) (ex.) [[LJ_well_depth (kJ/mol)] [LJ_dist (ang.)] [Gaussian_well_depth (kJ/mol)] [Gaussian_dist (ang.)] [Gaussian_range (ang.)] [Fragm.1 (1,2)] [Fragm.2 (3-5,8)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-cp",
+      "--cone_potential"
+     ],
+     "line": 213,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add cone type LJ repulsive_potential based on UFF (ex.) [[well_value (epsilon) (kJ/mol)] [dist (sigma) (ang.)] [cone angle (deg.)] [LJ center atom (1)] [three atoms (2,3,4) ] [target atoms (5-9)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-fp",
+      "--flux_potential"
+     ],
+     "line": 215,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to make flow. ( k/p*(x-x_0)^p )(ex.) [[x,y,z (constant (a.u.))] [x,y,z (order)] [x,y,z coordinate (ang.)] [Fragm.(ex. 1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kp",
+      "--keep_pot"
+     ],
+     "line": 216,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kpv2",
+      "--keep_pot_v2"
+     ],
+     "line": 217,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential_v2 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-akp",
+      "--anharmonic_keep_pot"
+     ],
+     "line": 218,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Morse potential  De*[1-exp(-((k/2*De)^0.5)*(r - r0))]^2 (ex.) [[potential well depth (a.u.)] [spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-ka",
+      "--keep_angle"
+     ],
+     "line": 219,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [atom1,atom2,atom3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kav2",
+      "--keep_angle_v2"
+     ],
+     "line": 220,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle_v2 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-up",
+      "--universal_potential"
+     ],
+     "line": 221,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Potential to gather specified atoms to a single point (ex.) [[potential (kJ/mol)] [target atoms (1,2)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kda",
+      "--keep_dihedral_angle"
+     ],
+     "line": 224,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopa",
+      "--keep_out_of_plain_angle"
+     ],
+     "line": 225,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep_out_of_plain_angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out of plain angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdav2",
+      "--keep_dihedral_angle_v2"
+     ],
+     "line": 226,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdac",
+      "--keep_dihedral_angle_cos"
+     ],
+     "line": 227,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_cos k*[1 + cos(n * φ - (φ0 + pi))] (0 ~ 180 deg.) (ex.) [[potential const.(a.u.)] [angle const. (unitless)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopav2",
+      "--keep_out_of_plain_angle_v2"
+     ],
+     "line": 228,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep out_of_plain angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out_of_plain angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpp",
+      "--void_point_pot"
+     ],
+     "line": 229,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "void point keep potential (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [void_point (x,y,z) (ang.)] [atoms(ex. 1,2,3-5)] [order p \"(1/p)*k*(r - r0)^p\"] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-brp",
+      "--bond_range_potential"
+     ],
+     "line": 231,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to confine atom distance. (ex.) [[upper const.(a.u.)] [lower const.(a.u.)] [upper distance (ang.)] [lower distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wp",
+      "--well_pot"
+     ],
+     "line": 232,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom distance. (ex.) [[wall energy (kJ/mol)] [fragm.1] [fragm.2] [a,b,c,d (a<b<c<d) (ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wwp",
+      "--wall_well_pot"
+     ],
+     "line": 233,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atoms movement. (like sandwich) (ex.) [[wall energy (kJ/mol)] [direction (x,y,z)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpwp",
+      "--void_point_well_pot"
+     ],
+     "line": 234,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere) (ex.) [[wall energy (kJ/mol)] [coordinate (x,y,z) (ang.)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-awp",
+      "--around_well_pot"
+     ],
+     "line": 235,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere around fragment) (ex.) [[wall energy (kJ/mol)] [center (1,2-4)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-smp",
+      "--spacer_model_potential"
+     ],
+     "line": 236,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential based on Morse potential to reproduce solvent molecules around molecule. (ex.) [[solvent particle well depth (kJ/mol)] [solvent particle e.q. distance (ang.)] [scaling of cavity (2.0)] [number of particles] [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-metad",
+      "--metadynamics"
+     ],
+     "line": 237,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply meta-dynamics (use gaussian potential) (ex.) [[[bond] [potential height (kJ/mol)] [potential width (ang.)] [(atom1),(atom2)]] [[angle] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3)]] [[dihedral] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]] [[outofplain] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]]...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefp",
+      "--linear_mechano_force_pot"
+     ],
+     "line": 238,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atoms1(ex. 1,2)] [atoms2(ex. 3,4)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefpv2",
+      "--linear_mechano_force_pot_v2"
+     ],
+     "line": 239,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atom(ex. 1)] [direction (xyz)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerp",
+      "--asymmetric_ellipsoidal_repulsive_potential"
+     ],
+     "line": 240,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (use GNB parameters (JCTC, 2024)) (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerpv2",
+      "--asymmetric_ellipsoidal_repulsive_potential_v2"
+     ],
+     "line": 241,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-nrp",
+      "--nano_reactor_potential"
+     ],
+     "line": 242,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add nano reactor potential (ex.) [[inner wall (ang.)] [outer wall (ang.)] [contraction time (ps)] [expansion time (ps)] [contraction force const (kcal/mol/A^2)] [expansion force const (kcal/mol/A^2)]] (Recommendation: 8.0 14.0 1.5 0.5 1.0 0.5)",
+     "origin": "interface.py:parser_for_biasforce"
+    }
+   ]
+  },
+  "ieipmain": {
+   "sources": [
+    "interface.py:call_ieipparser",
+    "interface.py:parser_for_biasforce"
+   ],
+   "options": [
+    {
+     "names": [
+      "INPUT"
+     ],
+     "line": 82,
+     "help": "input folder",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-bs",
+      "--basisset"
+     ],
+     "line": 83,
+     "default": "6-31G(d)",
+     "help": "basisset (ex. 6-31G*)",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-func",
+      "--functional"
+     ],
+     "line": 84,
+     "default": "b3lyp",
+     "help": "functional(ex. b3lyp)",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-ns",
+      "--NSTEP"
+     ],
+     "line": 85,
+     "type": "int",
+     "default": "999",
+     "help": "iter. number",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-opt",
+      "--opt_method"
+     ],
+     "line": 87,
+     "nargs": "*",
+     "type": "str",
+     "default": [
+      "FIRELARS"
+     ],
+     "help": "optimization method for QM calclation (default: FIRE) (mehod_list:(steepest descent method group) FIRE, CG etc. (quasi-Newton method group) RFO_FSB, RFO_BFGS, RFO3_Bifill  etc.) (notice you can combine two methods, steepest descent family and quasi-Newton method family. The later method is used if gradient is small enough. [[steepest descent] [quasi-Newton method]]) (ex.) [opt_method]",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-sub_bs",
+      "--sub_basisset"
+     ],
+     "line": 88,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "sub_basisset (ex. I LanL2DZ)",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-ecp",
+      "--effective_core_potential"
+     ],
+     "line": 89,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "ECP (ex. I LanL2DZ) (notice) If you assign ECP to all atoms of inputs, type \"default (basis_set name)\". ",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-gfix",
+      "--gradient_fix_atoms"
+     ],
+     "line": 90,
+     "nargs": "*",
+     "type": "str",
+     "default": "",
+     "help": "set the gradient of internal coordinates between atoms to zero  (ex.) [[atoms (ex.) 1,2] ...]",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-core",
+      "--N_THREAD"
+     ],
+     "line": 91,
+     "type": "int",
+     "default": "8",
+     "help": "threads",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-mi",
+      "--microiter"
+     ],
+     "line": 92,
+     "type": "int",
+     "default": 0,
+     "help": "microiteration for relaxing reaction pathways",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-beta",
+      "--BETA"
+     ],
+     "line": 93,
+     "type": "float",
+     "default": "1.0",
+     "help": "force for optimization",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-mem",
+      "--SET_MEMORY"
+     ],
+     "line": 94,
+     "type": "str",
+     "default": "2GB",
+     "help": "use mem(ex. 1GB)",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-es",
+      "--excited_state"
+     ],
+     "line": 95,
+     "type": "int",
+     "nargs": "*",
+     "default": [
+      0,
+      0
+     ],
+     "help": "calculate excited state (default: [0(initial state), 0(final state)]) (e.g.) if you set spin_multiplicity as 1 and set this option as \"n\", this program calculate S\"n\" state.",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-mf",
+      "--model_function_mode"
+     ],
+     "line": 97,
+     "help": "use model function to optimization (seam, avoiding, conical, mesx, meci)",
+     "type": "str",
+     "default": "None",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-fc",
+      "--calc_exact_hess"
+     ],
+     "line": 98,
+     "type": "int",
+     "default": -1,
+     "help": "calculate exact hessian per steps (ex.) [steps per one hess calculation]",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-xtb",
+      "--usextb"
+     ],
+     "line": 101,
+     "type": "str",
+     "default": "None",
+     "help": "use extended tight bonding method to calculate. default is not using extended tight binding method (ex.) GFN1-xTB, GFN2-xTB ",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-dxtb",
+      "--usedxtb"
+     ],
+     "line": 102,
+     "type": "str",
+     "default": "None",
+     "help": "use extended tight bonding method to calculate. default is not using extended tight binding method (This option is for dxtb module (hessian calculated by autograd diffential method is available.)) (ex.) GFN1-xTB, GFN2-xTB ",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-sqm1",
+      "--sqm1"
+     ],
+     "line": 103,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-sqm2",
+      "--sqm2"
+     ],
+     "line": 104,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-pyscf",
+      "--pyscf"
+     ],
+     "line": 105,
+     "help": "use pyscf module.",
+     "action": "store_true",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-u",
+      "--unrestrict"
+     ],
+     "line": 107,
+     "help": "use unrestricted method (for radical reaction and excite state etc.)",
+     "action": "store_true",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-elec",
+      "--electronic_charge"
+     ],
+     "line": 108,
+     "type": "int",
+     "nargs": "*",
+     "default": [
+      0,
+      0
+     ],
+     "help": "formal electronic charge (ex.) [charge (0)]",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-spin",
+      "--spin_multiplicity"
+     ],
+     "line": 109,
+     "type": "int",
+     "nargs": "*",
+     "default": [
+      1,
+      1
+     ],
+     "help": "spin multiplcity (if you use pyscf, please input S value (mol.spin = 2S = Nalpha - Nbeta)) (ex.) [multiplcity (0)]",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-cpcm",
+      "--cpcm_solv_model"
+     ],
+     "line": 110,
+     "type": "str",
+     "default": null,
+     "help": "use CPCM solvent model for xTB (Defalut setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-alpb",
+      "--alpb_solv_model"
+     ],
+     "line": 111,
+     "type": "str",
+     "default": null,
+     "help": "use ALPB solvent model for xTB (Defalut setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-grid",
+      "--dft_grid"
+     ],
+     "line": 112,
+     "type": "int",
+     "default": 3,
+     "help": "fineness of grid for DFT calculation (default: 3 (0~9))",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-os",
+      "--othersoft"
+     ],
+     "line": 113,
+     "type": "str",
+     "default": "None",
+     "help": "use other QM software. default is not using other QM software. (require python module, ASE (Atomic Simulation Environment)) (ex.) orca, gaussian, gamessus, mace_mp etc.",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-osp",
+      "--software_path_file"
+     ],
+     "line": 114,
+     "type": "str",
+     "default": "./software_path.conf",
+     "help": "read the list of file directory of other QM softwares to use them. default is current directory. (require python module, ASE (Atomic Simulation Environment)) (ex.) ./software_path.conf",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-gnt",
+      "--use_gnt"
+     ],
+     "line": 117,
+     "help": "Use GNT (Growing Newton Trajectory)",
+     "action": "store_true",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-gnt_vec",
+      "--gnt_vec"
+     ],
+     "line": 118,
+     "help": "set vector to calculate Newton trajectory (ex. 1,2,3 (default:calculate vector reactant to product) )",
+     "type": "str",
+     "default": null,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-gnt_step",
+      "--gnt_step_len"
+     ],
+     "line": 119,
+     "help": "set step length for Newton trajectory (default: 0.5)",
+     "type": "float",
+     "default": 0.5,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-gnt_mi",
+      "--gnt_microiter"
+     ],
+     "line": 120,
+     "help": "max number of micro-iteration for Newton trajectory (default: 25)",
+     "type": "int",
+     "default": 25,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-addf",
+      "--use_addf"
+     ],
+     "line": 122,
+     "help": "Use ADDF-like method (default: False)",
+     "action": "store_true",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-addf_step",
+      "--addf_step_size"
+     ],
+     "line": 123,
+     "help": "set step size for ADDF-like method (default: 0.1)",
+     "type": "float",
+     "default": 0.1,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-addf_num",
+      "--addf_step_num"
+     ],
+     "line": 124,
+     "help": "set number of steps for ADDF-like method (default: 300)",
+     "type": "int",
+     "default": 300,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-addf_nadd",
+      "--number_of_add"
+     ],
+     "line": 125,
+     "help": "set number of number of searching ADD (A larger ADD takes precedence.) for ADDF-like method (default: 5)",
+     "type": "int",
+     "default": 5,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-2pshs",
+      "--use_2pshs"
+     ],
+     "line": 127,
+     "help": "Use 2PSHS-like method (default: False)",
+     "action": "store_true",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-2pshs_step",
+      "--twoPshs_step_size"
+     ],
+     "line": 128,
+     "help": "set step size for 2PSHS-like method (default: 0.05)",
+     "type": "float",
+     "default": 0.05,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-2pshs_num",
+      "--twoPshs_step_num"
+     ],
+     "line": 129,
+     "help": "set number of steps for 2PSHS-like method (default: 300)",
+     "type": "int",
+     "default": 300,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-use_dimer",
+      "--use_dimer"
+     ],
+     "line": 131,
+     "help": "Use Dimer method for searching direction of TS (default: False)",
+     "action": "store_true",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-dimer_sep",
+      "--dimer_separation"
+     ],
+     "line": 133,
+     "help": "set dimer separation (default: 0.0001)",
+     "type": "float",
+     "default": 0.0001,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-dimer_trial_angle",
+      "--dimer_trial_angle"
+     ],
+     "line": 134,
+     "help": "set dimer trial angle (default: pi/32)",
+     "type": "float",
+     "default": {
+      "expr": "np.pi / 32.0"
+     },
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-dimer_maxiter",
+      "--dimer_max_iterations"
+     ],
+     "line": 135,
+     "help": "set max iterations for dimer method (default: 1000)",
+     "type": "int",
+     "default": 1000,
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-use_spm",
+      "--use_spm"
+     ],
+     "line": 136,
+     "help": "Use Spring Pair method for searching direction of TS (default: False)",
+     "action": "store_true",
+     "origin": "interface.py:call_ieipparser"
+    },
+    {
+     "names": [
+      "-ma",
+      "--manual_AFIR"
+     ],
+     "line": 208,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "manual-AFIR (ex.) [[Gamma(kJ/mol)] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rp",
+      "--repulsive_potential"
+     ],
+     "line": 209,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ex.) [[well_scale] [dist_scale] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpv2",
+      "--repulsive_potential_v2"
+     ],
+     "line": 210,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε[A * (σ/r)^(rep) - B * (σ/r)^(attr)]) (ex.) [[well_scale] [dist_scale] [length (ang.)] [const. (rep)] [const. (attr)] [order (rep)] [order (attr)] [LJ center atom (1,2)] [target atoms (3-5,8)] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpg",
+      "--repulsive_potential_gaussian"
+     ],
+     "line": 211,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε_LJ[(σ/r)^(12) - 2 * (σ/r)^(6)] - ε_gau * exp(-((r-σ_gau)/b)^2)) (ex.) [[LJ_well_depth (kJ/mol)] [LJ_dist (ang.)] [Gaussian_well_depth (kJ/mol)] [Gaussian_dist (ang.)] [Gaussian_range (ang.)] [Fragm.1 (1,2)] [Fragm.2 (3-5,8)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-cp",
+      "--cone_potential"
+     ],
+     "line": 213,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add cone type LJ repulsive_potential based on UFF (ex.) [[well_value (epsilon) (kJ/mol)] [dist (sigma) (ang.)] [cone angle (deg.)] [LJ center atom (1)] [three atoms (2,3,4) ] [target atoms (5-9)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-fp",
+      "--flux_potential"
+     ],
+     "line": 215,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to make flow. ( k/p*(x-x_0)^p )(ex.) [[x,y,z (constant (a.u.))] [x,y,z (order)] [x,y,z coordinate (ang.)] [Fragm.(ex. 1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kp",
+      "--keep_pot"
+     ],
+     "line": 216,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kpv2",
+      "--keep_pot_v2"
+     ],
+     "line": 217,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential_v2 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-akp",
+      "--anharmonic_keep_pot"
+     ],
+     "line": 218,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Morse potential  De*[1-exp(-((k/2*De)^0.5)*(r - r0))]^2 (ex.) [[potential well depth (a.u.)] [spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-ka",
+      "--keep_angle"
+     ],
+     "line": 219,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [atom1,atom2,atom3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kav2",
+      "--keep_angle_v2"
+     ],
+     "line": 220,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle_v2 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-up",
+      "--universal_potential"
+     ],
+     "line": 221,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Potential to gather specified atoms to a single point (ex.) [[potential (kJ/mol)] [target atoms (1,2)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kda",
+      "--keep_dihedral_angle"
+     ],
+     "line": 224,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopa",
+      "--keep_out_of_plain_angle"
+     ],
+     "line": 225,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep_out_of_plain_angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out of plain angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdav2",
+      "--keep_dihedral_angle_v2"
+     ],
+     "line": 226,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdac",
+      "--keep_dihedral_angle_cos"
+     ],
+     "line": 227,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_cos k*[1 + cos(n * φ - (φ0 + pi))] (0 ~ 180 deg.) (ex.) [[potential const.(a.u.)] [angle const. (unitless)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopav2",
+      "--keep_out_of_plain_angle_v2"
+     ],
+     "line": 228,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep out_of_plain angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out_of_plain angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpp",
+      "--void_point_pot"
+     ],
+     "line": 229,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "void point keep potential (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [void_point (x,y,z) (ang.)] [atoms(ex. 1,2,3-5)] [order p \"(1/p)*k*(r - r0)^p\"] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-brp",
+      "--bond_range_potential"
+     ],
+     "line": 231,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to confine atom distance. (ex.) [[upper const.(a.u.)] [lower const.(a.u.)] [upper distance (ang.)] [lower distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wp",
+      "--well_pot"
+     ],
+     "line": 232,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom distance. (ex.) [[wall energy (kJ/mol)] [fragm.1] [fragm.2] [a,b,c,d (a<b<c<d) (ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wwp",
+      "--wall_well_pot"
+     ],
+     "line": 233,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atoms movement. (like sandwich) (ex.) [[wall energy (kJ/mol)] [direction (x,y,z)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpwp",
+      "--void_point_well_pot"
+     ],
+     "line": 234,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere) (ex.) [[wall energy (kJ/mol)] [coordinate (x,y,z) (ang.)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-awp",
+      "--around_well_pot"
+     ],
+     "line": 235,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere around fragment) (ex.) [[wall energy (kJ/mol)] [center (1,2-4)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-smp",
+      "--spacer_model_potential"
+     ],
+     "line": 236,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential based on Morse potential to reproduce solvent molecules around molecule. (ex.) [[solvent particle well depth (kJ/mol)] [solvent particle e.q. distance (ang.)] [scaling of cavity (2.0)] [number of particles] [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-metad",
+      "--metadynamics"
+     ],
+     "line": 237,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply meta-dynamics (use gaussian potential) (ex.) [[[bond] [potential height (kJ/mol)] [potential width (ang.)] [(atom1),(atom2)]] [[angle] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3)]] [[dihedral] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]] [[outofplain] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]]...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefp",
+      "--linear_mechano_force_pot"
+     ],
+     "line": 238,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atoms1(ex. 1,2)] [atoms2(ex. 3,4)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefpv2",
+      "--linear_mechano_force_pot_v2"
+     ],
+     "line": 239,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atom(ex. 1)] [direction (xyz)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerp",
+      "--asymmetric_ellipsoidal_repulsive_potential"
+     ],
+     "line": 240,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (use GNB parameters (JCTC, 2024)) (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerpv2",
+      "--asymmetric_ellipsoidal_repulsive_potential_v2"
+     ],
+     "line": 241,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-nrp",
+      "--nano_reactor_potential"
+     ],
+     "line": 242,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add nano reactor potential (ex.) [[inner wall (ang.)] [outer wall (ang.)] [contraction time (ps)] [expansion time (ps)] [contraction force const (kcal/mol/A^2)] [expansion force const (kcal/mol/A^2)]] (Recommendation: 8.0 14.0 1.5 0.5 1.0 0.5)",
+     "origin": "interface.py:parser_for_biasforce"
+    }
+   ]
+  },
+  "nebmain": {
+   "sources": [
+    "interface.py:call_nebparser",
+    "interface.py:parser_for_biasforce"
+   ],
+   "options": [
+    {
+     "names": [
+      "INPUT"
+     ],
+     "line": 246,
+     "help": "input folder",
+     "nargs": "*",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-bs",
+      "--basisset"
+     ],
+     "line": 247,
+     "default": "6-31G(d)",
+     "help": "basisset (ex. 6-31G*)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-sub_bs",
+      "--sub_basisset"
+     ],
+     "line": 248,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "sub_basisset (ex. I LanL2DZ)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ecp",
+      "--effective_core_potential"
+     ],
+     "line": 249,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "ECP (ex. I LanL2DZ) (notice) If you assign ECP to all atoms of inputs, type \"default (basis_set name)\". ",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-func",
+      "--functional"
+     ],
+     "line": 250,
+     "default": "b3lyp",
+     "help": "functional(ex. b3lyp)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-u",
+      "--unrestrict"
+     ],
+     "line": 251,
+     "help": "use unrestricted method (for radical reaction and excite state etc.)",
+     "action": "store_true",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-es",
+      "--excited_state"
+     ],
+     "line": 252,
+     "type": "int",
+     "default": 0,
+     "help": "calculate excited state (default: 0) (e.g.) if you set spin_multiplicity as 1 and set this option as \"n\", this program calculate S\"n\" state.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ns",
+      "--NSTEP"
+     ],
+     "line": 254,
+     "type": "int",
+     "default": "10",
+     "help": "iter. number",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-om",
+      "--OM"
+     ],
+     "line": 255,
+     "action": "store_true",
+     "help": "J. Chem. Phys. 155, 074103 (2021)  doi:https://doi.org/10.1063/5.0059593 This improved NEB method is inspired by the Onsager-Machlup (OM) action.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-lup",
+      "--LUP"
+     ],
+     "line": 256,
+     "action": "store_true",
+     "help": "J. Chem. Phys. 92, 1510–1511 (1990) doi:https://doi.org/10.1063/1.458112 locally updated planes (LUP) method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-bneb",
+      "--BNEB"
+     ],
+     "line": 257,
+     "action": "store_true",
+     "help": "NEB using Wilson's B matrix for calculating the perpendicular force.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-bneb2",
+      "--BNEB2"
+     ],
+     "line": 258,
+     "action": "store_true",
+     "help": "NEB using Wilson's B matrix for calculating the perpendicular force with parallel spring force.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-dneb",
+      "--DNEB"
+     ],
+     "line": 259,
+     "action": "store_true",
+     "help": "J. Chem. Phys. 120, 2082–2094 (2004) doi:https://doi.org/10.1063/1.1636455 doubly NEB method (DNEB) method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-nesb",
+      "--NESB"
+     ],
+     "line": 260,
+     "action": "store_true",
+     "help": "J Comput Chem. 2023;44:1884–1897. https://doi.org/10.1002/jcc.27169 Nudged elastic stiffness band (NESB) method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-dmf",
+      "--DMF"
+     ],
+     "line": 261,
+     "action": "store_true",
+     "help": "Direct Max Flux (DMF) method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ewbneb",
+      "--EWBNEB"
+     ],
+     "line": 262,
+     "action": "store_true",
+     "help": "Energy-weighted Nudged elastic band method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-qsm",
+      "--QSM"
+     ],
+     "line": 263,
+     "action": "store_true",
+     "help": "Quadratic String Method (J. Chem. Phys. 124, 054109 (2006))",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-qsmv2",
+      "--QSMv2"
+     ],
+     "line": 264,
+     "action": "store_true",
+     "help": "Quadratic String Method v2 (J. Chem. Phys. 124, 054109 (2006))",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-aneb",
+      "--ANEB"
+     ],
+     "line": 265,
+     "default": null,
+     "nargs": "*",
+     "help": "Adaptic NEB method (ref.: J. Chem. Phys. 117, 4651 (2002)) (Usage: -aneb [interpolation_num (ex. 2)] [frequency (ex. 5)], Default setting is not applying adaptic NEB method.)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-idpp",
+      "--use_image_dependent_pair_potential"
+     ],
+     "line": 267,
+     "action": "store_true",
+     "help": "use image dependent pair potential (IDPP) method (ref. arXiv:1406.1512v1)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-cfbenm",
+      "--use_correlated_flat_bottom_elastic_network_model"
+     ],
+     "line": 268,
+     "action": "store_true",
+     "help": "use correlated flat-bottom elastic network model (CFBENM) method (ref. s: J.Chem.TheoryComput.2025,21,3513−3522)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ad",
+      "--align_distances"
+     ],
+     "line": 269,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at equal intervals on the reaction coordinate",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adene",
+      "--align_distances_energy"
+     ],
+     "line": 270,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at energy-weighted intervals on the reaction coordinate",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adpred",
+      "--align_distances_energy_predicted"
+     ],
+     "line": 271,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at intervals on the reaction coordinate using cubic predicted interpolation",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adrpred",
+      "--align_distances_ritz_energy_predicted"
+     ],
+     "line": 272,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at intervals on the reaction coordinate using Ritz method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ads",
+      "--align_distances_spline"
+     ],
+     "line": 273,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at equal intervals on the reaction coordinate using spline interpolation",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ads2",
+      "--align_distances_spline_ver2"
+     ],
+     "line": 274,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at equal intervals on the reaction coordinate using spline interpolation ver.2",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adg",
+      "--align_distances_geodesic"
+     ],
+     "line": 275,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at equal intervals on the reaction coordinate using geodesic interpolation",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adb",
+      "--align_distances_bernstein"
+     ],
+     "line": 276,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at equal intervals on the reaction coordinate using Bernstein interpolation",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adbene",
+      "--align_distances_bernstein_energy"
+     ],
+     "line": 277,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at energy-weighted intervals on the reaction coordinate using Bernstein interpolation",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adadene",
+      "--align_distances_adaptive_energy"
+     ],
+     "line": 280,
+     "type": "int",
+     "default": 0,
+     "help": "distribute images at energy-weighted intervals on the reaction coordinate using Adaptive Geometry + Energy interpolation",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-adsg",
+      "--align_distances_savgol"
+     ],
+     "line": 284,
+     "type": "str",
+     "default": "0,0,0",
+     "help": "distribute images at equal intervals on the reaction coordinate using Savitzky-Golay interpolation (ex.) [[iteration(int)],[window_size(int, 5 is recommended)],[poly_order(int) 3 is recommended]] (default: 0,0,0 (not using Savitzky-Golay interpolation))",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-nd",
+      "--node_distance"
+     ],
+     "line": 286,
+     "type": "float",
+     "default": null,
+     "help": "distribute images at equal intervals linearly based ont specific distance (ex.) [distance (ang.)] (default: None)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-nds",
+      "--node_distance_spline"
+     ],
+     "line": 287,
+     "type": "float",
+     "default": null,
+     "help": "distribute images at equal intervals using spline interpolation based ont specific distance (ex.) [distance (ang.)] (default: None)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ndb",
+      "--node_distance_bernstein"
+     ],
+     "line": 288,
+     "type": "float",
+     "default": null,
+     "help": "distribute images at equal intervals using Bernstein interpolation based ont specific distance (ex.) [distance (ang.)] (default: None)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ndsg",
+      "--node_distance_savgol"
+     ],
+     "line": 289,
+     "type": "str",
+     "default": null,
+     "help": "distribute images at equal intervals using Savitzky-Golay interpolation based ont specific distance (ex.) [[distance (ang.)],[window_size(int, 5 is recommended)],[poly_order(int) 3 is recommended]] (default: None)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-p",
+      "--partition"
+     ],
+     "line": 290,
+     "type": "int",
+     "default": "0",
+     "help": "number of nodes",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-core",
+      "--N_THREAD"
+     ],
+     "line": 291,
+     "type": "int",
+     "default": "8",
+     "help": "threads",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-mem",
+      "--SET_MEMORY"
+     ],
+     "line": 292,
+     "type": "str",
+     "default": "1GB",
+     "help": "use mem(ex. 1GB)",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-cineb",
+      "--apply_CI_NEB"
+     ],
+     "line": 293,
+     "type": "int",
+     "default": "99999",
+     "help": "apply CI_NEB method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-sd",
+      "--steepest_descent"
+     ],
+     "line": 294,
+     "type": "int",
+     "default": "99999",
+     "help": "apply steepest_descent method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-cg",
+      "--conjugate_gradient"
+     ],
+     "line": 304,
+     "nargs": "?",
+     "help": "apply conjugate_gradient method for path optimization (Available update method of CG parameters :FR, PR, HS, DY, HZ), default update method is HS.) ",
+     "action": {
+      "expr": "CGAction"
+     },
+     "default": false,
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-lbfgs",
+      "--memory_limited_BFGS"
+     ],
+     "line": 305,
+     "action": "store_true",
+     "help": "apply L-BFGS method for path optimization ",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-notsopt",
+      "--not_ts_optimization"
+     ],
+     "line": 306,
+     "action": "store_true",
+     "help": "not apply TS optimization during NEB calculation",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-fc",
+      "--calc_exact_hess"
+     ],
+     "line": 307,
+     "type": "int",
+     "default": -1,
+     "help": "calculate exact hessian per steps (ex.) [steps per one hess calculation]",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-gqnt",
+      "--global_quasi_newton"
+     ],
+     "line": 308,
+     "action": "store_true",
+     "help": "use global quasi-Newton method",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-xtb",
+      "--usextb"
+     ],
+     "line": 310,
+     "type": "str",
+     "default": "None",
+     "help": "use extended tight bonding method to calculate. default is not using extended tight binding method (ex.) GFN1-xTB, GFN2-xTB ",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-dxtb",
+      "--usedxtb"
+     ],
+     "line": 311,
+     "type": "str",
+     "default": "None",
+     "help": "use extended tight bonding method to calculate. default is not using extended tight binding method (This option is for dxtb module (hessian calculated by autograd diffential method is available.)) (ex.) GFN1-xTB, GFN2-xTB ",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-sqm1",
+      "--sqm1"
+     ],
+     "line": 312,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-sqm2",
+      "--sqm2"
+     ],
+     "line": 313,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-pyscf",
+      "--pyscf"
+     ],
+     "line": 314,
+     "help": "use pyscf module.",
+     "action": "store_true",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-fe",
+      "--fixedges"
+     ],
+     "line": 315,
+     "type": "int",
+     "default": 0,
+     "help": "fix edges of nodes (1=initial_node, 2=end_node, 3=both_nodes) ",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-fix",
+      "--fix_atoms"
+     ],
+     "line": 316,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "fix atoms (ex.) [atoms (ex.) 1,2,3-6]",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-pc",
+      "--projection_constrain"
+     ],
+     "line": 317,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply constrain conditions with projection of gradient and hessian (ex.) [[(constraint condition name) (atoms(ex. 1,2))] ...] ",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-cpcm",
+      "--cpcm_solv_model"
+     ],
+     "line": 318,
+     "type": "str",
+     "default": null,
+     "help": "use CPCM solvent model for xTB (Defalut setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-alpb",
+      "--alpb_solv_model"
+     ],
+     "line": 319,
+     "type": "str",
+     "default": null,
+     "help": "use ALPB solvent model for xTB (Defalut setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-spng",
+      "--save_pict"
+     ],
+     "line": 320,
+     "action": "store_true",
+     "help": "Save picture for visualization.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-aconv",
+      "--apply_convergence_criteria"
+     ],
+     "line": 321,
+     "action": "store_true",
+     "help": "Apply convergence criteria for NEB calculation.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ci",
+      "--climbing_image"
+     ],
+     "line": 322,
+     "type": "int",
+     "default": [
+      999999,
+      999999
+     ],
+     "nargs": "*",
+     "help": "climbing image for NEB calculation. (start of ITR., interval) The default setting is not using climbing image.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-elec",
+      "--electronic_charge"
+     ],
+     "line": 323,
+     "type": "int",
+     "default": 0,
+     "help": "formal electronic charge (ex.) [charge (0)]",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-spin",
+      "--spin_multiplicity"
+     ],
+     "line": 324,
+     "type": "int",
+     "default": 1,
+     "help": "spin multiplcity (if you use pyscf, please input S value (mol.spin = 2S = Nalpha - Nbeta)) (ex.) [multiplcity (0)]",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-grid",
+      "--dft_grid"
+     ],
+     "line": 325,
+     "type": "int",
+     "default": 3,
+     "help": "fineness of grid for DFT calculation (default: 3 (0~9))",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-modelhess",
+      "--use_model_hessian"
+     ],
+     "line": 334,
+     "nargs": "?",
+     "help": "use model hessian. (Default: not using model hessian If you specify only option, Fischer + Grimme's D3 dispersion model hessian is used.) (ex. lindh, gfnff, gfn0xtb, fischer, fischerd3, fischerd4, schlegel, swart, lindh2007, lindh2007d3, lindh2007d4)",
+     "action": {
+      "expr": "ModelhessAction"
+     },
+     "default": null,
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-mfc",
+      "--calc_model_hess"
+     ],
+     "line": 335,
+     "type": "int",
+     "default": 50,
+     "help": "calculate model hessian per steps (ex.) [steps per one hess calculation]",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-os",
+      "--othersoft"
+     ],
+     "line": 336,
+     "type": "str",
+     "default": "None",
+     "help": "use other QM software. default is not using other QM software. (require python module, ASE (Atomic Simulation Environment)) (ex.) orca, gaussian, gamessus, mace_mp etc.",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-osp",
+      "--software_path_file"
+     ],
+     "line": 337,
+     "type": "str",
+     "default": "./software_path.conf",
+     "help": "read the list of file directory of other QM softwares to use them. default is current directory. (require python module, ASE (Atomic Simulation Environment)) (ex.) ./software_path.conf",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-rrs",
+      "--ratio_of_rfo_step"
+     ],
+     "line": 338,
+     "type": "float",
+     "default": 0.5,
+     "help": "ratio of rfo step (default: 0.5).  This option is for optimizer using Hessian (-fc or -modelhess).",
+     "origin": "interface.py:call_nebparser"
+    },
+    {
+     "names": [
+      "-ma",
+      "--manual_AFIR"
+     ],
+     "line": 208,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "manual-AFIR (ex.) [[Gamma(kJ/mol)] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rp",
+      "--repulsive_potential"
+     ],
+     "line": 209,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ex.) [[well_scale] [dist_scale] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpv2",
+      "--repulsive_potential_v2"
+     ],
+     "line": 210,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε[A * (σ/r)^(rep) - B * (σ/r)^(attr)]) (ex.) [[well_scale] [dist_scale] [length (ang.)] [const. (rep)] [const. (attr)] [order (rep)] [order (attr)] [LJ center atom (1,2)] [target atoms (3-5,8)] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpg",
+      "--repulsive_potential_gaussian"
+     ],
+     "line": 211,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε_LJ[(σ/r)^(12) - 2 * (σ/r)^(6)] - ε_gau * exp(-((r-σ_gau)/b)^2)) (ex.) [[LJ_well_depth (kJ/mol)] [LJ_dist (ang.)] [Gaussian_well_depth (kJ/mol)] [Gaussian_dist (ang.)] [Gaussian_range (ang.)] [Fragm.1 (1,2)] [Fragm.2 (3-5,8)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-cp",
+      "--cone_potential"
+     ],
+     "line": 213,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add cone type LJ repulsive_potential based on UFF (ex.) [[well_value (epsilon) (kJ/mol)] [dist (sigma) (ang.)] [cone angle (deg.)] [LJ center atom (1)] [three atoms (2,3,4) ] [target atoms (5-9)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-fp",
+      "--flux_potential"
+     ],
+     "line": 215,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to make flow. ( k/p*(x-x_0)^p )(ex.) [[x,y,z (constant (a.u.))] [x,y,z (order)] [x,y,z coordinate (ang.)] [Fragm.(ex. 1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kp",
+      "--keep_pot"
+     ],
+     "line": 216,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kpv2",
+      "--keep_pot_v2"
+     ],
+     "line": 217,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential_v2 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-akp",
+      "--anharmonic_keep_pot"
+     ],
+     "line": 218,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Morse potential  De*[1-exp(-((k/2*De)^0.5)*(r - r0))]^2 (ex.) [[potential well depth (a.u.)] [spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-ka",
+      "--keep_angle"
+     ],
+     "line": 219,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [atom1,atom2,atom3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kav2",
+      "--keep_angle_v2"
+     ],
+     "line": 220,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle_v2 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-up",
+      "--universal_potential"
+     ],
+     "line": 221,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Potential to gather specified atoms to a single point (ex.) [[potential (kJ/mol)] [target atoms (1,2)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kda",
+      "--keep_dihedral_angle"
+     ],
+     "line": 224,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopa",
+      "--keep_out_of_plain_angle"
+     ],
+     "line": 225,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep_out_of_plain_angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out of plain angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdav2",
+      "--keep_dihedral_angle_v2"
+     ],
+     "line": 226,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdac",
+      "--keep_dihedral_angle_cos"
+     ],
+     "line": 227,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_cos k*[1 + cos(n * φ - (φ0 + pi))] (0 ~ 180 deg.) (ex.) [[potential const.(a.u.)] [angle const. (unitless)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopav2",
+      "--keep_out_of_plain_angle_v2"
+     ],
+     "line": 228,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep out_of_plain angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out_of_plain angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpp",
+      "--void_point_pot"
+     ],
+     "line": 229,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "void point keep potential (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [void_point (x,y,z) (ang.)] [atoms(ex. 1,2,3-5)] [order p \"(1/p)*k*(r - r0)^p\"] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-brp",
+      "--bond_range_potential"
+     ],
+     "line": 231,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to confine atom distance. (ex.) [[upper const.(a.u.)] [lower const.(a.u.)] [upper distance (ang.)] [lower distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wp",
+      "--well_pot"
+     ],
+     "line": 232,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom distance. (ex.) [[wall energy (kJ/mol)] [fragm.1] [fragm.2] [a,b,c,d (a<b<c<d) (ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wwp",
+      "--wall_well_pot"
+     ],
+     "line": 233,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atoms movement. (like sandwich) (ex.) [[wall energy (kJ/mol)] [direction (x,y,z)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpwp",
+      "--void_point_well_pot"
+     ],
+     "line": 234,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere) (ex.) [[wall energy (kJ/mol)] [coordinate (x,y,z) (ang.)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-awp",
+      "--around_well_pot"
+     ],
+     "line": 235,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere around fragment) (ex.) [[wall energy (kJ/mol)] [center (1,2-4)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-smp",
+      "--spacer_model_potential"
+     ],
+     "line": 236,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential based on Morse potential to reproduce solvent molecules around molecule. (ex.) [[solvent particle well depth (kJ/mol)] [solvent particle e.q. distance (ang.)] [scaling of cavity (2.0)] [number of particles] [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-metad",
+      "--metadynamics"
+     ],
+     "line": 237,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply meta-dynamics (use gaussian potential) (ex.) [[[bond] [potential height (kJ/mol)] [potential width (ang.)] [(atom1),(atom2)]] [[angle] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3)]] [[dihedral] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]] [[outofplain] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]]...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefp",
+      "--linear_mechano_force_pot"
+     ],
+     "line": 238,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atoms1(ex. 1,2)] [atoms2(ex. 3,4)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefpv2",
+      "--linear_mechano_force_pot_v2"
+     ],
+     "line": 239,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atom(ex. 1)] [direction (xyz)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerp",
+      "--asymmetric_ellipsoidal_repulsive_potential"
+     ],
+     "line": 240,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (use GNB parameters (JCTC, 2024)) (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerpv2",
+      "--asymmetric_ellipsoidal_repulsive_potential_v2"
+     ],
+     "line": 241,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-nrp",
+      "--nano_reactor_potential"
+     ],
+     "line": 242,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add nano reactor potential (ex.) [[inner wall (ang.)] [outer wall (ang.)] [contraction time (ps)] [expansion time (ps)] [contraction force const (kcal/mol/A^2)] [expansion force const (kcal/mol/A^2)]] (Recommendation: 8.0 14.0 1.5 0.5 1.0 0.5)",
+     "origin": "interface.py:parser_for_biasforce"
+    }
+   ]
+  },
+  "mdmain": {
+   "sources": [
+    "interface.py:call_mdparser",
+    "interface.py:parser_for_biasforce"
+   ],
+   "options": [
+    {
+     "names": [
+      "INPUT"
+     ],
+     "line": 344,
+     "help": "input psi4 files",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-bs",
+      "--basisset"
+     ],
+     "line": 345,
+     "default": "6-31G(d)",
+     "help": "basisset (ex. 6-31G*)",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-func",
+      "--functional"
+     ],
+     "line": 346,
+     "default": "b3lyp",
+     "help": "functional(ex. b3lyp)",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-sub_bs",
+      "--sub_basisset"
+     ],
+     "line": 347,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "sub_basisset (ex. I LanL2DZ)",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-ecp",
+      "--effective_core_potential"
+     ],
+     "line": 348,
+     "type": "str",
+     "nargs": "*",
+     "default": "",
+     "help": "ECP (ex. I LanL2DZ) (notice) If you assign ECP to all atoms of inputs, type \"default (basis_set name)\". ",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-es",
+      "--excited_state"
+     ],
+     "line": 349,
+     "type": "int",
+     "default": 0,
+     "help": "calculate excited state (default: 0) (e.g.) if you set spin_multiplicity as 1 and set this option as \"n\", this program calculate S\"n\" state.",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-addint",
+      "--additional_inputs"
+     ],
+     "line": 351,
+     "type": "int",
+     "nargs": "*",
+     "default": [],
+     "help": " (ex.) [(excited state) (fromal charge) (spin multiplicity) ...]",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-time",
+      "--NSTEP"
+     ],
+     "line": 352,
+     "type": "int",
+     "default": "100000",
+     "help": "time scale",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-traj",
+      "--TRAJECTORY"
+     ],
+     "line": 353,
+     "type": "int",
+     "default": "1",
+     "help": "number of trajectory to generate (default) 1",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-temp",
+      "--temperature"
+     ],
+     "line": 355,
+     "type": "float",
+     "default": "298.15",
+     "help": "temperature [unit. K] (default) 298.15 K",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-ts",
+      "--timestep"
+     ],
+     "line": 356,
+     "type": "float",
+     "default": 0.1,
+     "help": "time step [unit. atom unit] (default) 0.1 a.u.",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-press",
+      "--pressure"
+     ],
+     "line": 357,
+     "type": "float",
+     "default": "101.3",
+     "help": "pressure [unit. kPa] (default) 1013 kPa",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-core",
+      "--N_THREAD"
+     ],
+     "line": 359,
+     "type": "int",
+     "default": "8",
+     "help": "threads",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-mem",
+      "--SET_MEMORY"
+     ],
+     "line": 360,
+     "type": "str",
+     "default": "1GB",
+     "help": "use mem(ex. 1GB)",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-u",
+      "--unrestrict"
+     ],
+     "line": 361,
+     "help": "use unrestricted method (for radical reaction and excite state etc.)",
+     "action": "store_true",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-mt",
+      "--mdtype"
+     ],
+     "line": 362,
+     "type": "str",
+     "default": "nosehoover",
+     "help": "specify condition to do MD (ex.) velocityverlet (default) nosehoover",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-fix",
+      "--fix_atoms"
+     ],
+     "line": 364,
+     "nargs": "*",
+     "type": "str",
+     "default": "",
+     "help": "fix atoms (ex.) [atoms (ex.) 1,2,3-6]",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-gi",
+      "--geom_info"
+     ],
+     "line": 365,
+     "nargs": "*",
+     "type": "str",
+     "default": "1",
+     "help": "calculate atom distances, angles, and dihedral angles in every iteration (energy_profile is also saved.) (ex.) [atoms (ex.) 1,2,3-6]",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-pyscf",
+      "--pyscf"
+     ],
+     "line": 366,
+     "help": "use pyscf module.",
+     "action": "store_true",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-elec",
+      "--electronic_charge"
+     ],
+     "line": 367,
+     "type": "int",
+     "default": 0,
+     "help": "formal electronic charge (ex.) [charge (0)]",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-spin",
+      "--spin_multiplicity"
+     ],
+     "line": 368,
+     "type": "int",
+     "default": 1,
+     "help": "spin multiplcity (if you use pyscf, please input S value (mol.spin = 2S = Nalpha - Nbeta)) (ex.) [multiplcity (0)]",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-order",
+      "--saddle_order"
+     ],
+     "line": 369,
+     "type": "int",
+     "default": 0,
+     "help": "optimization for (n-1)-th order saddle point (Newton group of opt method (RFO) is only available.) (ex.) [order (0)]",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-cmds",
+      "--cmds"
+     ],
+     "line": 370,
+     "help": "apply classical multidimensional scaling to calculated approx. reaction path.",
+     "action": "store_true",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-xtb",
+      "--usextb"
+     ],
+     "line": 371,
+     "type": "str",
+     "default": "None",
+     "help": "use extended tight bonding method to calculate. default is GFN2-xTB (ex.) GFN1-xTB, GFN2-xTB ",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-sqm1",
+      "--sqm1"
+     ],
+     "line": 372,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-sqm2",
+      "--sqm2"
+     ],
+     "line": 373,
+     "action": "store_true",
+     "help": "use experimental semiempirical method based on GFN0-xTB to calculate. default is not using semiempirical method.",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-ct",
+      "--change_temperature"
+     ],
+     "line": 374,
+     "type": "str",
+     "nargs": "*",
+     "default": [],
+     "help": "change temperature of thermostat (defalut) No change (ex.) [1000(time), 500(K) 5000(time), 1000(K)...]",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-cc",
+      "--constraint_condition"
+     ],
+     "line": 375,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply constraint conditions for optimazation (ex.) [[(dinstance (ang.)), (atom1),(atom2)] [(bond_angle (deg.)), (atom1),(atom2),(atom3)] [(dihedral_angle (deg.)), (atom1),(atom2),(atom3),(atom4)] ...] ",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-os",
+      "--othersoft"
+     ],
+     "line": 376,
+     "type": "str",
+     "default": "None",
+     "help": "use other QM software. default is not using other QM software. (require python module, ASE (Atomic Simulation Environment)) (ex.) orca, gaussian, gamessus, mace_mp etc.",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-osp",
+      "--software_path_file"
+     ],
+     "line": 377,
+     "type": "str",
+     "default": "./software_path.conf",
+     "help": "read the list of file directory of other QM softwares to use them. default is current directory. (require python module, ASE (Atomic Simulation Environment)) (ex.) ./software_path.conf",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-pbc",
+      "--periodic_boundary_condition"
+     ],
+     "line": 378,
+     "type": "str",
+     "default": [],
+     "help": "apply periodic boundary condition (Default is not applying.) (ex.) [periodic boundary (x,y,z) (ang.)] ",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-pc",
+      "--projection_constrain"
+     ],
+     "line": 379,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply constrain conditions with projection of gradient and hessian (ex.) [[(constraint condition name) (atoms(ex. 1,2))] ...] ",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-cpcm",
+      "--cpcm_solv_model"
+     ],
+     "line": 380,
+     "type": "str",
+     "default": null,
+     "help": "use CPCM solvent model for xTB (Defalut setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-alpb",
+      "--alpb_solv_model"
+     ],
+     "line": 381,
+     "type": "str",
+     "default": null,
+     "help": "use ALPB solvent model for xTB (Defalut setting is not using this model.) (ex.) water",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-pca",
+      "--pca"
+     ],
+     "line": 382,
+     "help": "Apply principal component analysis to calculated approx. reaction path.",
+     "action": "store_true",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-grid",
+      "--dft_grid"
+     ],
+     "line": 383,
+     "type": "int",
+     "default": 3,
+     "help": "fineness of grid for DFT calculation (default: 3 (0~9))",
+     "origin": "interface.py:call_mdparser"
+    },
+    {
+     "names": [
+      "-ma",
+      "--manual_AFIR"
+     ],
+     "line": 208,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "manual-AFIR (ex.) [[Gamma(kJ/mol)] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rp",
+      "--repulsive_potential"
+     ],
+     "line": 209,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ex.) [[well_scale] [dist_scale] [Fragm.1(ex. 1,2,3-5)] [Fragm.2] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpv2",
+      "--repulsive_potential_v2"
+     ],
+     "line": 210,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε[A * (σ/r)^(rep) - B * (σ/r)^(attr)]) (ex.) [[well_scale] [dist_scale] [length (ang.)] [const. (rep)] [const. (attr)] [order (rep)] [order (attr)] [LJ center atom (1,2)] [target atoms (3-5,8)] [scale or value(kJ/mol ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-rpg",
+      "--repulsive_potential_gaussian"
+     ],
+     "line": 211,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add LJ repulsive_potential based on UFF (ver.2) (eq. V = ε_LJ[(σ/r)^(12) - 2 * (σ/r)^(6)] - ε_gau * exp(-((r-σ_gau)/b)^2)) (ex.) [[LJ_well_depth (kJ/mol)] [LJ_dist (ang.)] [Gaussian_well_depth (kJ/mol)] [Gaussian_dist (ang.)] [Gaussian_range (ang.)] [Fragm.1 (1,2)] [Fragm.2 (3-5,8)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-cp",
+      "--cone_potential"
+     ],
+     "line": 213,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add cone type LJ repulsive_potential based on UFF (ex.) [[well_value (epsilon) (kJ/mol)] [dist (sigma) (ang.)] [cone angle (deg.)] [LJ center atom (1)] [three atoms (2,3,4) ] [target atoms (5-9)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-fp",
+      "--flux_potential"
+     ],
+     "line": 215,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to make flow. ( k/p*(x-x_0)^p )(ex.) [[x,y,z (constant (a.u.))] [x,y,z (order)] [x,y,z coordinate (ang.)] [Fragm.(ex. 1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kp",
+      "--keep_pot"
+     ],
+     "line": 216,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kpv2",
+      "--keep_pot_v2"
+     ],
+     "line": 217,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep potential_v2 0.5*k*(r - r0)^2 (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-akp",
+      "--anharmonic_keep_pot"
+     ],
+     "line": 218,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Morse potential  De*[1-exp(-((k/2*De)^0.5)*(r - r0))]^2 (ex.) [[potential well depth (a.u.)] [spring const.(a.u.)] [keep distance (ang.)] [atom1,atom2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-ka",
+      "--keep_angle"
+     ],
+     "line": 219,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [atom1,atom2,atom3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kav2",
+      "--keep_angle_v2"
+     ],
+     "line": 220,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep angle_v2 0.5*k*(θ - θ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-up",
+      "--universal_potential"
+     ],
+     "line": 221,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Potential to gather specified atoms to a single point (ex.) [[potential (kJ/mol)] [target atoms (1,2)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kda",
+      "--keep_dihedral_angle"
+     ],
+     "line": 224,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopa",
+      "--keep_out_of_plain_angle"
+     ],
+     "line": 225,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep_out_of_plain_angle 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out of plain angle (degrees)] [atom1,atom2,atom3,atom4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdav2",
+      "--keep_dihedral_angle_v2"
+     ],
+     "line": 226,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kdac",
+      "--keep_dihedral_angle_cos"
+     ],
+     "line": 227,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep dihedral angle_cos k*[1 + cos(n * φ - (φ0 + pi))] (0 ~ 180 deg.) (ex.) [[potential const.(a.u.)] [angle const. (unitless)] [keep dihedral angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-kopav2",
+      "--keep_out_of_plain_angle_v2"
+     ],
+     "line": 228,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "keep out_of_plain angle_v2 0.5*k*(φ - φ0)^2 (0 ~ 180 deg.) (ex.) [[spring const.(a.u.)] [keep out_of_plain angle (degrees)] [Fragm.1] [Fragm.2] [Fragm.3] [Fragm.4] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpp",
+      "--void_point_pot"
+     ],
+     "line": 229,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "void point keep potential (ex.) [[spring const.(a.u.)] [keep distance (ang.)] [void_point (x,y,z) (ang.)] [atoms(ex. 1,2,3-5)] [order p \"(1/p)*k*(r - r0)^p\"] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-brp",
+      "--bond_range_potential"
+     ],
+     "line": 231,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to confine atom distance. (ex.) [[upper const.(a.u.)] [lower const.(a.u.)] [upper distance (ang.)] [lower distance (ang.)] [Fragm.1] [Fragm.2] ...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wp",
+      "--well_pot"
+     ],
+     "line": 232,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom distance. (ex.) [[wall energy (kJ/mol)] [fragm.1] [fragm.2] [a,b,c,d (a<b<c<d) (ang.)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-wwp",
+      "--wall_well_pot"
+     ],
+     "line": 233,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atoms movement. (like sandwich) (ex.) [[wall energy (kJ/mol)] [direction (x,y,z)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-vpwp",
+      "--void_point_well_pot"
+     ],
+     "line": 234,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere) (ex.) [[wall energy (kJ/mol)] [coordinate (x,y,z) (ang.)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (1,2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-awp",
+      "--around_well_pot"
+     ],
+     "line": 235,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential to limit atom movement. (like sphere around fragment) (ex.) [[wall energy (kJ/mol)] [center (1,2-4)] [a,b,c,d (a<b<c<d) (ang.)]  [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-smp",
+      "--spacer_model_potential"
+     ],
+     "line": 236,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "Add potential based on Morse potential to reproduce solvent molecules around molecule. (ex.) [[solvent particle well depth (kJ/mol)] [solvent particle e.q. distance (ang.)] [scaling of cavity (2.0)] [number of particles] [target atoms (2,3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-metad",
+      "--metadynamics"
+     ],
+     "line": 237,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "apply meta-dynamics (use gaussian potential) (ex.) [[[bond] [potential height (kJ/mol)] [potential width (ang.)] [(atom1),(atom2)]] [[angle] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3)]] [[dihedral] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]] [[outofplain] [potential height (kJ/mol)] [potential width (deg.)] [(atom1),(atom2),(atom3),(atom4)]]...] ",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefp",
+      "--linear_mechano_force_pot"
+     ],
+     "line": 238,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atoms1(ex. 1,2)] [atoms2(ex. 3,4)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-lmefpv2",
+      "--linear_mechano_force_pot_v2"
+     ],
+     "line": 239,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add linear mechanochemical force (ex.) [[force(pN)] [atom(ex. 1)] [direction (xyz)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerp",
+      "--asymmetric_ellipsoidal_repulsive_potential"
+     ],
+     "line": 240,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (use GNB parameters (JCTC, 2024)) (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-aerpv2",
+      "--asymmetric_ellipsoidal_repulsive_potential_v2"
+     ],
+     "line": 241,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add asymmetric ellipsoidal repulsive potential (ex.) [[well_value (epsilon) (kJ/mol)] [dist_value (sigma) (a1,a2,b1,b2,c1,c2) (ang.)] [dist_value (distance) (ang.)] [target atom (1,2)] [off target atoms (3-5)] ...]",
+     "origin": "interface.py:parser_for_biasforce"
+    },
+    {
+     "names": [
+      "-nrp",
+      "--nano_reactor_potential"
+     ],
+     "line": 242,
+     "nargs": "*",
+     "type": "str",
+     "default": [],
+     "help": "add nano reactor potential (ex.) [[inner wall (ang.)] [outer wall (ang.)] [contraction time (ps)] [expansion time (ps)] [contraction force const (kcal/mol/A^2)] [expansion force const (kcal/mol/A^2)]] (Recommendation: 8.0 14.0 1.5 0.5 1.0 0.5)",
+     "origin": "interface.py:parser_for_biasforce"
+    }
+   ]
+  },
+  "confsearch": {
+   "sources": [
+    "Entrypoints/conformation_search.py:run_confsearch"
+   ],
+   "options": [
+    {
+     "names": [
+      "-bf",
+      "--base_force"
+     ],
+     "line": 205,
+     "type": "float",
+     "default": 100.0,
+     "help": "bias force to search conformations (default: 100.0 kJ)",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-ms",
+      "--max_samples"
+     ],
+     "line": 206,
+     "type": "int",
+     "default": 50,
+     "help": "the number of trial of calculation (default: 50)",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-nl",
+      "--number_of_lowest"
+     ],
+     "line": 207,
+     "type": "int",
+     "default": 5,
+     "help": "termination condition of calculation for updating list (default: 5)",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-nr",
+      "--number_of_rank"
+     ],
+     "line": 208,
+     "type": "int",
+     "default": 10,
+     "help": "termination condition of calculation for making list (default: 10)",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-tgta",
+      "--target_atoms"
+     ],
+     "line": 209,
+     "nargs": "*",
+     "type": "str",
+     "help": "the atom to add bias force to perform conformational search (ex.) 1,2,3 or 1-3",
+     "default": null,
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-st",
+      "--sampling_temperature"
+     ],
+     "line": 210,
+     "type": "float",
+     "help": "set temperature to select conformer using Boltzmann distribution (default) 298.15 (K)",
+     "default": 298.15,
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-nost",
+      "--no_stochastic"
+     ],
+     "line": 211,
+     "action": "store_true",
+     "help": "no switching EQ structure during conformation sampling",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-pbc",
+      "--preserve_bond_connectivity"
+     ],
+     "line": 212,
+     "action": "store_true",
+     "help": "exclude conformers with different bond connectivity from the initial optimized structure",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-tabu",
+      "--tabu_search"
+     ],
+     "line": 213,
+     "action": "store_true",
+     "help": "enable Tabu Search / Metadynamics-like frequency penalty to avoid revisiting the same conformers",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    },
+    {
+     "names": [
+      "-alpha",
+      "--tabu_alpha"
+     ],
+     "line": 214,
+     "type": "float",
+     "default": 0.5,
+     "help": "penalty coefficient for Tabu Search (default: 0.5). Larger values = stronger penalty for frequently visited conformers",
+     "origin": "Entrypoints/conformation_search.py:run_confsearch"
+    }
+   ]
+  },
+  "relaxedscan": {
+   "sources": [
+    "Entrypoints/relaxed_scan.py:run_relaxedscan"
+   ],
+   "options": [
+    {
+     "names": [
+      "-nsample",
+      "--number_of_samples"
+     ],
+     "line": 15,
+     "type": "int",
+     "default": 10,
+     "help": "the number of sampling relaxed scan coordinates",
+     "origin": "Entrypoints/relaxed_scan.py:run_relaxedscan"
+    },
+    {
+     "names": [
+      "-scan",
+      "--scan_tgt"
+     ],
+     "line": 16,
+     "nargs": "*",
+     "type": "str",
+     "help": "scan target (ex.) [[bond, angle, or dihedral etc.] [atom_num] [(value_1(ex. 1.0 ang.)),(value_2(ex. 1.5 ang.))] ...] ",
+     "default": null,
+     "origin": "Entrypoints/relaxed_scan.py:run_relaxedscan"
+    },
+    {
+     "names": [
+      "-fo",
+      "--first_only"
+     ],
+     "line": 17,
+     "action": "store_true",
+     "help": "use only input structure for relax scan ",
+     "origin": "Entrypoints/relaxed_scan.py:run_relaxedscan"
+    }
+   ]
+  },
+  "orientsearch": {
+   "sources": [
+    "Entrypoints/orientation_search.py:run_orientsearch"
+   ],
+   "options": [
+    {
+     "names": [
+      "-nsample",
+      "--number_of_samples"
+     ],
+     "line": 14,
+     "type": "int",
+     "default": 5,
+     "help": "the number of sampling orientations",
+     "origin": "Entrypoints/orientation_search.py:run_orientsearch"
+    },
+    {
+     "names": [
+      "-part",
+      "--part"
+     ],
+     "line": 15,
+     "nargs": "*",
+     "type": "str",
+     "help": "the part number (ex.) 1,2,3 or 1-3",
+     "default": null,
+     "origin": "Entrypoints/orientation_search.py:run_orientsearch"
+    },
+    {
+     "names": [
+      "-dist",
+      "--distance"
+     ],
+     "line": 16,
+     "type": "float",
+     "default": 5.0,
+     "help": "the distance of parts [ang.]",
+     "origin": "Entrypoints/orientation_search.py:run_orientsearch"
+    }
+   ]
+  },
+  "run_autots": {
+   "sources": [
+    "Entrypoints/autots.py:run_autots"
+   ],
+   "options": [
+    {
+     "names": [
+      "input_file"
+     ],
+     "line": 100,
+     "type": "str",
+     "help": "Path to the initial structure file. If --skip_to_step4 is used (v1), this must be the TS file.",
+     "origin": "Entrypoints/autots.py:run_autots"
+    },
+    {
+     "names": [
+      "-cfg",
+      "--config_file"
+     ],
+     "line": 105,
+     "type": "str",
+     "default": "./config.json",
+     "help": "Path to the configuration JSON file. Default is './config.json'.",
+     "origin": "Entrypoints/autots.py:run_autots"
+    },
+    {
+     "names": [
+      "-ma",
+      "--manual_AFIR"
+     ],
+     "line": 111,
+     "nargs": "*",
+     "required": false,
+     "help": "Manual AFIR parameters for Step 1. Overrides config file's 'step1_settings'.",
+     "origin": "Entrypoints/autots.py:run_autots"
+    },
+    {
+     "names": [
+      "-osp",
+      "--software_path_file"
+     ],
+     "line": 117,
+     "type": "str",
+     "default": "./software_path.conf",
+     "help": "Path to the 'software_path.conf' file. Defaults to './software_path.conf'",
+     "origin": "Entrypoints/autots.py:run_autots"
+    },
+    {
+     "names": [
+      "-n",
+      "--top_n"
+     ],
+     "line": 123,
+     "type": "int",
+     "default": null,
+     "help": "Refine the top N highest energy candidates from NEB. Overrides config file.",
+     "origin": "Entrypoints/autots.py:run_autots"
+    },
+    {
+     "names": [
+      "--skip_step1"
+     ],
+     "line": 131,
+     "action": "store_true",
+     "help": "Skip the AFIR scan (Step 1). The input_file must be the NEB trajectory file.",
+     "origin": "Entrypoints/autots.py:run_autots"
+    },
+    {
+     "names": [
+      "--run_step4"
+     ],
+     "line": 136,
+     "action": "store_true",
+     "help": "Run Step 4 (IRC + Endpoint Optimization) after Step 3 completes.",
+     "origin": "Entrypoints/autots.py:run_autots"
+    },
+    {
+     "names": [
+      "--skip_to_step4"
+     ],
+     "line": 141,
+     "action": "store_true",
+     "help": "Skip Steps 1-3 and run only Step 4. The 'input_file' must be the TS structure file.",
+     "origin": "Entrypoints/autots.py:run_autots"
+    }
+   ]
+  },
+  "run_mapper": {
+   "sources": [
+    "Entrypoints/mapper.py:run_mapper"
+   ],
+   "options": [
+    {
+     "names": [
+      "input_file"
+     ],
+     "line": 119,
+     "help": "Path to the initial structure XYZ file.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "-cfg",
+      "--config_file"
+     ],
+     "line": 125,
+     "default": "./config.json",
+     "help": "Path to the JSON configuration file. Default: ./config.json",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "-osp",
+      "--software_path_file"
+     ],
+     "line": 130,
+     "default": "./software_path.conf",
+     "help": "Path to software_path.conf. Default: ./software_path.conf",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "-ma",
+      "--manual_AFIR"
+     ],
+     "line": 135,
+     "nargs": "*",
+     "required": false,
+     "help": "Seed AFIR parameters for Step 1 (overrides step1_settings in config). Format: gamma_kJmol frag1_atoms frag2_atoms ... Example: -ma 100.0 1,2 3,4,5",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "-n",
+      "--top_n"
+     ],
+     "line": 145,
+     "type": "int",
+     "default": null,
+     "help": "Number of NEB candidates to refine. Overrides config.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--temperature"
+     ],
+     "line": 153,
+     "type": "float",
+     "default": null,
+     "help": "Boltzmann temperature [K]. Default: from mapper_settings or 300.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--rmsd_threshold"
+     ],
+     "line": 159,
+     "type": "float",
+     "default": null,
+     "help": "RMSD threshold for structure identity [A]. Default: 0.30.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--max_iter"
+     ],
+     "line": 165,
+     "type": "int",
+     "default": null,
+     "help": "Maximum number of AutoTSWorkflow invocations (0=unlimited). Default: 50.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--afir_gamma"
+     ],
+     "line": 171,
+     "type": "float",
+     "default": null,
+     "help": "Auto-generated AFIR gamma [kJ/mol]. Default: 100.0.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--max_pairs"
+     ],
+     "line": 177,
+     "type": "int",
+     "default": 9999,
+     "help": "Max AFIR atom-pair perturbations per node. Default: 9999.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--dist_lower"
+     ],
+     "line": 183,
+     "type": "float",
+     "default": null,
+     "help": "AFIR distance window lower bound [A]. Default: 1.5.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--dist_upper"
+     ],
+     "line": 189,
+     "type": "float",
+     "default": null,
+     "help": "AFIR distance window upper bound [A]. Default: 5.0.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--output_dir"
+     ],
+     "line": 195,
+     "default": null,
+     "help": "Root directory for all mapper outputs. Default: mapper_output.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--rng_seed"
+     ],
+     "line": 200,
+     "type": "int",
+     "default": null,
+     "help": "Random seed for reproducibility. Default: 42.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--active_atoms"
+     ],
+     "line": 206,
+     "nargs": "+",
+     "type": "int",
+     "default": null,
+     "metavar": "ATOM_NUM",
+     "help": "1-based atom label numbers to restrict AFIR pair search. Only pairs formed between these atoms will be generated. Example: --active_atoms 1 2 5 6  Default: all atoms are considered.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--negative_gamma"
+     ],
+     "line": 219,
+     "action": "store_true",
+     "default": false,
+     "help": "Also generate repulsive (negative gamma) AFIR perturbations for every selected atom pair, in addition to the default attractive (positive gamma) direction.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--exclude_nodes"
+     ],
+     "line": 229,
+     "nargs": "+",
+     "type": "int",
+     "default": null,
+     "metavar": "NODE_ID",
+     "help": "EQ node IDs to exclude from AFIR exploration.  Matching nodes are still registered in the reaction network graph but will never be used as starting points for new AFIR runs.  Example: --exclude_nodes 3 7 12  Default: no exclusions.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--exclude_bond_rearrangement"
+     ],
+     "line": 242,
+     "action": "store_true",
+     "default": false,
+     "help": "Automatically exclude any newly found EQ node whose covalent bond topology differs from that of the seed structure (EQ0).  Useful for restricting exploration to a single potential-energy surface without crossing into reactive products.  Default: disabled.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--use_rcmc"
+     ],
+     "line": 254,
+     "action": "store_true",
+     "default": false,
+     "help": "Use the RCMC (Rate Constant Matrix Contraction) algorithm to determine exploration priorities instead of the default Boltzmann queue.  Requires --rcmc_temperature and optionally --rcmc_time.  Default: disabled.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--rcmc_temperature"
+     ],
+     "line": 265,
+     "type": "float",
+     "default": null,
+     "help": "Temperature [K] for the RCMC priority calculation.  Only used when --use_rcmc is set.  Default: from mapper_settings or 300.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--rcmc_time"
+     ],
+     "line": 275,
+     "type": "float",
+     "default": null,
+     "help": "Reaction time [s] for the RCMC priority calculation.  Only used when --use_rcmc is set.  Default: from mapper_settings or 1.0.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--rcmc_start_node"
+     ],
+     "line": 285,
+     "type": "int",
+     "default": null,
+     "help": "EQ node ID to use as the initial population source in the RCMC kinetic simulation.  The transient population vector is initialised with p[start_node]=1 before contraction.  Only used when --use_rcmc is set.  Default: from mapper_settings[\"rcmc_start_node_id\"] or 0 (EQ0).",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--resume"
+     ],
+     "line": 297,
+     "action": "store_true",
+     "help": "Resume from an existing reaction_network.json.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--max_workers"
+     ],
+     "line": 302,
+     "type": "int",
+     "default": null,
+     "metavar": "N",
+     "help": "Number of AutoTSWorkflow tasks to run concurrently.  Each task is executed in its own spawned subprocess so that os.chdir() calls inside AutoTSWorkflow are fully isolated.  1 (default) gives sequential execution identical to the single-process behaviour.  Overrides mapper_settings.n_parallel.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--log_level"
+     ],
+     "line": 317,
+     "default": "INFO",
+     "choices": [
+      "DEBUG",
+      "INFO",
+      "WARNING",
+      "ERROR"
+     ],
+     "help": "Logging verbosity. Default: INFO.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    },
+    {
+     "names": [
+      "--log_file"
+     ],
+     "line": 323,
+     "default": "mapper.log",
+     "help": "Log file path. Default: mapper.log.",
+     "origin": "Entrypoints/mapper.py:run_mapper"
+    }
+   ]
+  },
+  "run_rcmc": {
+   "sources": [
+    "Utils/rcmc.py:main"
+   ],
+   "options": [
+    {
+     "names": [
+      "json_file"
+     ],
+     "line": 695,
+     "help": "Path to reaction_network.json produced by MultiOptPy.",
+     "origin": "Utils/rcmc.py:main"
+    },
+    {
+     "names": [
+      "-T",
+      "--temperature"
+     ],
+     "line": 699,
+     "type": "float",
+     "default": 300.0,
+     "metavar": "K",
+     "help": "Temperature in Kelvin (default: 300.0).",
+     "origin": "Utils/rcmc.py:main"
+    },
+    {
+     "names": [
+      "-t",
+      "--time"
+     ],
+     "line": 706,
+     "type": "float",
+     "default": 1.0,
+     "metavar": "S",
+     "help": "Reaction time scale in seconds (default: 1.0).",
+     "origin": "Utils/rcmc.py:main"
+    },
+    {
+     "names": [
+      "--start-node"
+     ],
+     "line": 713,
+     "type": "int",
+     "default": 0,
+     "metavar": "ID",
+     "help": "node_id of the initial EQ node (default: 0).",
+     "origin": "Utils/rcmc.py:main"
+    },
+    {
+     "names": [
+      "--output-dir"
+     ],
+     "line": 720,
+     "type": "str",
+     "default": null,
+     "metavar": "DIR",
+     "help": "Directory to write rcmc_K_contracted.csv (default: none – results printed to stdout only).",
+     "origin": "Utils/rcmc.py:main"
+    },
+    {
+     "names": [
+      "--energy-type"
+     ],
+     "line": 730,
+     "type": "str",
+     "default": "electronic",
+     "choices": [
+      "electronic",
+      "free"
+     ],
+     "metavar": "TYPE",
+     "help": "Energy type used for rate-constant calculations.             'electronic' (default) uses the SCF energy (energy_hartree).             'free' uses the Gibbs free energy (free_energy_hartree).             In free mode, nodes whose free_energy_hartree is null are             removed along with all edges connected to them before RCMC.",
+     "origin": "Utils/rcmc.py:main"
+    },
+    {
+     "names": [
+      "--log-level"
+     ],
+     "line": 744,
+     "type": "str",
+     "default": "WARNING",
+     "choices": [
+      "DEBUG",
+      "INFO",
+      "WARNING",
+      "ERROR"
+     ],
+     "help": "Logging verbosity (default: WARNING).",
+     "origin": "Utils/rcmc.py:main"
+    }
+   ]
+  }
+ }
+}

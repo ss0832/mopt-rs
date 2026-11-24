@@ -1,0 +1,4 @@
+# What a build of the documentation needs (the same as the "docs" extra of pyproject.toml).
+sphinx>=7.2
+myst-parser>=3.0
+sphinx-rtd-theme>=2.0

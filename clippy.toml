@@ -1,0 +1,8 @@
+# clippy configuration
+too-many-arguments-threshold = 12
+type-complexity-threshold = 500
+cognitive-complexity-threshold = 25
+too-many-lines-threshold = 80
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true

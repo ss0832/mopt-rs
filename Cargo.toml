@@ -1,0 +1,60 @@
+# mopt-rs workspace manifest
+# Copyright (C) 2023-2026 ss0832
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/mopt-rs",
+    "crates/mopt-py",
+]
+
+[workspace.package]
+version = "2.1.0"
+edition = "2021"
+authors = ["ss0832"]
+license = "GPL-3.0-or-later"
+description = "Successor implementation of MultiOptPy: extensible geometry optimization and reaction path exploration"
+repository = "https://github.com/ss0832/mopt-rs"
+
+[workspace.dependencies]
+faer = { version = "0.24.4", default-features = false, features = ["std", "rayon", "linalg"] }
+rayon = "1.12.0"
+libm = "0.2.16"
+pyo3 = { version = "0.23.5", features = ["abi3-py312", "generate-import-lib"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+dbg_macro = "deny"
+
+[profile.dev]
+incremental = false
+# File and line numbers in backtraces without the full debug information (measured in
+# docs/source/benchmarks.md: the target directory of the tests is 44 % of that with
+# `debug = true`). The test profile states the same below.
+debug = "line-tables-only"
+
+# Dependencies (faer, rayon, ...) are optimized in dev and test builds; the test profile
+# inherits this. Measured in docs/source/benchmarks.md ("Build profile of the tests").
+[profile.dev.package."*"]
+opt-level = 3
+
+# The workspace crates at opt-level 1 in tests: longer builds, much shorter test runs
+# (no fast-math: floating-point results are those of opt-level 0).
+[profile.test]
+incremental = false
+opt-level = 1
+debug = "line-tables-only"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1

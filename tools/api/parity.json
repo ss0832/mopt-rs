@@ -1,0 +1,1184 @@
+{
+  "about": "Which parts of mopt-rs can be used from Rust and from Python. 'components' pairs Rust modules or items (paths below crates/mopt-rs/src, '::'-separated) with the Python names that reach them. 'pending' lists Rust modules that Python cannot reach yet (to be emptied; MOPT_API_PARITY_RELEASE=1 makes that an error). 'rust_only' and 'python_only' list what exists on one side by nature, with the reason. tests/test_api_parity.py and crates/mopt-rs/tests/api_parity.rs check that every Rust module and every public Python name is accounted for and that the named items exist.",
+  "components": {
+    "structure files (.xyz and extended .xyz) with the reader and writer of the commands": {
+      "rust": [
+        "io::xyz::read_xyz_trajectory_file",
+        "io::xyz::format_xyz_system",
+        "io::xyz::state_of_xyz"
+      ],
+      "python": [
+        "mopt_rs.read_xyz",
+        "mopt_rs.read_xyz_frames",
+        "mopt_rs.write_xyz",
+        "mopt_rs.append_xyz",
+        "mopt_rs.XyzFrame",
+        "mopt_rs._core.xyz_read",
+        "mopt_rs._core.xyz_write"
+      ]
+    },
+    "the ONIOM calculator of the commands with microiterations, from Python": {
+      "rust": [
+        "cli::oniom::oniom_spec",
+        "cli::oniom_micro::wrap_constrained",
+        "cli::calculator::calculator_options"
+      ],
+      "python": [
+        "mopt_rs.OniomCalculator",
+        "mopt_rs._core.OniomCalculator"
+      ]
+    },
+    "chains of nebmain from Python (its options, defaults, constraints, cells)": {
+      "rust": [
+        "cli::nebmain::options_from_cli",
+        "cli::nebmain::structure_chain",
+        "cli::nebmain::variable_chain",
+        "cli::nebmain::chain_surrogate",
+        "cli::nebmain_cell::cell_chain",
+        "workflow::chain_constraints"
+      ],
+      "python": [
+        "mopt_rs.relax_band"
+      ]
+    },
+    "the initial Hessian of the optimizer (optmain -ih, -modelhess)": {
+      "rust": [
+        "pes::given_hessian::checked_hessian",
+        "pes::given_hessian::read_for",
+        "io::hessian_file::read_hessian_file"
+      ],
+      "python": [
+        "mopt_rs.Optimizer"
+      ]
+    },    "image chains with Python surfaces and iteration observers": {
+      "rust": [
+        "path::band::machine::ChainRelaxation",
+        "path::band::lup::locally_updated_planes",
+        "workflow::chain::relax_chain",
+        "workflow::chain_input::first_chain",
+        "workflow::chain_internal::InternalSurface",
+        "workflow::chain_surrogate::SurrogateSurface",
+        "workflow::chain_files::ChainFiles",
+        "workflow::chain_figures::ChainFigures"
+      ],
+      "python": [
+        "mopt_rs.relax_band"
+      ]
+    },
+    "environment microiterations with registry methods": {
+      "rust": [
+        "pes::microiter::relax",
+        "opt::micro::settings"
+      ],
+      "python": [
+        "mopt_rs.relax_environment"
+      ]
+    },
+    "state surfaces and state following in Python optimization loops": {
+      "rust": [
+        "pes::combine::PesExpr",
+        "pes::followed::FollowedStates"
+      ],
+      "python": [
+        "mopt_rs.Optimizer",
+        "mopt_rs.FollowedCalculator",
+        "mopt_rs._core.FollowedEvaluator",
+        "mopt_rs.NativeCalculator"
+      ]
+    },
+    "electronic embedding with a Python engine": {
+      "rust": [
+        "pes::point_charges::PointCharges"
+      ],
+      "python": [
+        "mopt_rs.calculators.EngineCalculator.evaluate_embedded",
+        "mopt_rs.calculators.Engine.compute_embedded"
+      ]
+    },
+    "mapper tasks, priorities and network store observers": {
+      "rust": [
+        "workflow::mapper::MethodRegistry",
+        "workflow::mapper::ExplorationPriorityRegistry",
+        "workflow::mapper::StoreObserver",
+        "workflow::mapper::StoreRegistry"
+      ],
+      "python": [
+        "mopt_rs.MapperNetwork"
+      ]
+    },
+    "geometry optimization (ask/tell and the loop)": {
+      "rust": [
+        "opt::state_machine::GeometryOptimizer",
+        "opt::convergence::ConvergenceCriteria",
+        "opt::trust::OuterTrustRadius",
+        "opt::constrained::ConstraintProjection",
+        "opt::stationary::StationaryPoint",
+        "workflow::driver::run_optimization"
+      ],
+      "python": [
+        "mopt_rs.Optimizer",
+        "mopt_rs.run",
+        "mopt_rs.Result",
+        "mopt_rs._core.Optimizer",
+        "mopt_rs.optimize.Optimizer"
+      ]
+    },
+    "structures, evaluation requests and results": {
+      "rust": [
+        "domain::molecule::MolecularSystem",
+        "domain::eval::EvalOutput",
+        "domain::pbc::PeriodicCell",
+        "pes::calculator::Calculator"
+      ],
+      "python": [
+        "mopt_rs.Task",
+        "mopt_rs.Evaluation",
+        "mopt_rs.Calculator"
+      ]
+    },
+    "optimization of plain variables": {
+      "rust": [
+        "opt::vector::VectorOptimizer",
+        "workflow::driver::run_vector_optimization",
+        "pes::objective::ObjectiveRegistry",
+        "pes::model_objectives",
+        "cli::variables::run_one"
+      ],
+      "python": [
+        "mopt_rs.VectorOptimizer",
+        "mopt_rs.optimize_variables",
+        "mopt_rs.VariableResult",
+        "mopt_rs.NativeObjective",
+        "mopt_rs.objective_names",
+        "mopt_rs._core.VectorOptimizer",
+        "mopt_rs._core.objective_names",
+        "mopt_rs._core.evaluate_objective",
+        "mopt_rs.variables.finite_difference_hessian"
+      ]
+    },
+    "step methods one by one": {
+      "rust": [
+        "opt::stepper::Stepper",
+        "opt::registry::MethodRegistry",
+        "opt::step::StepGenerator",
+        "opt::enhance::StepEnhancer",
+        "opt::update::HessianUpdater"
+      ],
+      "python": [
+        "mopt_rs.StepMethod",
+        "mopt_rs._core.StepMethod"
+      ]
+    },
+    "built-in calculators": {
+      "rust": [
+        "pes::registry::CalculatorRegistry",
+        "pes::native"
+      ],
+      "python": [
+        "mopt_rs.NativeCalculator",
+        "mopt_rs.evaluate_native",
+        "mopt_rs._core.evaluate_native",
+        "mopt_rs._core.NativeEvaluator",
+        "mopt_rs._core.native_calculators"
+      ]
+    },
+    "bias potentials and terms of one's own": {
+      "rust": [
+        "pes::bias",
+        "pes::term::PesTerm",
+        "pes::term_check::check_term",
+        "cli::bias::BiasRegistry"
+      ],
+      "python": [
+        "mopt_rs.evaluate_bias",
+        "mopt_rs.check_term",
+        "mopt_rs.check_bias",
+        "mopt_rs._core.evaluate_bias",
+        "mopt_rs._core.check_term",
+        "mopt_rs._core.check_bias"
+      ]
+    },
+    "derivatives in the constants of bias potentials": {
+      "rust": [
+        "pes::bias_response",
+        "cli::bias_constants"
+      ],
+      "python": [
+        "mopt_rs._core.bias_constant_derivatives"
+      ]
+    },
+    "constraints": {
+      "rust": [
+        "pes::constraint::ConstraintSet",
+        "cli::constraints"
+      ],
+      "python": [
+        "mopt_rs._core.constraint_values"
+      ]
+    },
+    "model Hessians": {
+      "rust": [
+        "model_hessian",
+        "model_hessian::ModelHessian"
+      ],
+      "python": [
+        "mopt_rs._core.model_hessian",
+        "mopt_rs._core.model_hessian_names"
+      ]
+    },
+    "dispersion corrections": {
+      "rust": [
+        "pes::dispersion"
+      ],
+      "python": [
+        "mopt_rs._core.dispersion",
+        "mopt_rs._core.dispersion_properties"
+      ]
+    },
+    "units and elements": {
+      "rust": [
+        "domain::units::Units",
+        "domain::element::Element"
+      ],
+      "python": [
+        "mopt_rs._core.units",
+        "mopt_rs._core.atomic_numbers",
+        "mopt_rs._core.BOHR_TO_ANGSTROM",
+        "mopt_rs._core.ANGSTROM_TO_BOHR",
+        "mopt_rs._core.HARTREE_TO_EV",
+        "mopt_rs._core.HARTREE_TO_KCAL_MOL",
+        "mopt_rs._core.HARTREE_TO_KJ_MOL",
+        "mopt_rs._core.HARTREE_TO_WAVENUMBER",
+        "mopt_rs._core.BOLTZMANN_HARTREE_PER_K",
+        "mopt_rs._core.AMU_TO_AU_MASS",
+        "mopt_rs._core.AU_TIME_TO_FS",
+        "mopt_rs._core.GPA_PER_AU_PRESSURE"
+      ]
+    },
+    "commands, settings files, restart of command runs": {
+      "rust": [
+        "cli",
+        "workflow::journal::RunJournal",
+        "workflow::narrated",
+        "workflow::observers",
+        "workflow::trajectories"
+      ],
+      "python": [
+        "mopt_rs._core.run_cli",
+        "mopt_rs._core.run_optmain",
+        "mopt_rs.run_optmain",
+        "mopt_rs._core.main_from_argv",
+        "mopt_rs.optimize.Checkpoint"
+      ]
+    },
+    "version": {
+      "rust": [
+        "VERSION"
+      ],
+      "python": [
+        "mopt_rs.__version__",
+        "mopt_rs._core.version"
+      ]
+    },
+    "coordinate systems one by one": {
+      "rust": [
+        "coord::system::CoordinateRegistry",
+        "coord::system::back_transform",
+        "coord::internal",
+        "coord::primitives"
+      ],
+      "python": [
+        "mopt_rs._core.Coordinates",
+        "mopt_rs._core.coordinate_names"
+      ]
+    },
+    "spherical and hyperspherical coordinates (-coord spherical, hyperspherical)": {
+      "rust": [
+        "coord::hyperspherical::to_hyperspherical",
+        "coord::hyperspherical::from_hyperspherical",
+        "coord::hyperspherical::jacobian",
+        "coord::hyperspherical::wilson",
+        "coord::hyperspherical::gradient_to_hyperspherical",
+        "coord::system::spherical::Spherical",
+        "coord::system::spherical::Hyperspherical"
+      ],
+      "python": [
+        "mopt_rs._core.to_hyperspherical",
+        "mopt_rs._core.from_hyperspherical",
+        "mopt_rs._core.hyperspherical_jacobian",
+        "mopt_rs._core.hyperspherical_wilson",
+        "mopt_rs._core.gradient_to_hyperspherical",
+        "mopt_rs._core.Coordinates"
+      ]
+    },
+    "superposition of structures and the bond graph": {
+      "rust": [
+        "coord::alignment::kabsch_align_bohr",
+        "coord::connectivity::BondConnectivity"
+      ],
+      "python": [
+        "mopt_rs._core.align",
+        "mopt_rs._core.connectivity"
+      ]
+    },
+    "binary-image transition state search (optmain -mf bitss)": {
+      "rust": [
+        "path::bitss::Bitss",
+        "path::bitss::penalized",
+        "path::bitss::Coefficients",
+        "cli::bitss::run"
+      ],
+      "python": [
+        "mopt_rs.Bitss",
+        "mopt_rs.BitssResult",
+        "mopt_rs.bitss_search",
+        "mopt_rs.bitss.bitss_function",
+        "mopt_rs.bitss.bitss_coefficients",
+        "mopt_rs._core.Bitss",
+        "mopt_rs._core.bitss_function",
+        "mopt_rs._core.bitss_coefficients",
+        "mopt_rs.run_optmain"
+      ]
+    },
+    "ONIOM (-oniom, -oniom_middle, -oniom_opt for every command)": {
+      "rust": [
+        "pes::oniom::OniomCalculator",
+        "pes::oniom::OniomSpec",
+        "pes::oniom::layout::Region",
+        "pes::oniom::layout::Link",
+        "cli::oniom::oniom_spec"
+      ],
+      "python": [
+        "mopt_rs.run_optmain",
+        "mopt_rs.cli.run_counted"
+      ]
+    },
+    "direct MaxFlux method (nebmain -dmf)": {
+      "rust": [
+        "path::dmf::DirectMaxFlux",
+        "path::dmf::SplinePath",
+        "path::dmf::arc::ArcLength",
+        "path::dmf::action::action",
+        "path::dmf::profile::EnergyProfile",
+        "workflow::dmf::run_dmf",
+        "cli::nebmain_dmf::relax_by_max_flux"
+      ],
+      "python": [
+        "mopt_rs.DirectMaxFlux",
+        "mopt_rs.DmfPath",
+        "mopt_rs.DmfResult",
+        "mopt_rs.dmf_search",
+        "mopt_rs.dmf.dmf_profile",
+        "mopt_rs._core.DirectMaxFlux",
+        "mopt_rs._core.DmfPath",
+        "mopt_rs._core.dmf_profile",
+        "mopt_rs.cli.run_counted"
+      ]
+    },
+    "saddle points of index k (high-index saddle dynamics, bands on a ridge)": {
+      "rust": [
+        "path::hisd::HighIndexSaddleSearch",
+        "path::hisd::HisdEnd",
+        "path::hisd::frame::SearchFrame",
+        "path::hisd::settings::HisdSettings",
+        "path::hisd::settings::DirectionUpdate",
+        "path::hisd::settings::Curvature",
+        "path::hisd::settings::PointFlow",
+        "path::hisd::modes::LowestModes",
+        "path::hisd::landscape::upward_starts",
+        "path::hisd::landscape::downward_starts",
+        "path::hisd::mode_max::LineMaximum",
+        "path::hisd::subspace::rayleigh_ritz",
+        "path::band::ridge::RidgeBand",
+        "path::band::ridge::cornered_band",
+        "path::band::ridge_fixed::FixedRidgeBand",
+        "opt::step::hisd::ReflectedGradient"
+      ],
+      "python": [
+        "mopt_rs.HighIndexSaddleSearch",
+        "mopt_rs.LowestModes",
+        "mopt_rs.RidgeBand",
+        "mopt_rs.FixedRidgeBand",
+        "mopt_rs.SaddleResult",
+        "mopt_rs.saddle_search",
+        "mopt_rs.lowest_modes",
+        "mopt_rs.ridge_band_search",
+        "mopt_rs.hisd_upward_starts",
+        "mopt_rs.hisd_downward_starts",
+        "mopt_rs._core.HighIndexSaddleSearch",
+        "mopt_rs._core.LowestModes",
+        "mopt_rs._core.RidgeBand",
+        "mopt_rs._core.FixedRidgeBand",
+        "mopt_rs._core.hisd_upward_starts",
+        "mopt_rs._core.hisd_downward_starts"
+      ]
+    },
+    "transition states from two structures or one (ieipmain)": {
+      "rust": [
+        "path::ieip::ElasticImagePair",
+        "path::ieip::IeipSettings",
+        "path::ieip::MicroCoordinates",
+        "path::ieip::MicroRelaxation",
+        "path::dimer::Dimer",
+        "path::dimer::DimerSettings",
+        "path::spring_pair::SpringPair",
+        "path::spring_pair::SpringPairSettings",
+        "path::twopshs::TwoPointShs",
+        "path::twopshs::TwoPshsSettings",
+        "path::newton_trajectory::GrowingNewtonTrajectory",
+        "path::newton_trajectory::NtSettings",
+        "path::shs::ScaledCoordinates",
+        "path::manifold::PointManifold",
+        "workflow::pair_search::relax_path::relax_path",
+        "workflow::pair_search::relax_path::PathRelaxation",
+        "path::points::PointRequest",
+        "path::points::SearchAction",
+        "path::gsm::GrowingString",
+        "path::gsm::GsmSettings",
+        "path::gsm::Driving",
+        "path::gsm::DrivingCoordinate",
+        "path::fsm::FreezingString",
+        "path::fsm::FsmSettings",
+        "path::dsafir::DoubleSphereAfir",
+        "path::dsafir::DsAfirSettings",
+        "path::lmm::LocalMinimax",
+        "path::lmm::LmmSettings",
+        "workflow::pair_search::run_lmm",
+        "path::dimer::DimerTranslation",
+        "path::string_nodes::NodeSteps",
+        "path::string_nodes::PointGeometry",
+        "workflow::pair_search::run_gsm",
+        "workflow::pair_search::run_fsm",
+        "workflow::pair_search::run_dsafir",
+        "workflow::pair_search::PairMethodRegistry",
+        "workflow::pair_search::PairInput",
+        "workflow::pair_search::PairSettings",
+        "workflow::pair_search::PairResult",
+        "workflow::pair_search::internal::InternalSearchSurface",
+        "cli::ieipmain_coords::set_up",
+        "workflow::explore::addf::Addf",
+        "workflow::explore::addf::AddfSettings",
+        "workflow::pair_search::run_ieip",
+        "workflow::pair_search::run_addf",
+        "workflow::pair_search::SearchRun",
+        "workflow::pair_search::surface::SearchSurface",
+        "cli::ieipmain::run_with",
+        "cli::ieipmain_settings::IeipmainConfig",
+        "cli::ieipmain_methods::run_method",
+        "cli::ieipmain_cell::CellSearchSurface"
+      ],
+      "python": [
+        "mopt_rs.ElasticImagePair",
+        "mopt_rs.Dimer",
+        "mopt_rs.SpringPair",
+        "mopt_rs.TwoPointShs",
+        "mopt_rs.NewtonTrajectory",
+        "mopt_rs.Addf",
+        "mopt_rs.SearchResult",
+        "mopt_rs.IeipJob",
+        "mopt_rs.ieip_search",
+        "mopt_rs.dimer_search",
+        "mopt_rs.spring_pair_search",
+        "mopt_rs.two_point_shs",
+        "mopt_rs.newton_trajectory",
+        "mopt_rs.addf_search",
+        "mopt_rs._core.ElasticImagePair",
+        "mopt_rs._core.Dimer",
+        "mopt_rs._core.SpringPair",
+        "mopt_rs._core.TwoPointShs",
+        "mopt_rs._core.NewtonTrajectory",
+        "mopt_rs._core.Addf",
+        "mopt_rs.GrowingString",
+        "mopt_rs.FreezingString",
+        "mopt_rs.DsAfir",
+        "mopt_rs.gsm_search",
+        "mopt_rs.fsm_search",
+        "mopt_rs.dsafir_search",
+        "mopt_rs.pair_methods",
+        "mopt_rs.run_pair_method",
+        "mopt_rs._core.GrowingString",
+        "mopt_rs._core.FreezingString",
+        "mopt_rs._core.DsAfir",
+        "mopt_rs._core.pair_methods",
+        "mopt_rs._core.run_pair_method"
+      ]
+    },
+    "intrinsic reaction coordinate (ircmain, optmain -irc)": {
+      "rust": [
+        "irc",
+        "workflow::irc_cell::CellSurface",
+        "workflow::irc_cell::CellStructures",
+        "irc::Irc",
+        "irc::lqa_step",
+        "irc::test_first_step",
+        "irc::IntegratorRegistry",
+        "workflow::irc::run_irc",
+        "workflow::irc_output::IrcOutput",
+        "workflow::irc_combined",
+        "cli::irc::run_structure",
+        "cli::ircmain::run_with"
+      ],
+      "python": [
+        "mopt_rs.Irc",
+        "mopt_rs.IrcResult",
+        "mopt_rs.IrcSide",
+        "mopt_rs.irc_path",
+        "mopt_rs.irc.irc_lqa_step",
+        "mopt_rs.irc.irc_first_step_test",
+        "mopt_rs.irc.irc_methods",
+        "mopt_rs._core.Irc",
+        "mopt_rs._core.irc_lqa_step",
+        "mopt_rs._core.irc_first_step_test",
+        "mopt_rs._core.irc_methods",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "variable-cell optimization (optmain -vc)": {
+      "rust": [
+        "opt::cell"
+      ],
+      "python": [
+        "mopt_rs.run_optmain"
+      ]
+    },
+    "stress of periodic cells": {
+      "rust": [
+        "pes::stress"
+      ],
+      "python": [
+        "mopt_rs._core.native_stress",
+        "mopt_rs._core.stress_to_ase_voigt",
+        "mopt_rs._core.stress_from_ase_voigt"
+      ]
+    },
+    "check of the branching plane of a search for a conical intersection": {
+      "rust": [
+        "opt::crossing_check::CrossingCheckSettings"
+      ],
+      "python": [
+        "mopt_rs._core.Optimizer"
+      ]
+    },
+    "mode kill at convergence": {
+      "rust": [
+        "opt::mode_kill::examine",
+        "opt::mode_kill::ModeKillSettings"
+      ],
+      "python": [
+        "mopt_rs._core.Optimizer",
+        "mopt_rs.optimize_variables",
+        "mopt_rs._core.IMAGINARY_CURVATURE"
+      ]
+    },
+    "O1NumHess: Hessians from a few gradients": {
+      "rust": [
+        "pes::o1numhess::O1NumHess",
+        "pes::o1numhess::molecular_problem",
+        "pes::o1numhess::O1NumHessCalculator"
+      ],
+      "python": [
+        "mopt_rs._core.O1NumHess",
+        "mopt_rs.calculators.EngineCalculator"
+      ]
+    },
+    "sampling priorities": {
+      "rust": [
+        "workflow::explore::PriorityRegistry",
+        "workflow::explore::priority::SamplingPriority"
+      ],
+      "python": [
+        "mopt_rs._core.SamplingPriority",
+        "mopt_rs._core.sampling_priority_names"
+      ]
+    },
+    "maps of a path and dynamic modes of an optimization (optmain -cmds, -pca, -km)": {
+      "rust": [
+        "analysis::path_map::classical_mds",
+        "analysis::path_map::distance_matrix",
+        "analysis::path_map::principal_components",
+        "analysis::koopman::dynamic_modes",
+        "workflow::path_analysis::PathMaps",
+        "workflow::path_analysis::KoopmanLog"
+      ],
+      "python": [
+        "mopt_rs._core.structure_distances",
+        "mopt_rs._core.classical_mds",
+        "mopt_rs._core.principal_components",
+        "mopt_rs._core.path_variables",
+        "mopt_rs._core.koopman_observables",
+        "mopt_rs._core.dynamic_modes",
+        "mopt_rs.run_optmain"
+      ]
+    },
+    "orbital analyses: following orbitals, natural reaction orbitals, reactive orbitals (freqmain -nro, -roet)": {
+      "rust": [
+        "domain::orbitals::Orbitals",
+        "analysis::orbitals::tracking::follow",
+        "analysis::orbitals::nro::natural_reaction_orbitals",
+        "analysis::orbitals::roet::reactive_orbitals",
+        "workflow::orbital_analysis::natural_reaction_orbitals_at",
+        "cli::orbital_path::run"
+      ],
+      "python": [
+        "mopt_rs._core.follow_orbitals",
+        "mopt_rs._core.natural_reaction_orbitals",
+        "mopt_rs._core.mass_weighted_displacement",
+        "mopt_rs._core.reactive_orbitals",
+        "mopt_rs._core.native_orbitals",
+        "mopt_rs.calculators.EngineCalculator"
+      ]
+    },
+    "vibrational analysis and thermochemistry (optmain -freq, freqmain)": {
+      "rust": [
+        "vib"
+      ],
+      "python": [
+        "mopt_rs._core.normal_modes",
+        "mopt_rs._core.point_group",
+        "mopt_rs._core.rotational_constants",
+        "mopt_rs._core.vibrational_analysis",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "vibrations transverse to a reaction path and its bifurcations (freqmain -path)": {
+      "rust": [
+        "vib::path::transverse_profile",
+        "vib::path::path_tangents",
+        "vib::path::gradient_alignment",
+        "vib::path::PathPoint",
+        "vib::path::PathProfile",
+        "vib::path::Bifurcation"
+      ],
+      "python": [
+        "mopt_rs.path_profile",
+        "mopt_rs.PathProfile",
+        "mopt_rs.PathBifurcation",
+        "mopt_rs._core.transverse_profile"
+      ]
+    },
+    "electron-transfer rates (etmain: EDEEL, SAES, Scher-Holstein, Zhu-Nakamura, Mulliken-Hush)": {
+      "rust": [
+        "kinetics::rate::electron_transfer::edeel_rate",
+        "kinetics::rate::inner_sphere::inner_sphere",
+        "kinetics::rate::inner_sphere::scher_holstein",
+        "kinetics::rate::inner_sphere::marcus_with_tunnelling",
+        "kinetics::rate::inner_sphere::zhu_nakamura_at_crossing",
+        "kinetics::rate::inner_sphere::marcus_levich_jortner",
+        "kinetics::rate::couplings::mulliken_hush",
+        "kinetics::rate::couplings::generalized_mulliken_hush",
+        "kinetics::rate::couplings::fragment_charge_difference",
+        "kinetics::rate::couplings::charge_transfer",
+        "kinetics::rate::solvent_activation::SolventActivation",
+        "workflow::electron_transfer",
+        "workflow::electron_transfer::run_transfer",
+        "workflow::electron_transfer::apparent_barrier",
+        "cli::etmain::run_with"
+      ],
+      "python": [
+        "mopt_rs._core.electron_transfer_rate",
+        "mopt_rs.electron_transfer.run_etmain",
+        "mopt_rs.electron_transfer.inner_sphere",
+        "mopt_rs.electron_transfer.scher_holstein",
+        "mopt_rs.electron_transfer.marcus_rate",
+        "mopt_rs.electron_transfer.zhu_nakamura_rate",
+        "mopt_rs.electron_transfer.marcus_levich_jortner",
+        "mopt_rs._core.et_marcus_levich_jortner",
+        "mopt_rs.electron_transfer.mulliken_hush",
+        "mopt_rs.electron_transfer.generalized_mulliken_hush",
+        "mopt_rs.electron_transfer.charge_transfer",
+        "mopt_rs.electron_transfer.solvent_shifts",
+        "mopt_rs.electron_transfer.apparent_barrier",
+        "mopt_rs._core.run_etmain",
+        "mopt_rs._core.et_inner_sphere",
+        "mopt_rs._core.et_scher_holstein",
+        "mopt_rs._core.et_marcus_rate",
+        "mopt_rs._core.et_zhu_nakamura_rate",
+        "mopt_rs._core.et_mulliken_hush",
+        "mopt_rs._core.et_generalized_mulliken_hush",
+        "mopt_rs._core.et_fragment_charge_difference",
+        "mopt_rs.electron_transfer.fragment_charge_difference",
+        "mopt_rs._core.et_charge_transfer",
+        "mopt_rs._core.et_solvent_shifts",
+        "mopt_rs._core.et_apparent_barrier"
+      ]
+    },
+    "charge hopping: the transfer integral of the projection method, the four-point reorganization energy, the hopping rate": {
+      "rust": [
+        "kinetics::rate::transfer_integral",
+        "kinetics::rate::transfer_integral::transfer_integral",
+        "kinetics::rate::transfer_integral::matched_transfer_integral",
+        "kinetics::rate::transfer_integral::fragment_transfer_integral",
+        "kinetics::rate::transfer_integral::fock_from_orbitals",
+        "kinetics::rate::transfer_integral::four_point_reorganization",
+        "kinetics::rate::transfer_integral::hopping_rate"
+      ],
+      "python": [
+        "mopt_rs.electron_transfer.transfer_integral",
+        "mopt_rs.electron_transfer.fock_from_orbitals",
+        "mopt_rs.electron_transfer.projection_coupling",
+        "mopt_rs.electron_transfer.four_point_reorganization",
+        "mopt_rs.electron_transfer.hopping_rate",
+        "mopt_rs._core.et_transfer_integral",
+        "mopt_rs._core.et_fock_from_orbitals",
+        "mopt_rs._core.et_projection_coupling",
+        "mopt_rs._core.et_four_point_reorganization",
+        "mopt_rs._core.et_hopping_rate"
+      ]
+    },
+    "the hop of a charge between two molecules (etmain -et_method hopping)": {
+      "rust": [
+        "workflow::hopping",
+        "workflow::hopping::run_hopping",
+        "workflow::hopping::HoppingSettings",
+        "workflow::hopping::HoppingResult"
+      ],
+      "python": [
+        "mopt_rs._core.run_etmain"
+      ]
+    },
+    "proton-coupled electron transfer: the proton states on a grid and the vibronic rate": {
+      "rust": [
+        "kinetics::rate::pcet",
+        "kinetics::rate::pcet::proton_states",
+        "kinetics::rate::pcet::proton_overlaps",
+        "kinetics::rate::pcet::pcet_rate"
+      ],
+      "python": [
+        "mopt_rs.electron_transfer.proton_states",
+        "mopt_rs.electron_transfer.pcet_rate",
+        "mopt_rs.electron_transfer.PROTON_MASS_AMU",
+        "mopt_rs.electron_transfer.DEUTERON_MASS_AMU",
+        "mopt_rs._core.et_proton_states",
+        "mopt_rs._core.et_pcet_rate"
+      ]
+    },
+    "the first images between two structures": {
+      "rust": [
+        "path::interp",
+        "path::interp::images_between",
+        "path::interp::FirstPath"
+      ],
+      "python": [
+        "mopt_rs._core.images_between"
+      ]
+    },
+    "molecular dynamics (mdmain): integrators, thermostats, barostats, constraints, frozen modes": {
+      "rust": [
+        "md",
+        "md::MolecularDynamics",
+        "md::integrator::IntegratorRegistry",
+        "md::thermostat::ThermostatRegistry",
+        "md::barostat::BarostatRegistry",
+        "md::constraints::Rattle",
+        "md::freeze::ModeFreezing",
+        "workflow::md",
+        "workflow::md::run_md",
+        "workflow::md_files",
+        "workflow::md_log",
+        "workflow::md_hopping_output",
+        "cli::mdmain::run_with"
+      ],
+      "python": [
+        "mopt_rs.MolecularDynamics",
+        "mopt_rs.MdResult",
+        "mopt_rs.run_md",
+        "mopt_rs.md.md_parts",
+        "mopt_rs._core.MolecularDynamics",
+        "mopt_rs._core.md_parts",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "collective variables, umbrella sampling, WHAM and MBAR (mdmain -umbrella)": {
+      "rust": [
+        "md::cv::Cv",
+        "md::cv::Umbrella",
+        "workflow::umbrella",
+        "workflow::umbrella::run_umbrella",
+        "analysis::free_energy",
+        "analysis::free_energy::wham",
+        "analysis::free_energy::mbar"
+      ],
+      "python": [
+        "mopt_rs._core.wham",
+        "mopt_rs._core.mbar",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "time correlations, spectra, transport coefficients (mdmain -analysis acf, ir, transport)": {
+      "rust": [
+        "analysis::correlation",
+        "analysis::correlation::autocorrelation",
+        "analysis::correlation::autocorrelation_direct",
+        "analysis::correlation::orientational",
+        "analysis::correlation::spectrum",
+        "analysis::correlation::spectrum::cosine_transform",
+        "analysis::correlation::spectrum::infrared",
+        "analysis::correlation::spectrum::power_spectrum",
+        "analysis::correlation::transport",
+        "analysis::correlation::transport::green_kubo",
+        "analysis::correlation::transport::reverse_conductivity",
+        "pes::calculator::SiteTerms",
+        "pes::native::embedding::site_terms",
+        "md::settings::Exchange",
+        "workflow::md_flux",
+        "workflow::md_flux::HeatFlux",
+        "workflow::md_analysis_transport"
+      ],
+      "python": [
+        "mopt_rs.md.autocorrelation",
+        "mopt_rs.md.power_spectrum",
+        "mopt_rs.md.infrared_spectrum",
+        "mopt_rs.md.green_kubo",
+        "mopt_rs._core.autocorrelation",
+        "mopt_rs._core.power_spectrum",
+        "mopt_rs._core.infrared_spectrum",
+        "mopt_rs._core.green_kubo",
+        "mopt_rs._core.TrajectoryAnalysis"
+      ]
+    },
+    "LINCS, Wigner initial conditions, collective variables of mdmain": {
+      "rust": [
+        "md::lincs",
+        "md::lincs::Lincs",
+        "md::settings::ConstraintSolver",
+        "md::wigner",
+        "md::wigner::sample",
+        "md::wigner::mean_energy",
+        "md::cv_spec",
+        "md::cv_spec::parse_cv",
+        "workflow::md_cvs",
+        "workflow::md_cvs::MdCvs",
+        "cli::mdmain_cv",
+        "cli::mdmain_wigner"
+      ],
+      "python": [
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "molecular dynamics in generalized coordinates (mdmain -coord)": {
+      "rust": [
+        "md::MdMachine",
+        "md::generalized",
+        "md::generalized::GeneralizedDynamics",
+        "md::generalized::Span",
+        "workflow::md_coordinates",
+        "workflow::md_coordinates::MdCoordinates",
+        "cli::mdmain_coordinates"
+      ],
+      "python": [
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "trajectory analysis (mdmain -analysis, -analyze_only)": {
+      "rust": [
+        "analysis::trajectory",
+        "analysis::trajectory::MdTrajectory",
+        "analysis::trajectory::statistics",
+        "analysis::trajectory::radial_distribution",
+        "analysis::trajectory::mean_squared_displacement",
+        "analysis::trajectory::velocity_autocorrelation",
+        "analysis::trajectory::vibrational_density_of_states",
+        "analysis::trajectory::fluctuations",
+        "analysis::trajectory::geometry_series",
+        "analysis::trajectory::trajectory_pca",
+        "math::fft",
+        "workflow::md_analysis",
+        "workflow::md_analysis::analyze_files",
+        "workflow::md_analysis_output",
+        "cli::mdmain_analysis"
+      ],
+      "python": [
+        "mopt_rs.TrajectoryAnalysis",
+        "mopt_rs.md.block_average",
+        "mopt_rs.md.analyze_md_run",
+        "mopt_rs._core.TrajectoryAnalysis",
+        "mopt_rs._core.block_average",
+        "mopt_rs._core.analyze_md_run",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "orientation search of complexes (orientsearch): parts, placements, duplicate removal, pool of minima": {
+      "rust": [
+        "workflow::explore::orient",
+        "workflow::explore::orient::OrientationSearch",
+        "workflow::explore::orient::Sampler",
+        "workflow::explore::orient::ComplexParts",
+        "workflow::explore::orient::contact",
+        "workflow::explore::identity::StructureMatcher",
+        "workflow::explore::identity::BondGraph",
+        "workflow::explore::pool::MinimaPool",
+        "workflow::explore::pool::boltzmann_weights",
+        "cli::orientsearch::run_with",
+        "cli::orientsearch::OrientsearchConfig",
+        "cli::orientsearch_output",
+        "cli::orientsearch_energies",
+        "cli::orientsearch_settings"
+      ],
+      "python": [
+        "mopt_rs.OrientationSearch",
+        "mopt_rs.orientation_search",
+        "mopt_rs.OrientResult",
+        "mopt_rs.OrientMinimum",
+        "mopt_rs.orient.compare_structures",
+        "mopt_rs.orient.complex_parts",
+        "mopt_rs._core.OrientationSearch",
+        "mopt_rs._core.compare_structures",
+        "mopt_rs._core.complex_parts",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "counts of the evaluations of a run": {
+      "rust": [
+        "pes::counting",
+        "pes::counting::EvaluationCounts",
+        "pes::counting::CountingCalculator"
+      ],
+      "python": [
+        "mopt_rs.cli.run_counted",
+        "mopt_rs.cli.EvaluationCounts",
+        "mopt_rs._core.run_cli_counted"
+      ]
+    },
+    "conformation search (confsearch): bond graphs, invariant RMSD, ensemble, crossing, RMSD metadynamics, stop rules": {
+      "rust": [
+        "workflow::confsearch",
+        "workflow::confsearch::afir::run",
+        "workflow::confsearch::imtd::run",
+        "workflow::confsearch::ts::run",
+        "workflow::confsearch::moves::run",
+        "workflow::confsearch::moves::ConformerMove",
+        "workflow::confsearch::moves::MoveRegistry",
+        "cli::confsearch::run_with_moves",
+        "workflow::explore::ConformerEnsemble",
+        "workflow::explore::crossover_candidates",
+        "workflow::explore::StopRules",
+        "workflow::explore::AdaptiveWaterFilling",
+        "workflow::explore::HeatedBoltzmann",
+        "coord::graph::MolecularGraph",
+        "coord::invariant_rmsd::invariant_rmsd",
+        "coord::zmatrix::ZMatrix",
+        "pes::bias::RmsdMetadynamics",
+        "cli::confsearch::run_with"
+      ],
+      "python": [
+        "mopt_rs._core.run_cli",
+        "mopt_rs._core.run_confsearch",
+        "mopt_rs._core.conformer_move_names",
+        "mopt_rs.confsearch.conformer_search",
+        "mopt_rs.confsearch.conformer_move_names",
+        "mopt_rs.confsearch.ConformerSearchResult",
+        "mopt_rs.conformer_search",
+        "mopt_rs.conformer_move_names",
+        "mopt_rs.ConformerSearchResult",
+        "mopt_rs._core.bond_graph",
+        "mopt_rs._core.graph_isomorphism",
+        "mopt_rs._core.invariant_rmsd",
+        "mopt_rs._core.zmatrix",
+        "mopt_rs._core.crossover_conformers",
+        "mopt_rs._core.ConformerEnsemble",
+        "mopt_rs._core.RmsdMetadynamics",
+        "mopt_rs._core.SamplingPriority"
+      ]
+    },
+    "scans of coordinates and ReSPer coordinates (relaxedscan)": {
+      "rust": [
+        "analysis::resper",
+        "analysis::resper::ResperMap",
+        "analysis::resper::ResperCoordinate",
+        "analysis::resper::ResperVariable",
+        "analysis::resper::preimage::preimage",
+        "opt::vector_constraints",
+        "opt::vector_constraints::VectorConstraintSet",
+        "opt::vector_constraints::FixedVariable",
+        "workflow::scan",
+        "workflow::scan::grid::ScanGrid",
+        "workflow::scan::candidates::stationary_points",
+        "workflow::scan::rigid::set_rigidly",
+        "workflow::scan::continuity::jumps",
+        "workflow::scan::output::ScanState",
+        "workflow::scan::figures::map_figure",
+        "cli::relaxedscan",
+        "cli::relaxedscan::run_with",
+        "cli::relaxedscan_followup",
+        "cli::relaxedscan_outputs",
+        "cli::relaxedscan_points",
+        "cli::relaxedscan_report",
+        "cli::relaxedscan_resper",
+        "cli::relaxedscan_scan",
+        "cli::relaxedscan_settings",
+        "cli::relaxedscan_targets"
+      ],
+      "python": [
+        "mopt_rs.ResperMap",
+        "mopt_rs.run_relaxedscan",
+        "mopt_rs._core.ResperMap",
+        "mopt_rs._core.VectorOptimizer.hold",
+        "mopt_rs._core.scan_points",
+        "mopt_rs._core.scan_stationary_points",
+        "mopt_rs._core.rigid_scan_structure",
+        "mopt_rs._core.run_relaxedscan",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "excited states compared between structures (-es_follow)": {
+      "rust": [
+        "pes::states",
+        "pes::states::StateCharacters",
+        "pes::states::carry_amplitudes"
+      ],
+      "python": [
+        "mopt_rs._core.state_overlaps",
+        "mopt_rs.calculators.EngineCalculator"
+      ]
+    },
+    "states along a path as diabatic states (freqmain -diabatize)": {
+      "rust": [
+        "analysis::diabatic",
+        "analysis::diabatic::from_overlaps",
+        "analysis::diabatic::crossings",
+        "analysis::diabatic::from_gap",
+        "analysis::diabatic::landau_zener_stay",
+        "workflow::state_path",
+        "workflow::state_path::states_along",
+        "cli::diabatic_path::run"
+      ],
+      "python": [
+        "mopt_rs._core.diabatic_states",
+        "mopt_rs._core.landau_zener_stay",
+        "mopt_rs._core.state_overlaps",
+        "mopt_rs._core.run_cli"
+      ]
+    },
+    "MCP server for agents (mopt mcp, python -m mopt_rs.mcp)": {
+      "rust": [
+        "mcp",
+        "mcp::server::Server",
+        "mcp::schema::all_tools",
+        "mcp::policy::Policy",
+        "mcp::compute::compute",
+        "mcp::compute::tools_json"
+      ],
+      "python": [
+        "mopt_rs.mcp.Server",
+        "mopt_rs.mcp.main",
+        "mopt_rs.mcp.tables.all_tools",
+        "mopt_rs.mcp.policy.Policy",
+        "mopt_rs._core.mcp_component",
+        "mopt_rs._core.mcp_component_tools"
+      ]
+    },
+    "kinetics of reaction networks (run_kinetics, run_rcmc; rate matrices, contraction, solvers, priorities)": {
+      "rust": [
+        "kinetics",
+        "kinetics::solve::SolverRegistry",
+        "kinetics::contract::contract",
+        "kinetics::contract::greedy_order",
+        "kinetics::observe::scores",
+        "kinetics::generator::Generator",
+        "kinetics::derivative::derivatives",
+        "kinetics::species",
+        "kinetics::mass_action",
+        "kinetics::rate::tunneling",
+        "kinetics::rate::variational",
+        "kinetics::rate::electron_transfer::transfer_barrier",
+        "kinetics::rate::recrossing",
+        "kinetics::rate::weak_coupling",
+        "kinetics::rate::small_curvature",
+        "kinetics::rate::diffusion",
+        "kinetics::solve::kmc",
+        "kinetics::solve::contract_mass",
+        "kinetics::solve::windows",
+        "kinetics::order",
+        "kinetics::rrkm",
+        "kinetics::egme",
+        "kinetics::hot",
+        "kinetics::semi_markov",
+        "kinetics::msm",
+        "kinetics::branching",
+        "kinetics::refine",
+        "workflow::kinetics",
+        "workflow::kinetics_beyond",
+        "workflow::kinetics_dynamics"
+      ],
+      "python": [
+        "mopt_rs.kinetics.solve",
+        "mopt_rs.kinetics.derivatives",
+        "mopt_rs.kinetics.YieldDerivatives",
+        "mopt_rs._core.kinetics_network_derivatives",
+        "mopt_rs.kinetics.mass_action",
+        "mopt_rs.kinetics.MassActionSolution",
+        "mopt_rs.kinetics.standard_state_shift",
+        "mopt_rs._core.kinetics_network_mass_action",
+        "mopt_rs._core.kinetics_standard_state_shift",
+        "mopt_rs.kinetics.tunnelling",
+        "mopt_rs._core.kinetics_tunnelling",
+        "mopt_rs.kinetics.transfer_rate",
+        "mopt_rs.kinetics.cvt_factor",
+        "mopt_rs._core.kinetics_transfer_rate",
+        "mopt_rs._core.kinetics_cvt_factor",
+        "mopt_rs.kinetics.contract",
+        "mopt_rs.kinetics.greedy_order",
+        "mopt_rs.kinetics.scores",
+        "mopt_rs.kinetics.solver_names",
+        "mopt_rs.kinetics.run_kinetics",
+        "mopt_rs.kinetics.KineticSolution",
+        "mopt_rs.kinetics.Contraction",
+        "mopt_rs._core.kinetics_solve",
+        "mopt_rs._core.kinetics_contract",
+        "mopt_rs._core.kinetics_greedy_order",
+        "mopt_rs._core.kinetics_scores",
+        "mopt_rs._core.kinetics_solver_names",
+        "mopt_rs.kinetics.part_names",
+        "mopt_rs.kinetics.network_model",
+        "mopt_rs.kinetics.refinement_tasks",
+        "mopt_rs.kinetics.kramers",
+        "mopt_rs.kinetics.grote_hynes",
+        "mopt_rs.kinetics.weak_coupling",
+        "mopt_rs.kinetics.curvature_tunnelling",
+        "mopt_rs.kinetics.beyer_swinehart",
+        "mopt_rs.kinetics.branching",
+        "mopt_rs.kinetics.Branching",
+        "mopt_rs.kinetics.saddle_trajectories",
+        "mopt_rs.kinetics.markov_state_model",
+        "mopt_rs.kinetics.dwell_times",
+        "mopt_rs.kinetics.kernel_contraction",
+        "mopt_rs._core.kinetics_part_names",
+        "mopt_rs._core.kinetics_network_model",
+        "mopt_rs._core.kinetics_network_refinement",
+        "mopt_rs._core.kinetics_kramers",
+        "mopt_rs._core.kinetics_grote_hynes",
+        "mopt_rs._core.kinetics_weak_coupling",
+        "mopt_rs._core.kinetics_curvature_tunnelling",
+        "mopt_rs._core.kinetics_beyer_swinehart",
+        "mopt_rs._core.kinetics_branching",
+        "mopt_rs._core.kinetics_msm",
+        "mopt_rs._core.kinetics_dwell",
+        "mopt_rs._core.kinetics_kernel_contraction"
+      ]
+    }
+  },
+  "pending": {},
+  "rust_only": {
+    "core_infra": "argument parser, JSON, logger, clock, random numbers, plots: infrastructure of the Rust side; Python has its own",
+    "error": "errors arrive in Python as exceptions (ValueError, RuntimeError)",
+    "bin": "the stand-alone mopt binary",
+    "math": "numerical kernels (automatic differentiation, linear algebra, line search, ...): NumPy and SciPy on the Python side",
+    "io": "settings files, Hessian files, and the other formats are read and written by the commands; Python passes arrays (the .xyz files are reached through mopt_rs.read_xyz and mopt_rs.write_xyz)",
+    "pes::biased": "a calculator with static bias potentials added, used inside the workflows; from Python the terms are added to the Optimizer (add_bias, add_term) or given as options of run_cli",
+    "opt::cell_constraints": "the constraints of optmain -vc (-fix, -pc, -gfix, -uc) as constraints of the variables of the cell; from Python through run_optmain / run_cli with those options",
+    "pes::fd_hessian": "central-difference Hessians of a gradient, used inside the calculators and workflows that have no analytic second derivatives; from Python the Hessian of a calculator is asked for directly",
+    "pes::replay": "the evaluations of an earlier run offered to the journals of a restarted workflow (run_autots --restart, through run_cli); a Python caller of ask/tell restarts from its checkpoint file",
+    "analysis::disconnectivity": "the disconnectivity graph and lowest-barrier paths of the report of run_mapper (run_cli('run_mapper', ['--report', RUN_DIR]) writes it); the network itself is in reaction_network.json",
+    "analysis::graph_layout": "the force-directed places of the graph of the report of run_mapper, a drawing aid",
+    "workflow::diabatic_crossings": "the file diabatic_crossings.csv of freqmain -diabatize (run_cli writes it); the annotations of run_kinetics read it (\"diabatic_crossings\")",
+    "parameters": "element tables; what Python needs is returned by units, atomic_numbers, dispersion_properties",
+    "domain::atom_id": "typed atom index of the Rust side",
+    "domain::quantity": "typed quantities of the Rust side; Python uses atomic units",
+    "domain::trajectory": "trajectories are written by the commands"
+  },
+  "python_only": {
+    "mopt_rs.calculators": "engines for Python programs (ASE, PySCF, Psi4, tblite, dxtb, OpenMM, profiles): they exist only in Python; the Rust commands reach them through this registry when started from Python",
+    "mopt_rs.cli": "console entry points of the pip package; the Rust side has the mopt binary",
+    "mopt_rs.mapper_plugins": "the bridge of the exploration methods of Python classes (run_mapper -map_opt method=python:MODULE:CLASS): the Rust side calls it; the methods are Python classes"
+  }
+}
