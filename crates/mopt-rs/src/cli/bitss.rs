@@ -118,6 +118,7 @@ pub(super) fn effective_settings(config: &OptmainConfig) -> BitssSettings {
         exact_hessian_interval: s.exact_hessian_interval,
         ccqn: None,
         mode_kill: None,
+        project_updates: s.project_updates,
     };
     settings
 }

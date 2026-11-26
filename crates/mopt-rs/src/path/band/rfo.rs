@@ -98,7 +98,9 @@ use crate::math::linalg::{col_dot, col_norm, symmetric_eigen};
 use crate::math::projection::{build_tr_rot_basis, project_out_basis_mat, project_out_basis_vec};
 use crate::opt::step::rsirfo::{Rsirfo, RsirfoTrust};
 use crate::opt::step::{PreviousPoint, StepGenerator, StepInput};
-use crate::opt::update::{apply_update, BlockKind, BlockUpdater, HessianUpdater, UpdaterRegistry};
+use crate::opt::update::{
+    apply_update, project_out_rigid, BlockKind, BlockUpdater, HessianUpdater, UpdaterRegistry,
+};
 
 /// Settings of the quasi-Newton steps of a chain (MultiOptPy's values).
 #[derive(Debug, Clone, PartialEq)]
@@ -126,6 +128,9 @@ pub struct ChainRfoSettings {
     /// neighbour uphill enters the force of an image (see the module documentation; not
     /// in MultiOptPy's form).
     pub sweep: bool,
+    /// For chains of structures: take the translations and rotations of an image out of its
+    /// Hessian after every update (`-update_proj`; on by default).
+    pub project_updates: bool,
 }
 
 impl Default for ChainRfoSettings {
@@ -140,6 +145,7 @@ impl Default for ChainRfoSettings {
             directory: None,
             global: None,
             sweep: false,
+            project_updates: true,
         }
     }
 }
@@ -854,10 +860,6 @@ impl ChainRfo {
                 raw_gradient: g,
                 step: &chain[i] - &x,
             });
-            if let Some(prev) = &previous {
-                let y = &gradients[i] - &prev.raw_gradient;
-                apply_update(slot.updater.as_mut(), &mut surface, &prev.step, &y, false)?;
-            }
             let basis = match &self.template {
                 Some(template) => Some(build_tr_rot_basis(
                     &template.with_flat_coords_bohr(&chain[i])?,
@@ -865,6 +867,15 @@ impl ChainRfo {
                 )),
                 None => None,
             };
+            if let Some(prev) = &previous {
+                let y = &gradients[i] - &prev.raw_gradient;
+                // The update puts curvature along the rigid motions of the image; the kept
+                // Hessian has none there, updated or not.
+                apply_update(slot.updater.as_mut(), &mut surface, &prev.step, &y, false)?;
+                if self.settings.project_updates {
+                    project_out_rigid(&mut surface, basis.as_ref());
+                }
+            }
             // The model across the chain (see the module documentation).
             let climbing = along.climbing.contains(&i);
             let across = if end || legacy {
@@ -930,6 +941,7 @@ impl ChainRfo {
                 hessian,
                 bias_hessian: None,
                 rigid_body_basis: basis.as_ref(),
+                project_updates: self.settings.project_updates,
                 saddle_order: 0,
                 system: None,
                 cartesian_coordinates: true,

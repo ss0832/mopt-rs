@@ -292,6 +292,9 @@ pub fn relax_path(
     if let (Some(rfo), Some(step)) = (chain.rfo.as_mut(), relaxation.max_step) {
         rfo.inner_step = step;
     }
+    if let Some(rfo) = chain.rfo.as_mut() {
+        rfo.project_updates = !input.rigid_in_updates;
+    }
     run.log.info(&format!(
         "Relaxation of the path (method_relax={}): a chain of nebmain{}, {count} images, at \
          most {} iterations, the ends fixed.",

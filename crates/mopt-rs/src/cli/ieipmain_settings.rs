@@ -397,6 +397,9 @@ pub struct IeipmainConfig {
     /// `-vc` (with `-vc_pressure`, `-vc_weight`): the search in the variables of the atoms and
     /// the cell (`cli::ieipmain_cell`); `None`: the cell of the structures is held.
     pub variable_cell: Option<super::variable_cell::VariableCellSettings>,
+    /// `-update_proj`: the rigid-body motions taken out of the updated Hessians (on by
+    /// default).
+    pub project_updates: bool,
 }
 
 /// The method, what else was asked for and does not run, and the model function that is
@@ -593,6 +596,7 @@ impl IeipmainConfig {
             debug: p.get_bool("debug", false),
             coordinates: p.get_str("coordinate_system", "cart").trim().to_string(),
             variable_cell: super::variable_cell::VariableCellSettings::from_args(p)?,
+            project_updates: super::optmain::update_projection(p)?,
         })
     }
 

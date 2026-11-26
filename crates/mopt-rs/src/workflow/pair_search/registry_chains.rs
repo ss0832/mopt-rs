@@ -329,6 +329,9 @@ impl PairMethod for NebMember {
         // relaxation of a path after a method (`relax_path`).
         chain_settings.fixed_components = input.geometry.frozen.clone();
         chain_settings.align &= input.structures && input.geometry.aligns();
+        if let Some(rfo) = chain_settings.rfo.as_mut() {
+            rfo.project_updates = !input.rigid_in_updates;
+        }
         let mut m = ChainRelaxation::new(chain_settings, chain)?;
         if let (Some(t), true) = (&input.template, input.structures) {
             m = m.with_structure(t.clone())?;

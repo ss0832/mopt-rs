@@ -91,6 +91,10 @@ pub struct PairInput {
     pub bohr_lengths: bool,
     /// The steps of iEIP and DS-AFIR through other coordinates (`-coord`).
     pub step_map: Option<StepMap>,
+    /// The rigid-body motions are left in the Hessians after their updates (`-update_proj
+    /// off`); by default they are taken out after every update (DS-AFIR with LQA steps, the
+    /// quasi-Newton steps of chains).
+    pub rigid_in_updates: bool,
 }
 
 impl std::fmt::Debug for PairInput {

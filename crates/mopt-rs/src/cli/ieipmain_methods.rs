@@ -505,7 +505,7 @@ pub fn fragment_test_with(
 
 /// What a method of the registry (and the relaxation of a path) is given.
 fn pair_input(
-    _config: &IeipmainConfig,
+    config: &IeipmainConfig,
     points: &[Col<f64>],
     geometry: &Geometry,
     driving: Vec<DrivingCoordinate>,
@@ -526,6 +526,7 @@ fn pair_input(
         fragments: geometry.fragments.clone(),
         bohr_lengths: geometry.bohr_lengths,
         step_map: geometry.step_map.clone(),
+        rigid_in_updates: !config.project_updates,
     }
 }
 

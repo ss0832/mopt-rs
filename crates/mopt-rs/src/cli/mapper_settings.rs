@@ -103,8 +103,8 @@ const SURFACE_KEYS: &[&str] = &[
 pub const SHARED_BLOCK: &str = "shared_settings";
 
 /// The options of `optmain` (by destination) that `run_mapper` and `run_autots` take as shared
-/// by every step: the hard constraints and the bias potentials (`tools/cli/gen_cli.py`,
-/// `WORKFLOW_SHARED`).
+/// by every step: the hard constraints, the bias potentials, and `-update_proj`
+/// (`tools/cli/gen_cli.py`, `WORKFLOW_SHARED`).
 pub const SHARED_KEYS: &[&str] = &[
     "fix_atoms",
     "projection_constrain",
@@ -142,6 +142,7 @@ pub const SHARED_KEYS: &[&str] = &[
     "asymmetric_ellipsoidal_repulsive_potential",
     "asymmetric_ellipsoidal_repulsive_potential_v2",
     "nano_reactor_potential",
+    "update_projection",
 ];
 
 /// The options shared by every step: the block [`SHARED_BLOCK`] of `doc` with those of the
@@ -159,8 +160,8 @@ pub fn shared_options(
     for key in shared.keys() {
         if !SHARED_KEYS.contains(&key.as_str()) {
             return Err(MoptError::parse(format!(
-                "{SHARED_BLOCK}: '{key}' is not an option shared by the steps (the constraints \
-                 and the bias potentials of optmain: {})",
+                "{SHARED_BLOCK}: '{key}' is not an option shared by the steps (the constraints, \
+                 the bias potentials, and -update_proj of optmain: {})",
                 SHARED_KEYS.join(", ")
             )));
         }
@@ -943,6 +944,7 @@ impl MapperConfig {
             None => IrcSettings::from_multioptpy("0.1", "300", "lqa")?,
         };
         irc.exact_hessian_interval = minimum.settings.exact_hessian_interval;
+        irc.project_updates = minimum.settings.project_updates;
         for (name, c) in [
             ("step1_settings", &biased),
             ("step3_settings", &saddle),

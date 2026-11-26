@@ -39,6 +39,10 @@ pub struct DsAfirSettings {
     /// With the LQA steps: add the second derivatives of the two distance terms of `F` to
     /// the Hessian (mopt-rs).
     pub afir_curvature: bool,
+    /// With the LQA steps: take the rigid-body motions and the fixed variables out of the
+    /// Hessian of an end after every update, as out of the copy each step takes
+    /// (`-update_proj`; on by default).
+    pub project_updates: bool,
     /// Leave the second term of `F` out throughout (`Y = 1`: the end is drawn towards the
     /// other and never pushed from its reference; mopt-rs).
     pub attraction_only: bool,
@@ -74,6 +78,7 @@ impl DsAfirSettings {
             integrator: DsIntegrator::Lqa,
             hessian_every: 10,
             afir_curvature: false,
+            project_updates: true,
             attraction_only: false,
             separation: 0.12 * Units::ANGSTROM_TO_BOHR,
             max_steps: 2000,

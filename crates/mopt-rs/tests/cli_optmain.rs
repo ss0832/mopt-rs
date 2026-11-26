@@ -299,9 +299,11 @@ Ar 18.5 10.0 15.0
         assert_eq!(lines.next(), Some("pbc=\"T T F\""));
         assert!(lines.any(|line| line == "Hessian update: bfgs"));
         assert!(lines.any(|line| line.starts_with("step  radii (unit. Bohr):")));
+        // The updated Hessian without the three translations of the slab (its rigid motions;
+        // a rotation turns the atoms against the cell).
         assert_eq!(
             lines.next(),
-            Some("EIGENVALUES (NORMAL COORDINATE, NUMBER OF VALUES: 6):")
+            Some("EIGENVALUES (NORMAL COORDINATE, NUMBER OF VALUES: 3):")
         );
         let values: Vec<f64> = lines
             .next()
@@ -309,7 +311,7 @@ Ar 18.5 10.0 15.0
             .split_whitespace()
             .map(|value| value.parse().unwrap())
             .collect();
-        assert_eq!(values.len(), 6);
+        assert_eq!(values.len(), 3);
         assert!(values.iter().all(|value| value.is_finite()));
         assert!(values.windows(2).all(|pair| pair[0] <= pair[1]));
         let tail: Vec<&str> = log.lines().rev().take(25).collect();

@@ -102,6 +102,7 @@ impl PyVectorOptimizer {
             exact_hessian_interval: exact_hessian_interval.filter(|&n| n > 0),
             ccqn,
             mode_kill: mode_kill.then(mopt_rs::opt::mode_kill::ModeKillSettings::default),
+            ..VectorSettings::default()
         };
         let x0 = Col::from_fn(x0.len(), |i| x0[i]);
         Ok(Self {

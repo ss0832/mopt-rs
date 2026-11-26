@@ -204,7 +204,10 @@ impl<'a> CommandJobs<'a> {
     ) -> MoptResult<Self> {
         let irc = match &config.optmain.irc {
             Some(s) => s.clone(),
-            None => IrcSettings::from_multioptpy("0.1", "300", "lqa")?,
+            None => IrcSettings {
+                project_updates: config.optmain.settings.project_updates,
+                ..IrcSettings::from_multioptpy("0.1", "300", "lqa")?
+            },
         };
         Ok(Self {
             config,

@@ -152,6 +152,24 @@ fn first_f64(p: &ParsedArgs, key: &str, default: f64) -> MoptResult<f64> {
     }
 }
 
+/// `-update_proj on|off` (key `update_projection`; on by default): whether the rigid-body
+/// motions are taken out of the Hessians after every update. Shared by every command that
+/// updates Hessians of structures.
+pub(crate) fn update_projection(p: &ParsedArgs) -> MoptResult<bool> {
+    match p
+        .get_str("update_projection", "on")
+        .trim()
+        .to_ascii_lowercase()
+        .as_str()
+    {
+        "on" => Ok(true),
+        "off" => Ok(false),
+        other => Err(MoptError::config(format!(
+            "-update_proj is on or off, not '{other}'"
+        ))),
+    }
+}
+
 fn atom_list(expr: &str) -> MoptResult<Vec<AtomId>> {
     parse_atom_indices_one_based(expr)?
         .into_iter()
@@ -250,6 +268,7 @@ impl OptmainConfig {
                 .then(ModeKillSettings::default),
             crossing_check: (!p.get_bool("no_crossing_check", false))
                 .then(CrossingCheckSettings::default),
+            project_updates: update_projection(p)?,
             projection_trust: match p
                 .get_str("projection_trust", "energy")
                 .to_ascii_lowercase()

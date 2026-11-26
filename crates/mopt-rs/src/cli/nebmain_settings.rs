@@ -281,7 +281,9 @@ impl NebmainConfig {
             force_tolerance: Some(DEFAULT_FORCE_TOLERANCE),
             ..ChainSettings::default()
         };
+        let project_updates = super::optmain::update_projection(p)?;
         if let Some(rfo) = chain.rfo.as_mut() {
+            rfo.project_updates = project_updates;
             rfo.ratio = p.get_f64("ratio_of_rfo_step", 0.5)?;
             if !(0.0..=1.0).contains(&rfo.ratio) {
                 return Err(MoptError::config(format!(

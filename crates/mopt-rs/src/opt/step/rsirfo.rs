@@ -400,6 +400,7 @@ mod tests {
             hessian: h,
             bias_hessian: None,
             rigid_body_basis: None,
+            project_updates: true,
             saddle_order: order,
             system: None,
             cartesian_coordinates: true,

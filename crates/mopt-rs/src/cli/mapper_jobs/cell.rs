@@ -190,8 +190,13 @@ impl CommandJobs<'_> {
             exact_hessian_interval: s.exact_hessian_interval,
             ccqn: None,
             mode_kill: None,
+            project_updates: s.project_updates,
         };
         let mut opt = VectorOptimizer::new(settings, map.variables(start)?)?;
+        // The rigid motions of the whole structure, those taken out of its exact Hessians
+        // ([`crate::workflow::irc_cell::cell_hessian`]), out of the updated ones as well.
+        let modes = map.clone();
+        opt.set_rigid_modes(Box::new(move |x| modes.rigid_modes(x)));
         if !follow.is_empty() {
             // Atomic directions hold the cell fixed. Coupled directions already span the map.
             let padded: Vec<Col<f64>> = follow

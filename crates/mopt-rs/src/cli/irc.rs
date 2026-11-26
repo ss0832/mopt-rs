@@ -86,10 +86,11 @@ pub fn irc_states(spec: &[String], root: usize) -> MoptResult<Option<PesExpr>> {
     super::optmain::state_surface(spec, root)
 }
 
-/// `-fc` and `-irc_opt` on top of `settings`.
+/// `-fc`, `-update_proj`, and `-irc_opt` on top of `settings`.
 pub fn with_common_options(mut settings: IrcSettings, p: &ParsedArgs) -> MoptResult<IrcSettings> {
     let fc = p.get_i64("calc_exact_hess", -1)?;
     settings.exact_hessian_interval = usize::try_from(fc).ok().filter(|&n| n > 0);
+    settings.project_updates = super::optmain::update_projection(p)?;
     settings.with_options(p.get_list("irc_options"))
 }
 
@@ -259,7 +260,8 @@ fn structure_machine(
             log.info("IRC: masses of the most abundant isotopes (as MultiOptPy)");
             IrcSpace::molecule_with_masses(start, &most_abundant_isotope_masses(start)?, rigid)?
         }
-    };
+    }
+    .with_update_projection(settings.project_updates);
     let space = match parts.constraints.take() {
         Some(set) if !set.is_empty() => {
             log.info(&format!(

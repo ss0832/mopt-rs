@@ -4,7 +4,7 @@
 It re-implements MultiOptPy (v1.21.2) in Rust with a modular, plugin-oriented architecture and
 exposes it to Python through PyO3.
 
-> Status: `2.1.0`. Which MultiOptPy features are
+> Status: `2.1.1`. Which MultiOptPy features are
 > implemented is listed in `docs/source/coverage.md` and, per option, in
 > `docs/source/cli_reference.md`; what is known not to work is in
 > `docs/source/open_issues.md`.

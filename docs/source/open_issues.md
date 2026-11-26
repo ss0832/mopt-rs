@@ -67,6 +67,13 @@ completes and something is not as one would expect.
 - **`"save_pict": false` through the Python MCP server** does not switch the figures of
   `nebmain` off (*silent*). The settings file, the command line and the MCP server of the
   `mopt` binary take `false`.
+- **Rigid-body motions of updated Hessians in `tric`** (`-update_proj`). The coordinates of
+  `tric` have no basis of the translations and rotations of the whole structure, so its updated
+  Hessians are kept as the formulas give them (Cartesian coordinates and `-vc` are projected;
+  `ric` and `dic` hold no rigid motions). Likewise the updates of the IRC of a variable cell
+  (`-irc` after `-vc`, whose space of plain variables has no atoms) and the Hessian `mnewton`
+  keeps for itself in `-vc` (the optimizer of the cell gives its step generators no rigid
+  basis) are not projected; the Hessians the cell optimizer keeps are.
 
 ## Not available
 

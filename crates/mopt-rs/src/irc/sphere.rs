@@ -38,6 +38,7 @@ use faer::{Col, Mat};
 
 use super::lqa::SMALL_EIGENVALUE;
 use super::settings::SphereSettings;
+use super::space::IrcSpace;
 use super::types::{dot, norm, rms};
 use crate::error::{MoptError, MoptResult};
 use crate::math::linalg::symmetric_eigen;
@@ -81,6 +82,9 @@ pub struct SphereMinimizer {
     /// Whether the point to evaluate is the best one, asked for again at the end of the
     /// evaluations: its value ends the minimization whatever it is.
     revisiting: bool,
+    /// The space of the path, whose rigid motions are taken out of the Hessian after every
+    /// update ([`Self::with_rigid_motions`]; none by default).
+    space: Option<IrcSpace>,
 }
 
 /// `v` scaled to the length `radius`.
@@ -123,7 +127,17 @@ impl SphereMinimizer {
             iterations: 0,
             tangential_rms: f64::NAN,
             revisiting: false,
+            space: None,
         })
+    }
+
+    /// Take the rigid motions of the structure at each point of `space` out of the Hessian
+    /// after every update ([`IrcSpace::project_hessian`]), where the space does so
+    /// ([`IrcSpace::projects_updates`]).
+    #[must_use]
+    pub fn with_rigid_motions(mut self, space: &IrcSpace) -> Self {
+        self.space = space.projects_updates().then(|| space.clone());
+        self
     }
 
     /// The point (mass-weighted) to evaluate next; after the end, the result.
@@ -174,6 +188,10 @@ impl SphereMinimizer {
                     .all(|j| (0..change.nrows()).all(|i| change[(i, j)].is_finite()));
                 if finite {
                     self.hessian += change;
+                }
+                if let Some(space) = &self.space {
+                    self.hessian =
+                        space.project_updated_hessian(&self.hessian, &space.from_mw(&self.q))?;
                 }
             }
         }

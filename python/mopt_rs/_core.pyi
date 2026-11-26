@@ -154,6 +154,7 @@ def relax_band(
     max_iterations: int | None = None,
     tolerance: float | None = None,
     surrogate: bool | None = None,
+    update_projection: bool | None = None,
     fix_atoms: list[int] | None = None,
     constraints: list[str] | None = None,
     user_constraints: list[str] | None = None,
@@ -254,6 +255,7 @@ class Optimizer:
         max_trust_radius: float | None = None,
         min_trust_radius: float = 0.01,
         rigid_body_invariant: bool = True,
+        update_projection: bool = True,
         dissociation_distance_angstrom: float | None = 10.0,
         cell_bohr: list[float] | None = None,
         ccqn_bonds: list[tuple[int, int]] | None = None,
@@ -862,6 +864,7 @@ class Irc:
         symbols: list[str] | None = None,
         masses: list[float] | None = None,
         project_rigid: bool = True,
+        update_projection: bool = True,
         step_size: float = 0.1,
         max_steps: int = 300,
         method: str = "lqa",
@@ -1061,8 +1064,15 @@ class StepMethod:
         *,
         saddle_order: int = 0,
         max_step: float | None = None,
+        update_projection: bool = True,
     ) -> None: ...
-    def propose(self, x: list[float], value: float, gradient: list[float]) -> list[float]: ...
+    def propose(
+        self,
+        x: list[float],
+        value: float,
+        gradient: list[float],
+        rigid_basis: list[list[float]] | None = None,
+    ) -> list[float]: ...
     def set_hessian(self, hessian: list[float]) -> None: ...
     def reset(self) -> None: ...
     @property

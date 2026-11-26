@@ -23,7 +23,7 @@ pub trait Calculator: Send + Sync {
     /// Short name used in logs and output directory names.
     fn name(&self) -> &str;
 
-    /// Where the calculator comes from, for the run log (`lj: built into mopt-rs 2.1.0`;
+    /// Where the calculator comes from, for the run log (`lj: built into mopt-rs 2.1.1`;
     /// Python engines name their package, version, and file).
     fn description(&self) -> String {
         format!("{}: built into mopt-rs {}", self.name(), crate::VERSION)

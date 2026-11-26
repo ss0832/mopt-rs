@@ -297,6 +297,7 @@ struct BandOverrides {
     max_iterations: Option<usize>,
     tolerance: Option<f64>,
     surrogate: Option<bool>,
+    update_projection: Option<bool>,
 }
 
 impl BandOverrides {
@@ -344,6 +345,9 @@ impl BandOverrides {
             }
             Some(false) => config.surrogate = None,
             _ => {}
+        }
+        if let (Some(on), Some(rfo)) = (self.update_projection, config.chain.rfo.as_mut()) {
+            rfo.project_updates = on;
         }
         if config.dmf.is_some() {
             return Err(PyValueError::new_err(
@@ -418,7 +422,9 @@ fn observe_band(
 /// those of the run; ONIOM can also be given as `-oniom` in `options`). The
 /// keyword arguments override the options: `spacing` (Bohr for structures), `max_iterations`
 /// (`-ns`), `tolerance` (`-neb_opt tolerance=`), `inserted` (`-p`), `equal_spacing` (`-ad`),
-/// `coordinates` (`-coord`), `surrogate` (`-neb_opt gp=on`). Constraints (`fix_atoms`,
+/// `coordinates` (`-coord`), `surrogate` (`-neb_opt gp=on`), `update_projection`
+/// (`-update_proj on|off`: the rigid-body motions taken out of the updated Hessians of the
+/// images). Constraints (`fix_atoms`,
 /// `constraints`, `user_constraints`, `constraint_functions`, as for `Optimizer`) are added to
 /// those of `options`; `cell_bohr` and `pbc` make the structures periodic.
 #[pyfunction]
@@ -440,6 +446,7 @@ fn observe_band(
     max_iterations = None,
     tolerance = None,
     surrogate = None,
+    update_projection = None,
     fix_atoms = None,
     constraints = None,
     user_constraints = None,
@@ -467,6 +474,7 @@ fn relax_band<'py>(
     max_iterations: Option<usize>,
     tolerance: Option<f64>,
     surrogate: Option<bool>,
+    update_projection: Option<bool>,
     fix_atoms: Option<Vec<usize>>,
     constraints: Option<Vec<String>>,
     user_constraints: Option<Vec<String>>,
@@ -511,6 +519,7 @@ fn relax_band<'py>(
         max_iterations,
         tolerance,
         surrogate,
+        update_projection,
     };
     overrides.apply(&mut config, symbols.is_some())?;
     let held = held_constraints(

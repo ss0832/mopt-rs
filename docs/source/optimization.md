@@ -48,14 +48,82 @@ For example `-opt rsirfo_block_fsb_gdiis`, `-opt lbfgs_linesearch`, `-opt cg_pr`
 and the generators, enhancers, and their kernels are public types of `mopt_rs::opt` and
 `mopt_rs::math`.
 
-After each applied quasi-Newton update, `optmain` writes the update method and
-the eigenvalues of the updated Hessian to `mopt.log`, in ascending order.
-These curvatures are in the optimizer's coordinates, before adding bias
-curvature or applying step projections. Variable-cell runs include the scaled
-lattice coordinates. The spectrum follows the step radius, with the same
-eight decimal places and cutoff (`|λ| > 1e-10`) as the exact Hessian. When
-both are available, the updated spectrum comes first. Vibrational frequencies
-are reported separately.
+After each applied quasi-Newton update, `optmain` writes the update method
+(`Hessian update: NAME`) and the eigenvalues of the updated Hessian to `mopt.log`, in
+ascending order. These curvatures are in the optimizer's coordinates, before adding bias
+curvature or applying step projections. Variable-cell runs include the scaled lattice
+coordinates. The spectrum follows the step radius, with eight decimal places and the cutoff
+`|λ| > 1e-10`. One spectrum is written per iteration: in an iteration with an exact Hessian
+(`-fc N`) it is that of the exact Hessian with the translations and rotations taken out, and
+the updated spectrum is not written (the update line still is); otherwise it is that of the
+updated Hessian. (Up to 2.1.0 both were written one after the other under the same heading, the
+updated one first and with the rigid-body curvatures in it.) Vibrational frequencies are
+reported separately.
+
+### The rigid-body motions of updated Hessians (`-update_proj`)
+
+A quasi-Newton update fits the Hessian to the pair of the last step and the change of the
+gradient. The pair joins two structures, and it is not orthogonal to the translations and
+rotations of the newer one, so every update puts curvature along them, which a surface that
+does not change under rigid motions does not have. With `-update_proj on` (the default) the
+kept Hessian is projected after every update, `H <- P H P` with `P = I - D D^T` and `D` the
+orthonormal rigid-body basis of the structure the update arrived at (`math::projection::
+project_out_basis_mat`; `opt::update::project_out_rigid`). An exact Hessian is projected the
+same way when it is taken over, whatever the option says. The Hessian that is projected is the
+one that is kept: the next update starts from it, the trust radius predicts the energy change
+with it, the log shows its spectrum, and later stages that take the Hessian of a run (the
+optimizations after a chain, `relaxedscan`) get it. A Hessian whose update was skipped (a pair
+with `s . y <= 0`, or one undone by the guard on the negative curvatures of a saddle search)
+is projected with the newer structure as well. `-update_proj off` keeps the updated Hessians
+as the formulas give them, as mopt-rs 2.1.0 and MultiOptPy do (the exact Hessians are still
+projected).
+
+The rigid-body basis is that of the step generators: three translations and three rotations,
+two rotations for a linear structure, the translations only in a periodic cell (and the
+rotation about the axis of a wire). The option applies to
+
+- the optimizer of structures (`optmain` and everything built on it: TS searches, crossing
+  points, ONIOM, `run_autots`, `run_mapper`, `ieipmain -mf`, `confsearch`, `relaxedscan`, ...)
+  and the Hessian `mnewton` keeps for itself;
+- variable-cell runs (`-vc`): the rigid motions of the atoms and the cell
+  (`VariableCell::rigid_modes`, restricted as for the exact Hessian where `-fix` or `-vc_fix`
+  pin translations or rotations);
+- the quasi-Newton steps of the images of a chain (`nebmain`, the chains of the two-structure
+  methods and of the mapper), each image with its own basis;
+- the IRC (`ircmain`, `optmain -irc`): the Hessian of each side and that of the hypersphere
+  minimizations of GS2 and of the first step, in mass-weighted coordinates;
+- the LQA steps of DS-AFIR (the rigid motions and the fixed variables, as its steps take them
+  out);
+- `mopt_rs.StepMethod` / `opt::stepper::Stepper` when a basis is given (`rigid_basis=` of
+  `propose`; none by default).
+
+Nothing is taken out where there is nothing to take out or where it would be wrong:
+
+- plain variables (Muller-Brown and the other objectives of `-os`), and surfaces that change
+  under rigid motions (`Calculator::is_rigid_body_invariant` is false, or a bias potential is
+  not invariant): their curvature along those directions is real;
+- constraints that pin the frame (`-fix`, fixed Cartesian components, the frozen atoms of a
+  chain): their own projection takes care of the frame, as it did before. In the IRC, taking the
+  rotations about a fixed atom out of every update spoilt the path of HCN with its carbon atom
+  fixed (17 and 28 steps of higher energy against 0 and 2), so the IRC follows the optimizers
+  here;
+- internal coordinates (`ric`, `dic`): they hold no rigid motions. `tric` has the translations
+  and rotations of every fragment among its coordinates, but no basis of the rigid motions of
+  the whole structure in them; its updated Hessians are kept as they are (an open issue, see
+  [open_issues.md](open_issues.md));
+- the `hessian_update` tool of the MCP server, which returns what a formula gives for the
+  matrices it is handed.
+
+The model Hessians are unchanged: the rigid-body curvature some of them add on purpose, and
+their projection away from periodic cells, stay as they were; the first update projects them.
+The initial identity matrix of a run without a model Hessian likewise stays until the first
+update.
+
+Measured on the IRC of HCN with GFN0-xTB (`ircmain -irc_step 0.1`, LQA, from the transition
+state of `optmain -order 1 -fc 1 -tcc`): with the option on, no step was taken again on either
+side (a point of higher energy, or one past the floor of the valley); with it off, 4 steps
+without constraints and 5 with the C-N distance held (`-pc bond 1,2`). With the carbon atom
+fixed (`-fix 1`) nothing is projected and both settings take the same path.
 
 ## Coordinate systems (`-coord`)
 

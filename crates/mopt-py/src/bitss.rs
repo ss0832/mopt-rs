@@ -131,6 +131,7 @@ impl PyBitss {
                 exact_hessian_interval: exact_hessian_interval.filter(|&n| n > 0),
                 ccqn: None,
                 mode_kill: None,
+                ..VectorSettings::default()
             },
         };
         let bitss = Bitss::new(settings, &column(&first), &column(&second))

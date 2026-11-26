@@ -557,6 +557,21 @@ EXTRA_OPTMAIN = [
         "the seam and (E1 - E2)^2 / |g1 - g2|)",
     },
     {
+        "names": ["-update_proj", "--update_projection"],
+        "type": "str",
+        "default": "on",
+        "help": "on (the default): the translations and rotations of the structure are taken "
+        "out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions "
+        "of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, "
+        "its eigenvalues in the log, the Hessian handed on to later stages, and the trust "
+        "radius have no curvature along them; off: an updated Hessian is kept as the formula "
+        "gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface "
+        "changes under rigid motions (external fields, some bias potentials), constraints pin "
+        "the frame (-fix and the like: their own projection holds), or the coordinates have "
+        "none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton "
+        "steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+    },
+    {
         "names": ["-vc", "--variable_cell"],
         "action": "store_true",
         "default": False,
@@ -2615,6 +2630,7 @@ NEBMAIN_SHARED = [
     ("optmain", "-debug"),
     ("optmain", "-mf"),
     ("optmain", "-coord"),
+    ("optmain", "-update_proj"),
     ("optmain", "-vc"),
     ("optmain", "-vc_pressure"),
     ("optmain", "-vc_weight"),
@@ -2679,6 +2695,7 @@ IEIPMAIN_SHARED = [
     ("optmain", "-unpaired"),
     ("optmain", "-debug"),
     ("optmain", "-coord"),
+    ("optmain", "-update_proj"),
     ("optmain", "-vc"),
     ("optmain", "-vc_pressure"),
     ("optmain", "-vc_weight"),
@@ -2777,7 +2794,10 @@ def mdmain_shared(spec: dict[str, Any]) -> list[dict[str, Any]]:
 # constraints and the bias potentials, merged into every step block (a key of a step block
 # wins over them).
 WORKFLOW_SHARED = (
-    CONSTRAINT_OPTIONS + ["variable_cell_fix", "user_bias_expression"] + BIAS_OPTIONS
+    CONSTRAINT_OPTIONS
+    + ["variable_cell_fix", "user_bias_expression"]
+    + BIAS_OPTIONS
+    + ["update_projection"]
 )
 
 

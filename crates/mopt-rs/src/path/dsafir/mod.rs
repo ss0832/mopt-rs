@@ -324,8 +324,17 @@ impl DoubleSphereAfir {
         for ((side, x), v) in pending.into_iter().zip(values) {
             let raw = gradient_of("DS-AFIR", &v)?;
             if lqa {
-                // The curvature of the energy along the walk of this end.
-                self.curvature[side.min(1)].take(&x, &raw, v.hessian.as_ref());
+                // The curvature of the energy along the walk of this end; an update puts
+                // curvature along the rigid motions of the point, which the kept Hessian has
+                // none along.
+                let end = side.min(1);
+                if self.curvature[end].take(&x, &raw, v.hessian.as_ref())
+                    && self.settings.project_updates
+                {
+                    let mut curvature = std::mem::take(&mut self.curvature[end]);
+                    curvature.map_hessian(|h| self.projected(&x, h));
+                    self.curvature[end] = curvature;
+                }
             }
             let g = self.geometry.project(&x, &raw);
             if self.sides.is_none() {

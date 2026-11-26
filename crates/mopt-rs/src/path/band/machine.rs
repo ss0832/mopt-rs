@@ -305,6 +305,16 @@ pub struct ChainReport {
     pub ridge_switches: Vec<usize>,
 }
 
+/// The quasi-Newton settings of a chain of structures: fixed atoms pin the frame, and their
+/// constraints take the place of the projection of the rigid motions out of the updated
+/// Hessians (as in the optimizers and the IRC).
+fn structure_rfo(settings: &ChainSettings) -> Option<ChainRfoSettings> {
+    settings.rfo.clone().map(|mut rfo| {
+        rfo.project_updates &= settings.fixed_components.is_empty();
+        rfo
+    })
+}
+
 /// The relaxation of a chain of images.
 pub struct ChainRelaxation {
     pub(super) settings: ChainSettings,
@@ -414,9 +424,9 @@ impl ChainRelaxation {
                 template.dof()
             )));
         }
-        if let Some(rfo) = &self.settings.rfo {
+        if let Some(rfo) = structure_rfo(&self.settings) {
             self.rfo = Some(ChainRfo::new(
-                rfo.clone(),
+                rfo,
                 self.chain.len(),
                 n,
                 Some(template.clone()),
@@ -461,10 +471,10 @@ impl ChainRelaxation {
             self.first = chain.clone();
             self.previous_forces = None;
             self.fire = ChainFire::new(self.settings.fire);
-            if let Some(rfo) = &self.settings.rfo {
+            if let Some(rfo) = structure_rfo(&self.settings) {
                 // New images have no Hessians yet.
                 self.rfo = Some(ChainRfo::new(
-                    rfo.clone(),
+                    rfo,
                     chain.len(),
                     n,
                     self.template.clone(),

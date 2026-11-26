@@ -30,7 +30,7 @@ use super::stationary::{StationaryKind, StationaryPoint};
 use super::step::ccqn::CcqnSettings;
 use super::step::{ensure_finite_step, PreviousPoint, StepInput};
 use super::trust::{OuterTrustRadius, TrustSettings, TrustUpdateInput};
-use super::update::apply_update;
+use super::update::{apply_update, project_out_rigid};
 use crate::coord::alignment::align_unweighted_centered;
 use crate::coord::connectivity::BondConnectivity;
 use crate::coord::system::transform::BackTransformOptions;
@@ -66,6 +66,10 @@ pub struct OptimizerSettings {
     pub coordinates: String,
     /// Remove rigid-body motion (false for model surfaces in a fixed frame).
     pub rigid_body_invariant: bool,
+    /// `-update_proj`: take the translations and rotations of the structure out of the kept
+    /// Hessian after every update (on by default; with `rigid_body_invariant` in Cartesian
+    /// coordinates). An exact Hessian is projected when it is taken over either way.
+    pub project_updates: bool,
     /// `-dc`: stop when fragments separate by more than this distance.
     pub dissociation_distance: Option<Quantity<Bohr>>,
     /// CCQN reaction-coordinate axis and parameters (for `ccqn*` methods).
@@ -107,6 +111,7 @@ impl Default for OptimizerSettings {
             exact_hessian_interval: None,
             coordinates: "cart".to_string(),
             rigid_body_invariant: true,
+            project_updates: true,
             dissociation_distance: Some(Quantity::<Angstrom>::new(10.0).to()),
             ccqn: None,
             constraints: Vec::new(),
@@ -1203,8 +1208,16 @@ impl GeometryOptimizer {
 
         // Transform to the optimizer's coordinates.
         let frame = CoordinateFrame::new(self.coords.as_ref(), &self.current)?;
+        // The rigid motions of this structure, where the surface does not change under them
+        // and the coordinates are Cartesian (internal coordinates have none).
+        let inertia_basis = (self.coords.is_cartesian() && self.settings.rigid_body_invariant)
+            .then(|| build_tr_rot_basis(&self.current, false));
+        // The kept Hessian has no curvature along the rigid motions of the structure it belongs
+        // to: an exact Hessian is projected when it is taken over (its curvatures there are
+        // those of its noise), an updated one after every update (below, `-update_proj`).
         if let Some(h) = &surf.raw.hessian_bohr {
             self.hessian = frame.hessian_to_q(h);
+            project_out_rigid(&mut self.hessian, inertia_basis.as_ref());
         }
         // Model Hessian (MultiOptPy: every `-mfc` iterations when `-fc` is not used).
         let model_now = self.settings.exact_hessian_interval.is_none()
@@ -1336,8 +1349,6 @@ impl GeometryOptimizer {
         // count: their curvatures are zero up to the noise of the Hessian (an exact Hessian of
         // HCN had one of them at -1e-5), and counted they let the guard below skip updates of
         // a search whose inertia is fine.
-        let inertia_basis = (self.coords.is_cartesian() && self.settings.rigid_body_invariant)
-            .then(|| build_tr_rot_basis(&self.current, false));
         let without_rigid = |h: &Mat<f64>| match &inertia_basis {
             Some(b) if b.nrows() == h.nrows() => project_out_basis_mat(b, h),
             _ => h.clone(),
@@ -1404,6 +1415,13 @@ impl GeometryOptimizer {
                         }
                     }
                 }
+                // The secant pair joins two structures and is not orthogonal to the rigid
+                // motions of the newer one, so an update puts curvature along them. A Hessian
+                // that was not updated (a pair skipped, or undone by the guard) belongs to the
+                // structure before and is brought to this one as well.
+                if self.settings.project_updates {
+                    project_out_rigid(&mut self.hessian, inertia_basis.as_ref());
+                }
             }
         }
 
@@ -1423,6 +1441,7 @@ impl GeometryOptimizer {
             hessian: &step_hessian,
             bias_hessian: bias_hessian_q.as_ref(),
             rigid_body_basis: rigid.as_ref(),
+            project_updates: self.settings.project_updates,
             saddle_order: self.settings.saddle_order,
             system: Some(&self.current),
             cartesian_coordinates: self.coords.is_cartesian(),

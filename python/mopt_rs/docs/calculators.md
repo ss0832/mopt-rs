@@ -387,7 +387,7 @@ software_path.conf: not found; using the engines built into mopt-rs and the inst
 ```
 
 The calculator line names the distribution, its version, and the file Python imported
-(`lj: built into mopt-rs 2.1.0` for the Rust potentials; for ASE calculators the class, e.g.
+(`lj: built into mopt-rs 2.1.1` for the Rust potentials; for ASE calculators the class, e.g.
 `pm6_rs.ase.PM6 from pm6-rs 0.3.1 (...)`), followed by any path taken from
 `software_path.conf`. The second line says which file was read and which entries it has. From
 Python, `calc.describe()` returns the same text, and `Calculator::description()` in Rust.

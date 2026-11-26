@@ -21,6 +21,7 @@ use faer::{Col, Mat};
 
 use crate::error::{MoptError, MoptResult};
 use crate::math::linalg::{col_dot, col_norm, symmetrize};
+use crate::math::projection::project_out_basis_mat;
 
 pub use block::{BlockKind, BlockUpdater};
 
@@ -130,6 +131,27 @@ pub fn apply_update(
     *hessian += d;
     symmetrize(hessian);
     Ok(true)
+}
+
+/// Remove the rigid motions spanned by the orthonormal columns of `basis` from a stored
+/// Hessian, in place (`P H P`, `P = I - D D^T`): called after every update (also where the
+/// formula skipped the pair: the Hessian is brought to the newer structure) and after an exact
+/// Hessian is taken over, so that the Hessian an optimizer keeps has no curvature along the
+/// translations and rotations of the structure it belongs to (`-update_proj`; see
+/// `docs/source/optimization.md`). A secant update puts curvature
+/// there (the pair `(s, y)` of two structures is not orthogonal to the rigid motions of the
+/// newer one), and an exact Hessian has it at the size of its noise. Nothing is done without a
+/// basis or with one of another dimension (plain variables, a surface that changes under rigid
+/// motions, internal coordinates).
+///
+/// MultiOptPy: `Utils/calc_tools.py:Calculationtools.project_out_hess_tr_and_rot_for_coord`
+/// is the projection; applying it to the stored Hessian after every update is new.
+pub fn project_out_rigid(hessian: &mut Mat<f64>, basis: Option<&Mat<f64>>) {
+    if let Some(d) = basis {
+        if d.ncols() > 0 && d.nrows() == hessian.nrows() && hessian.nrows() == hessian.ncols() {
+            *hessian = project_out_basis_mat(d, hessian);
+        }
+    }
 }
 
 /// Curvatures below minus this (Hartree/Bohr^2, or the units of the coordinates) count as

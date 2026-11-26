@@ -301,8 +301,10 @@ objective such as `"mb2d"`); or an `OniomCalculator`. `options` takes the option
 `["-qsmv2"]`, `["-lup"]`, `["-ewbneb"]`, `["-aneb", "1", "5"]`, `["-modelhess", "none"]`,
 `["-neb_opt", "tangent=top", "gp=on"]`, and so on. The keyword arguments `max_iterations`
 (`-ns`), `tolerance` (`-neb_opt tolerance=`), `spacing` (`-nd`, in Bohr for structures),
-`inserted` (`-p`), `equal_spacing` (`-ad`), `coordinates` (`-coord`), and `surrogate`
-(`-neb_opt gp=on`) override them. With `symbols` the images are structures: `charge`,
+`inserted` (`-p`), `equal_spacing` (`-ad`), `coordinates` (`-coord`), `surrogate`
+(`-neb_opt gp=on`), and `update_projection` (`-update_proj`) override them. `Optimizer`, `Irc`
+(and `irc_path`), and `StepMethod` take `update_projection=False` as well (`-update_proj off`;
+`StepMethod.propose` takes the rigid motions of the point as `rigid_basis=`). With `symbols` the images are structures: `charge`,
 `multiplicity`, `cell_bohr` and `pbc` (as for `Optimizer`; every image in the cell of the
 first, every atom following its nearest periodic image), and the constraints `fix_atoms`,
 `constraints`, `user_constraints`, `constraint_functions` (the spelling of `Optimizer`) or

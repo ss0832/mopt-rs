@@ -202,6 +202,10 @@ pub struct IrcSettings {
     /// The masses of the atoms of a structure (the commands; a state machine is given
     /// its masses with its [`crate::irc::IrcSpace`]).
     pub masses: Masses,
+    /// Take the rigid-body motions out of the updated Hessians after every update
+    /// (`-update_proj`; on by default). For the commands; a state machine is given it with its
+    /// [`crate::irc::IrcSpace::with_update_projection`].
+    pub project_updates: bool,
     /// Test and correction of the first point.
     pub first_step: FirstStepSettings,
     /// The minimizations on hyperspheres of GS2.
@@ -233,6 +237,7 @@ impl Default for IrcSettings {
             imaginary_threshold: DEFAULT_IMAGINARY_THRESHOLD,
             sides: Sides::Both,
             masses: Masses::Standard,
+            project_updates: true,
             first_step: FirstStepSettings::default(),
             sphere: SphereSettings::default(),
         }

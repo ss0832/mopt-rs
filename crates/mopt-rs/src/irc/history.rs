@@ -3,7 +3,8 @@
 //!
 //! The Hessian is kept for the surface without bias potentials, in mass-weighted
 //! coordinates: an exact one replaces it when the calculator was asked for it, otherwise it
-//! is updated with the change of the gradient between two evaluated points. The Hessian of
+//! is updated with the change of the gradient between two evaluated points, and the rigid-body
+//! motions are taken out of the update as out of an exact Hessian (`-update_proj`). The Hessian of
 //! the bias potentials is exact at every point and added on top. MultiOptPy does the same,
 //! with three slips that are not repeated here (`docs/source/migration_paths.md`): its starting
 //! Hessian already holds the bias potentials (counted twice), `iter % FC_count` with the
@@ -204,6 +205,11 @@ impl SurfaceModel {
                         }
                         None => self.apply(&s, &y),
                     }
+                    // The pair joins two structures and puts curvature along the rigid
+                    // motions of this one: they are taken out as out of an exact Hessian (also
+                    // where the formula left the Hessian as it was: it belongs to the point
+                    // before).
+                    self.hessian = space.project_updated_hessian(&self.hessian, x)?;
                 }
                 false
             }

@@ -50,7 +50,7 @@ use crate::error::{MoptError, MoptResult};
 use crate::math::davidson::{lowest_eigenpair, DavidsonSettings};
 use crate::math::linalg::col_norm;
 use crate::math::projection::build_tr_rot_basis;
-use crate::opt::update::apply_update;
+use crate::opt::update::{apply_update, project_out_rigid};
 
 /// Settings of [`ChainRfo::global_steps`].
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -179,16 +179,6 @@ impl ChainRfo {
             let end = i == 0 || i == count - 1;
             let fixed = (i == 0 && ends.first) || (i == count - 1 && ends.last);
             let slot = &mut self.images[i];
-            let mut surface = slot.hessian.take()?;
-            if let Some((x, g)) = slot.last.take() {
-                let step = &chain[i] - &x;
-                let y = &gradients[i] - &g;
-                apply_update(slot.updater.as_mut(), &mut surface, &step, &y, false)?;
-            }
-            let mut diagonal = Col::from_fn(n, |r| surface[(r, r)]);
-            slot.hessian.put(surface)?;
-            slot.last = Some((chain[i].clone(), gradients[i].clone()));
-            slot.iteration += 1;
             let rigid = match &self.template {
                 Some(template) => Some(build_tr_rot_basis(
                     &template.with_flat_coords_bohr(&chain[i])?,
@@ -196,6 +186,21 @@ impl ChainRfo {
                 )),
                 None => None,
             };
+            let mut surface = slot.hessian.take()?;
+            if let Some((x, g)) = slot.last.take() {
+                let step = &chain[i] - &x;
+                let y = &gradients[i] - &g;
+                // As in the steps image by image: the kept Hessian has no curvature along the
+                // rigid motions of the image, updated or not.
+                apply_update(slot.updater.as_mut(), &mut surface, &step, &y, false)?;
+                if self.settings.project_updates {
+                    project_out_rigid(&mut surface, rigid.as_ref());
+                }
+            }
+            let mut diagonal = Col::from_fn(n, |r| surface[(r, r)]);
+            slot.hessian.put(surface)?;
+            slot.last = Some((chain[i].clone(), gradients[i].clone()));
+            slot.iteration += 1;
             let climbing = along.climbing.contains(&i);
             let (frame, gradient, stiffening, uphill) = if end {
                 (None, gradients[i].clone(), Vec::new(), None)

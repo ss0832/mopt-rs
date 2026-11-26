@@ -75,6 +75,9 @@ pub struct StepInput<'a> {
     pub bias_hessian: Option<&'a Mat<f64>>,
     /// Orthonormal rigid-body modes to remove (Cartesian coordinates only).
     pub rigid_body_basis: Option<&'a Mat<f64>>,
+    /// Whether a generator that keeps a Hessian of its own takes `rigid_body_basis` out of it
+    /// after every update (`-update_proj`; see [`crate::opt::update::project_out_rigid`]).
+    pub project_updates: bool,
     /// Number of negative-curvature directions to maximize along (0 = minimization).
     pub saddle_order: usize,
     /// Structure being optimized (elements, positions, cell), when available.

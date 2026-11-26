@@ -187,8 +187,14 @@ impl Observer for ProgressLog {
         for note in &r.notes {
             let _ = writeln!(s, "{note}");
         }
+        // One spectrum per iteration: that of the exact Hessian of this iteration where there
+        // is one (the rigid motions taken out), that of the updated Hessian otherwise.
+        let exact = r.hessian_eigenvalues.is_some();
         let updated_values = update.and_then(|(method, hessian)| {
             let _ = writeln!(s, "Hessian update: {method}");
+            if exact {
+                return None;
+            }
             match hessian.self_adjoint_eigenvalues(faer::Side::Lower) {
                 Ok(mut values) => {
                     values.retain(|v| v.abs() > 1e-10);
@@ -213,10 +219,7 @@ impl Observer for ProgressLog {
             "step  radii (unit. Bohr):  {}",
             python_float(r.step_norm.value())
         );
-        for values in [updated_values.as_ref(), r.hessian_eigenvalues.as_ref()]
-            .into_iter()
-            .flatten()
-        {
+        if let Some(values) = r.hessian_eigenvalues.as_ref().or(updated_values.as_ref()) {
             let _ = writeln!(
                 s,
                 "EIGENVALUES (NORMAL COORDINATE, NUMBER OF VALUES: {}):",

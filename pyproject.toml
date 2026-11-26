@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "mopt-py"
-version = "2.1.0"
+version = "2.1.1"
 description = "Successor implementation of MultiOptPy: extensible geometry optimization and reaction path exploration in Rust and Python"
 readme = "README.md"
 requires-python = ">=3.12"

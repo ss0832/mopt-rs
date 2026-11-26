@@ -26,7 +26,7 @@ use super::state_machine::{blend, Termination};
 use super::step::ccqn::CcqnSettings;
 use super::step::{ensure_finite_step, PreviousPoint, StepInput};
 use super::trust::{OuterTrustRadius, TrustSettings, TrustUpdateInput};
-use super::update::apply_update;
+use super::update::{apply_update, project_out_rigid};
 use super::vector_constraints::VectorConstraintSet;
 use crate::domain::Quantity;
 use crate::error::{MoptError, MoptResult, ResultExt};
@@ -53,6 +53,10 @@ pub struct VectorSettings {
     /// At convergence, leave a stationary point with more negative curvatures than
     /// `saddle_order` (see [`crate::opt::mode_kill`]); off by default.
     pub mode_kill: Option<ModeKillSettings>,
+    /// Take the rigid motions of [`VectorOptimizer::set_rigid_modes`] out of the kept Hessian
+    /// after every update (`-update_proj`; on by default). An exact Hessian is projected when
+    /// it is given either way.
+    pub project_updates: bool,
 }
 
 impl Default for VectorSettings {
@@ -66,6 +70,7 @@ impl Default for VectorSettings {
             exact_hessian_interval: None,
             ccqn: None,
             mode_kill: None,
+            project_updates: true,
         }
     }
 }
@@ -133,7 +138,15 @@ pub struct VectorOptimizer {
     mode_kill_masses: Option<Vec<f64>>,
     /// Equality constraints held exactly (none by default).
     constraints: Option<VectorConstraintSet>,
+    /// The rigid motions of the variables at a point (none by default: plain variables have
+    /// none).
+    rigid_modes: Option<RigidModes>,
 }
+
+/// Orthonormal vectors along which the objective does not change at a point: the rigid motions
+/// of variables that describe a structure (the atoms and the cell of a variable-cell
+/// optimization). See [`VectorOptimizer::set_rigid_modes`].
+pub type RigidModes = Box<dyn Fn(&Col<f64>) -> MoptResult<Vec<Col<f64>>> + Send + Sync>;
 
 impl VectorOptimizer {
     /// Start at `x0` with the default method registry.
@@ -214,7 +227,33 @@ impl VectorOptimizer {
             hisd_mode_kill: false,
             mode_kill_masses: None,
             constraints: None,
+            rigid_modes: None,
         })
+    }
+
+    /// Take the rigid motions `modes` out of the Hessian that is kept, after every update and
+    /// when an exact Hessian is given (as the optimizer of structures does with the
+    /// translations and rotations): `modes` gives them at a point as orthonormal vectors.
+    /// Without this call nothing is taken out, which is right for plain variables.
+    pub fn set_rigid_modes(&mut self, modes: RigidModes) {
+        self.rigid_modes = Some(modes);
+    }
+
+    /// `P H P` on the kept Hessian with the rigid motions at the current point.
+    fn project_out_rigid_modes(&mut self) -> MoptResult<()> {
+        let Some(modes) = &self.rigid_modes else {
+            return Ok(());
+        };
+        let modes = modes(&self.x)?;
+        let n = self.x.nrows();
+        if modes.iter().any(|m| m.nrows() != n) {
+            return Err(MoptError::config(format!(
+                "a rigid motion does not have {n} components"
+            )));
+        }
+        let basis = Mat::from_fn(n, modes.len(), |i, j| modes[j][i]);
+        project_out_rigid(&mut self.hessian, Some(&basis));
+        Ok(())
     }
 
     /// Follow `directions` (one per mode of the saddle order) from the start instead of the
@@ -402,6 +441,7 @@ impl VectorOptimizer {
         let verifying = std::mem::take(&mut self.verify_hessian);
         if let Some(h) = hessian {
             self.hessian = h;
+            self.project_out_rigid_modes()?;
         }
         // With constraints: the gradient without the constraint forces moves the point, is
         // learned from, and decides convergence; the objective's gradient is reported.
@@ -424,6 +464,7 @@ impl VectorOptimizer {
             decrease: None,
         });
         self.trust.update(trust_input);
+        let mut learned = false;
         if let Some(prev) = &self.previous {
             let y = &gradient - &prev.point.raw_gradient;
             let learns = self
@@ -445,7 +486,13 @@ impl VectorOptimizer {
                 )? {
                     self.last_hessian_update = Some(up.name().to_owned());
                 }
+                learned = true;
             }
+        }
+        // An update puts curvature along the rigid motions of the newer point; a Hessian that
+        // was not updated belongs to the point before and is brought to this one as well.
+        if learned && self.settings.project_updates {
+            self.project_out_rigid_modes()?;
         }
         let step_hessian = match &frame {
             Some(f) => f.step_hessian(&self.hessian),
@@ -461,6 +508,7 @@ impl VectorOptimizer {
             hessian: &step_hessian,
             bias_hessian: None,
             rigid_body_basis: None,
+            project_updates: self.settings.project_updates,
             saddle_order: self.settings.saddle_order,
             system: None,
             cartesian_coordinates: true,

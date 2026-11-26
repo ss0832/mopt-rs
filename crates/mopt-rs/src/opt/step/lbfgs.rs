@@ -181,6 +181,7 @@ mod tests {
                 hessian: &h,
                 bias_hessian: None,
                 rigid_body_basis: None,
+                project_updates: true,
                 saddle_order: 0,
                 system: None,
                 cartesian_coordinates: true,

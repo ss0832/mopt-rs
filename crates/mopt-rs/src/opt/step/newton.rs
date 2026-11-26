@@ -32,7 +32,7 @@ use super::{StepGenerator, StepInput};
 use crate::error::MoptResult;
 use crate::math::linalg::{symmetric_eigen, symmetrize};
 use crate::math::projection::{project_out_basis_mat, project_out_basis_vec};
-use crate::opt::update::{apply_update, HessianUpdater};
+use crate::opt::update::{apply_update, project_out_rigid, HessianUpdater};
 
 /// Modes with `|lambda|` below this are null modes.
 const NULL_MODE: f64 = 1e-8;
@@ -157,6 +157,11 @@ impl StepGenerator for Newton {
                             &(&ng - &ag),
                             false,
                         )?;
+                        // The kept Hessian has no curvature along the rigid motions of this
+                        // structure, updated or not.
+                        if input.project_updates {
+                            project_out_rigid(&mut h, input.rigid_body_basis);
+                        }
                         (nx, ng)
                     }
                     _ => (m.position.clone(), g.clone()),

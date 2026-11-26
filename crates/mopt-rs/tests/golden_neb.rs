@@ -294,9 +294,11 @@ fn mixed_steps_follow_multioptpy(file: &str, predicted_every: Option<usize>) {
     let images = chains[0].len();
     let n = chains[0][0].nrows();
     let template = argon(&chains[0][0]);
-    // One pair per Hessian update, as MultiOptPy's block updates in effect use.
+    // One pair per Hessian update, as MultiOptPy's block updates in effect use; the updated
+    // Hessians kept as the formula gives them, as MultiOptPy keeps them (`-update_proj off`).
     let settings = ChainRfoSettings {
         pairs: Some(1),
+        project_updates: false,
         ..ChainRfoSettings::default()
     };
     let mut rfo = ChainRfo::new(settings, images, n, Some(template), rule).unwrap();

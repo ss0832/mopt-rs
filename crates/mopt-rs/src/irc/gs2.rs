@@ -85,7 +85,8 @@ impl Gs2 {
             &guess,
             anchor.hessian.clone(),
             self.walk.settings.sphere,
-        )?;
+        )?
+        .with_rigid_motions(&self.walk.space);
         let x = self
             .walk
             .space

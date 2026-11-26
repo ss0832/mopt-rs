@@ -124,8 +124,11 @@ impl EndCurvature {
     }
 
     /// Take the point `x` with the gradient `g` of the energy: its exact Hessian if there is
-    /// one, the update of the Hessian of the point before otherwise.
-    pub fn take(&mut self, x: &Col<f64>, g: &Col<f64>, exact: Option<&Mat<f64>>) {
+    /// one, the update of the Hessian of the point before otherwise. Returns whether the
+    /// Hessian was carried over from the point before (updated, or kept where the step was
+    /// too short).
+    pub fn take(&mut self, x: &Col<f64>, g: &Col<f64>, exact: Option<&Mat<f64>>) -> bool {
+        let mut updated = false;
         match exact {
             Some(h) => {
                 let n = h.nrows();
@@ -139,11 +142,20 @@ impl EndCurvature {
                         let correction = bofill(h, &s, &y, 1.0);
                         *h += correction;
                     }
+                    updated = true;
                     self.updates += 1;
                 }
             }
         }
         self.at = Some((x.clone(), g.clone()));
+        updated
+    }
+
+    /// Replace the Hessian at the point taken last by `f` of it (nothing without one).
+    pub fn map_hessian(&mut self, f: impl FnOnce(&Mat<f64>) -> Mat<f64>) {
+        if let Some(h) = self.hessian.as_mut() {
+            *h = f(h);
+        }
     }
 
     /// The Hessian at the point taken last.

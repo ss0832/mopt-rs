@@ -123,6 +123,7 @@ def irc_path(
     symbols: Sequence[str] | None = None,
     masses: npt.ArrayLike | None = None,
     project_rigid: bool = True,
+    update_projection: bool = True,
     step_size: float = 0.1,
     max_steps: int = 300,
     method: str = "lqa",
@@ -147,6 +148,8 @@ def irc_path(
     else central differences of the gradient. ``step_size`` is in mass-weighted coordinates
     (amu^0.5 Bohr for a structure), ``max_steps`` is MultiOptPy's ``MAX_STEP``. ``options``
     are the settings of ``-irc_opt`` as ``KEY=VALUE`` strings or a mapping.
+    ``update_projection=False`` leaves the rigid-body motion in the Hessians after their
+    updates (``-update_proj off``); by default it is taken out as out of an exact Hessian.
 
     ``callback(report)`` is called after every point of the path with ``branch``, ``step``,
     ``x`` (array), ``energy``, ``biased_energy``, ``arc_length`` (from the first point of
@@ -196,6 +199,7 @@ def irc_path(
         symbols=None if symbols is None else list(symbols),
         masses=None if masses is None else np.asarray(masses, dtype=np.float64).ravel().tolist(),
         project_rigid=project_rigid,
+        update_projection=update_projection,
         step_size=step_size,
         max_steps=max_steps,
         method=method,

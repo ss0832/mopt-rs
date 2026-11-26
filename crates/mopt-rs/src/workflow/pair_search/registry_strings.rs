@@ -287,6 +287,7 @@ pub fn dsafir_settings(settings: &PairSettings, input: &PairInput) -> MoptResult
         },
         hessian_every: settings.usize("hessian_every", base.hessian_every)?,
         afir_curvature: settings.flag("afir_curvature", base.afir_curvature)?,
+        project_updates: !input.rigid_in_updates,
         attraction_only: settings.flag("attraction_only", base.attraction_only)?,
         align: settings.flag("align", base.align)?,
         alternate: settings.flag("alternate", base.alternate)?,

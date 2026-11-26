@@ -1247,6 +1247,17 @@ pub const OPTMAIN: &[CliOption] = &[
     },
     CliOption {
         spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
             key: "variable_cell",
             flags: &["-vc", "--variable_cell"],
             arity: ArgArity::Flag,
@@ -2604,6 +2615,17 @@ pub const NEBMAIN: &[CliOption] = &[
     },
     CliOption {
         spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
             key: "variable_cell",
             flags: &["-vc", "--variable_cell"],
             arity: ArgArity::Flag,
@@ -3692,6 +3714,17 @@ pub const IEIPMAIN: &[CliOption] = &[
             help: "coordinate system of the optimization: cart, ric, dic, tric (translation-rotation internal coordinates, delocalized), tric-p (their primitive set), tric-cart[:WEIGHT] (TRIC stacked with weighted Cartesian coordinates), spherical (every atom by r, theta, phi about the centroid), hyperspherical or polar (the whole structure by its distance from the centroid and 3N-1 angles; hyperspherical:FILE about the structure of FILE; for optimizations, not chains), auto (tric-cart, or cart for atom clusters, dense or periodic networks and very large systems), or a registered name. Calculators always receive Cartesian structures.",
         },
         default: "cart",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
         implemented: true,
         feature: "",
     },
@@ -6136,6 +6169,17 @@ pub const CONFSEARCH: &[CliOption] = &[
     },
     CliOption {
         spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
             key: "variable_cell",
             flags: &["-vc", "--variable_cell"],
             arity: ArgArity::Flag,
@@ -7559,6 +7603,17 @@ pub const RELAXEDSCAN: &[CliOption] = &[
     },
     CliOption {
         spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
             key: "variable_cell",
             flags: &["-vc", "--variable_cell"],
             arity: ArgArity::Flag,
@@ -8949,6 +9004,17 @@ pub const ORIENTSEARCH: &[CliOption] = &[
     },
     CliOption {
         spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
             key: "variable_cell",
             flags: &["-vc", "--variable_cell"],
             arity: ArgArity::Flag,
@@ -9509,6 +9575,17 @@ pub const RUN_AUTOTS: &[CliOption] = &[
             help: "groups of atoms (ex.) 1,2,3 4,5 whose distances to each other are held at their values in the input (MultiOptPy: 'set the gradient of internal coordinates between atoms to zero'): every distance of a group is a constraint as -pc bond is, taken out of the gradient and of the Hessian and restored after every step (shared by every step: merged into every step block of the settings file, where a step that sets it itself wins; also the block shared_settings of the settings file)",
         },
         default: "",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR (shared by every step: merged into every step block of the settings file, where a step that sets it itself wins; also the block shared_settings of the settings file)",
+        },
+        default: "on",
         implemented: true,
         feature: "",
     },
@@ -10239,6 +10316,17 @@ pub const RUN_MAPPER: &[CliOption] = &[
             help: "groups of atoms (ex.) 1,2,3 4,5 whose distances to each other are held at their values in the input (MultiOptPy: 'set the gradient of internal coordinates between atoms to zero'): every distance of a group is a constraint as -pc bond is, taken out of the gradient and of the Hessian and restored after every step (shared by every step: merged into every step block of the settings file, where a step that sets it itself wins; also the block shared_settings of the settings file)",
         },
         default: "",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR (shared by every step: merged into every step block of the settings file, where a step that sets it itself wins; also the block shared_settings of the settings file)",
+        },
+        default: "on",
         implemented: true,
         feature: "",
     },
@@ -11836,6 +11924,17 @@ pub const FREQMAIN: &[CliOption] = &[
     },
     CliOption {
         spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
             key: "variable_cell",
             flags: &["-vc", "--variable_cell"],
             arity: ArgArity::Flag,
@@ -13221,6 +13320,17 @@ pub const IRCMAIN: &[CliOption] = &[
             help: "-mf opt_mesx, -mf opt_meci: what a step is judged by when the trust radius is adapted: energy (the change of the mean energy of the two states against the quadratic model of the projected gradient, as for a search on one surface) or merit (the change of the function the projected gradient belongs to: the mean energy within the seam and (E1 - E2)^2 / |g1 - g2|)",
         },
         default: "energy",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
         implemented: true,
         feature: "",
     },
@@ -15499,6 +15609,17 @@ pub const ETMAIN: &[CliOption] = &[
             help: "-mf opt_mesx, -mf opt_meci: what a step is judged by when the trust radius is adapted: energy (the change of the mean energy of the two states against the quadratic model of the projected gradient, as for a search on one surface) or merit (the change of the function the projected gradient belongs to: the mean energy within the seam and (E1 - E2)^2 / |g1 - g2|)",
         },
         default: "energy",
+        implemented: true,
+        feature: "",
+    },
+    CliOption {
+        spec: OptSpec {
+            key: "update_projection",
+            flags: &["-update_proj", "--update_projection"],
+            arity: ArgArity::Single,
+            help: "on (the default): the translations and rotations of the structure are taken out of a Hessian after every quasi-Newton update (P H P with the rigid-body motions of the structure the update arrived at), as out of an exact Hessian; the kept Hessian, its eigenvalues in the log, the Hessian handed on to later stages, and the trust radius have no curvature along them; off: an updated Hessian is kept as the formula gives it (mopt-rs 2.1.0). An exact Hessian is projected either way. Where the surface changes under rigid motions (external fields, some bias potentials), constraints pin the frame (-fix and the like: their own projection holds), or the coordinates have none (ric, dic, tric) nothing is taken out. The optimizers, -vc, the quasi-Newton steps of chains (nebmain), the IRC, and the LQA steps of DS-AFIR",
+        },
+        default: "on",
         implemented: true,
         feature: "",
     },

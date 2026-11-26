@@ -151,7 +151,8 @@ fn event_dict<'py>(py: Python<'py>, event: &IrcEvent) -> PyResult<Bound<'py, PyD
 /// Ask/tell IRC calculation from a structure (`symbols` given: standard atomic weights or
 /// the `masses` of the atoms, rigid-body motion projected out unless `project_rigid=False`)
 /// or from a point of `n` plain variables (`masses` of the variables, default one each). `x`
-/// is in Bohr for a structure. `options` are the `KEY=VALUE` settings of `-irc_opt`; `method`
+/// is in Bohr for a structure. `update_projection=False` leaves the rigid-body motion in the
+/// updated Hessians (`-update_proj off`). `options` are the `KEY=VALUE` settings of `-irc_opt`; `method`
 /// may carry options after colons. A structure may be periodic (`cell_bohr`, the rows a, b,
 /// c, and `pbc`, as for `Optimizer`) and keep constraints along the path (`fix_atoms`,
 /// `constraints`, `user_constraints`, `constraint_functions`, as for `Optimizer`): they are
@@ -202,6 +203,7 @@ impl PyIrc {
         symbols = None,
         masses = None,
         project_rigid = true,
+        update_projection = true,
         step_size = 0.1,
         max_steps = 300,
         method = "lqa",
@@ -220,6 +222,7 @@ impl PyIrc {
         symbols: Option<Vec<String>>,
         masses: Option<Vec<f64>>,
         project_rigid: bool,
+        update_projection: bool,
         step_size: f64,
         max_steps: usize,
         method: &str,
@@ -266,7 +269,8 @@ impl PyIrc {
                 IrcSpace::molecule_with_masses(&sys, masses, project_rigid).map_err(err)?
             }
             None => IrcSpace::molecule(&sys, project_rigid),
-        };
+        }
+        .with_update_projection(update_projection);
         // Resolved once at the start, as ircmain resolves them at its input.
         let space = if held.is_empty() {
             space

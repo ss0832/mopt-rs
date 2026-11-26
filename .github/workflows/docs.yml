@@ -1,5 +1,5 @@
 # The documentation as a web site on GitHub Pages.
-# 
+#
 # Every push to the default branch builds docs/source with Sphinx (the same settings as
 # Read the Docs, docs/source/conf.py) and publishes the pages; a pull request only builds.
 # One step outside this file is needed, once: in the repository settings, Pages > Source

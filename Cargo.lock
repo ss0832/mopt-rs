@@ -526,7 +526,7 @@ dependencies = [
 
 [[package]]
 name = "mopt-py"
-version = "2.1.0"
+version = "2.1.1"
 dependencies = [
  "faer",
  "mopt-rs",
@@ -535,7 +535,7 @@ dependencies = [
 
 [[package]]
 name = "mopt-rs"
-version = "2.1.0"
+version = "2.1.1"
 dependencies = [
  "faer",
  "libm",

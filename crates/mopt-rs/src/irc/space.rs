@@ -45,6 +45,9 @@ pub struct IrcSpace {
     /// constraints that fix the frame, `project_rigid` is off but the motions that keep
     /// the constraints are still projected out).
     rigid_surface: bool,
+    /// Whether the rigid motions are taken out of an updated Hessian after every update, as
+    /// out of an exact one ([`Self::project_hessian`]; `-update_proj`, on by default).
+    project_updates: bool,
     /// The first restore onto the constraints that failed since the last evaluation
     /// ([`Self::placed`], [`Self::kept`]), returned by the next [`Self::constrained`]: a
     /// point off the constraints is never evaluated as if it were on them.
@@ -81,6 +84,7 @@ impl IrcSpace {
             own_masses: false,
             constraints: None,
             rigid_surface: project_rigid,
+            project_updates: true,
             restore_failure: Arc::default(),
         }
     }
@@ -116,6 +120,7 @@ impl IrcSpace {
             own_masses: true,
             constraints: None,
             rigid_surface: project_rigid,
+            project_updates: true,
             restore_failure: Arc::default(),
         })
     }
@@ -129,6 +134,7 @@ impl IrcSpace {
             own_masses: false,
             constraints: None,
             rigid_surface: false,
+            project_updates: true,
             restore_failure: Arc::default(),
         }
     }
@@ -147,6 +153,7 @@ impl IrcSpace {
             own_masses: false,
             constraints: None,
             rigid_surface: false,
+            project_updates: true,
             restore_failure: Arc::default(),
         })
     }
@@ -168,6 +175,37 @@ impl IrcSpace {
         self.project_rigid &= !constraints.breaks_rigid_body();
         self.constraints = Some(Arc::new(constraints));
         Ok(self)
+    }
+
+    /// The space with the rigid motions taken out of the updated Hessians after every update
+    /// (`on`, the default) or left in them (`-update_proj off`, the Hessians of v2.1.0).
+    pub fn with_update_projection(mut self, on: bool) -> Self {
+        self.project_updates = on;
+        self
+    }
+
+    /// Whether the rigid motions are taken out of the updated Hessians: with
+    /// [`Self::with_update_projection`] on, where the rigid-body motion is projected out
+    /// ([`Self::projects_rigid_body`]). Constraints that fix the frame are left to their own
+    /// projection, as in the optimizers: taking the motions that keep them out of every update
+    /// (rotations about a fixed atom) spoilt the path of HCN with its carbon atom fixed (17 and
+    /// 28 steps of higher energy against 0 and 2, both sides ending at a rise of the energy).
+    pub fn projects_updates(&self) -> bool {
+        self.project_updates && self.projects_rigid_body()
+    }
+
+    /// An updated mass-weighted Hessian at `x` with the rigid motions taken out where
+    /// [`Self::projects_updates`]; unchanged otherwise.
+    pub fn project_updated_hessian(
+        &self,
+        mw_hessian: &Mat<f64>,
+        x: &Col<f64>,
+    ) -> MoptResult<Mat<f64>> {
+        if self.projects_updates() {
+            self.project_hessian(mw_hessian, x)
+        } else {
+            Ok(mw_hessian.clone())
+        }
     }
 
     /// The constraints the path keeps.

@@ -224,7 +224,8 @@ impl FirstStep {
                 &q,
                 self.origin.total_hessian.clone(),
                 self.settings.sphere,
-            )?;
+            )?
+            .with_rigid_motions(&self.space);
             let status = minimizer.tell(value.energy, &g)?;
             return self.after(minimizer, status, test, value);
         };

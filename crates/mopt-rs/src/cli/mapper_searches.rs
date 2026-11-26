@@ -325,6 +325,7 @@ impl CommandJobs<'_> {
                     (None, None) => fragment_test(template.clone(), None),
                 },
             ),
+            rigid_in_updates: !o.settings.project_updates,
             ..PairInput::default()
         };
         self.run_search(

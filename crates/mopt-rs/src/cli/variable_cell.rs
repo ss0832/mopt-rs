@@ -261,6 +261,7 @@ pub(super) fn run(
         exact_hessian_interval: s.exact_hessian_interval,
         ccqn: None,
         mode_kill: s.mode_kill,
+        project_updates: s.project_updates,
     };
     let mut opt = VectorOptimizer::new(settings, map.variables(start)?)?;
     // The constraints as the optimizer holds them, for the curvature they add to exact
@@ -288,6 +289,9 @@ pub(super) fn run(
         translations: !pins_translations(constraints) && invariant,
         rotations: !pins_rotations(constraints) && invariant,
     };
+    // The same motions out of the updated Hessians.
+    let modes = map.clone();
+    opt.set_rigid_modes(Box::new(move |x| modes.rigid_modes_with(x, symmetries)));
     if s.mode_kill.is_some() {
         opt.configure_mode_kill(config.hisd_mode_kill, Some(map.masses()?));
     }

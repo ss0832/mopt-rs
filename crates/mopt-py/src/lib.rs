@@ -447,6 +447,7 @@ impl PyOptimizer {
         max_trust_radius = None,
         min_trust_radius = 0.01,
         rigid_body_invariant = true,
+        update_projection = true,
         dissociation_distance_angstrom = Some(10.0),
         cell_bohr = None,
         ccqn_bonds = None,
@@ -485,6 +486,7 @@ impl PyOptimizer {
         max_trust_radius: Option<f64>,
         min_trust_radius: f64,
         rigid_body_invariant: bool,
+        update_projection: bool,
         dissociation_distance_angstrom: Option<f64>,
         cell_bohr: Option<Vec<f64>>,
         ccqn_bonds: Option<Vec<(usize, usize)>>,
@@ -659,6 +661,7 @@ impl PyOptimizer {
             exact_hessian_interval: exact_hessian_interval.filter(|&n| n > 0),
             coordinates: coordinates.to_string(),
             rigid_body_invariant,
+            project_updates: update_projection,
             dissociation_distance: dissociation_distance_angstrom
                 .map(|d| Quantity::<Bohr>::new(d * Units::ANGSTROM_TO_BOHR)),
             ccqn,

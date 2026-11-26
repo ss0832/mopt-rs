@@ -34,6 +34,22 @@ find the Muller-Brown saddle from a start 60% of the way into the well (300 iter
 it, the search converges in 22. Test:
 `ccqn_reaches_the_saddle_from_inside_the_wells_with_exact_hessian_every_5_steps`.
 
+### Updated Hessians keep no rigid-body curvature (`-update_proj`, mopt-rs 2.1.1)
+
+MultiOptPy projects the translations and rotations out of the copy of the Hessian a step is
+computed from (`Calculationtools.project_out_hess_tr_and_rot_for_coord`), never out of the
+Hessian it keeps: every update adds curvature along them (the secant pair joins two
+structures and is not orthogonal to the rigid motions of the newer one), the next update starts
+from that Hessian, and the trust radius predicts with it. mopt-rs up to 2.1.0 did the same, and
+kept even the exact Hessian of `-fc` unprojected. From 2.1.1 the kept Hessian is projected with
+the rigid-body basis of its structure after every update and when an exact Hessian is taken
+over, in the optimizers, `-vc`, the chains, the IRC, and DS-AFIR; `-update_proj off` restores
+the updated Hessians of 2.1.0 (the exact ones are projected either way). Where constraints pin
+the frame (`-fix`) nothing more is projected. Details in
+[optimization.md](optimization.md), "The rigid-body motions of updated Hessians". The tests that
+compare with MultiOptPy's numbers step by step (`tests/golden_neb.rs`) run with the option off.
+Tests: `tests/update_projection.rs`.
+
 ### Block PSB (inside block Bofill) is a genuine multi-secant update
 
 The reference's `_block_PSB_update` adds independent single-secant PSB corrections computed from
@@ -224,7 +240,8 @@ norm below `0.001`. Differences:
   50 cycles and scales the best step found onto the radius.
 - Rigid-body modes are projected out of the gradient and the Hessian and skipped. MultiOptPy
   projects the gradient only, so the six zero modes of the Hessian are shifted to `0.001` and
-  take part in the mode selection.
+  take part in the mode selection. (From 2.1.1 the kept Hessian has no curvature along them
+  either; see "Updated Hessians keep no rigid-body curvature" above.)
 - The last step is rated with the energy change predicted when it was proposed. MultiOptPy
   recomputes the prediction with the Hessian after its update.
 - MultiOptPy scales the step down (to as little as 10%) whenever it is longer than 50 times the

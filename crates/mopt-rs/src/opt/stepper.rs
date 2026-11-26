@@ -19,7 +19,7 @@ use super::enhance::StepEnhancer;
 use super::registry::{MethodContext, MethodRegistry};
 use super::step::{PreviousPoint, StepGenerator, StepInput};
 use super::trust::TrustSettings;
-use super::update::{apply_update, HessianUpdater};
+use super::update::{apply_update, project_out_rigid, HessianUpdater};
 use crate::domain::Quantity;
 use crate::error::{MoptError, MoptResult, ResultExt};
 use crate::math::linalg::col_norm;
@@ -44,6 +44,7 @@ pub fn plain_input<'a>(
         hessian,
         bias_hessian: None,
         rigid_body_basis: None,
+        project_updates: true,
         saddle_order,
         system: None,
         cartesian_coordinates: true,
@@ -63,6 +64,11 @@ pub struct Stepper {
     /// Last point: position, energy, gradient.
     last: Option<(Col<f64>, f64, Col<f64>)>,
     max_step: Option<f64>,
+    /// Orthonormal columns along which the function does not change (the rigid motions of
+    /// variables that describe a structure); none by default.
+    rigid_basis: Option<Mat<f64>>,
+    /// Whether `rigid_basis` is taken out of the Hessian after every update.
+    project_updates: bool,
 }
 
 impl Stepper {
@@ -112,6 +118,8 @@ impl Stepper {
             iteration: 0,
             last: None,
             max_step: None,
+            rigid_basis: None,
+            project_updates: true,
         }
     }
 
@@ -120,6 +128,32 @@ impl Stepper {
     pub fn with_max_step(mut self, max_step: f64) -> Self {
         self.max_step = Some(max_step);
         self
+    }
+
+    /// Whether the rigid motions of [`Self::set_rigid_basis`] are taken out of the Hessian
+    /// after every update (on by default; without a basis nothing is taken out).
+    pub fn with_project_updates(mut self, on: bool) -> Self {
+        self.project_updates = on;
+        self
+    }
+
+    /// The rigid motions at the point of the next [`Self::propose`], as orthonormal columns
+    /// (`n` rows), or `None`: they are taken out of the Hessian after every update and of a
+    /// Hessian given by [`Self::set_hessian`], and the step generator gets them as the
+    /// optimizers give theirs. For variables that describe a structure the basis changes
+    /// with the point and is set before every proposal.
+    pub fn set_rigid_basis(&mut self, basis: Option<Mat<f64>>) -> MoptResult<()> {
+        let n = self.hessian.nrows();
+        if let Some(b) = &basis {
+            if b.nrows() != n {
+                return Err(MoptError::config(format!(
+                    "the rigid motions have {} components, expected {n}",
+                    b.nrows()
+                )));
+            }
+        }
+        self.rigid_basis = basis;
+        Ok(())
     }
 
     /// Name of the step generator.
@@ -146,6 +180,7 @@ impl Stepper {
             )));
         }
         self.hessian = hessian;
+        project_out_rigid(&mut self.hessian, self.rigid_basis.as_ref());
         if let Some(up) = self.updater.as_mut() {
             up.reset();
         }
@@ -188,8 +223,11 @@ impl Stepper {
             let negative = self.generator.learns_negative_curvature()
                 || (self.saddle_order > 0 && up.learns_saddle_curvature());
             apply_update(up.as_mut(), &mut self.hessian, &prev.step, &y, negative)?;
+            if self.project_updates {
+                project_out_rigid(&mut self.hessian, self.rigid_basis.as_ref());
+            }
         }
-        let input = plain_input(
+        let mut input = plain_input(
             self.iteration,
             x,
             energy,
@@ -198,6 +236,8 @@ impl Stepper {
             previous.as_ref(),
             self.saddle_order,
         );
+        input.rigid_body_basis = self.rigid_basis.as_ref();
+        input.project_updates = self.project_updates;
         let mut step = self
             .generator
             .propose(&input)
@@ -266,5 +306,40 @@ mod tests {
         assert!(x[0].abs() < 1e-6 && x[1].abs() < 1e-6, "{x:?}");
         s.reset();
         assert_eq!(s.iterations(), 0);
+    }
+
+    #[test]
+    fn a_given_basis_is_taken_out_of_the_updates() {
+        // A function of the differences of three variables: unchanged along (1, 1, 1).
+        let f = |x: &Col<f64>| {
+            let (a, b) = (x[0] - x[1], x[1] - x[2]);
+            let e = a * a + 2.0 * b * b + 0.3 * a * a * b;
+            let g = Col::from_fn(3, |i| match i {
+                0 => 2.0 * a + 0.6 * a * b,
+                1 => -2.0 * a - 0.6 * a * b + 4.0 * b + 0.3 * a * a,
+                _ => -4.0 * b - 0.3 * a * a,
+            });
+            (e, g)
+        };
+        let d = Mat::from_fn(3, 1, |_, _| 1.0 / 3.0_f64.sqrt());
+        for on in [true, false] {
+            let mut s = Stepper::new("rsirfo_bfgs", 3, 0)
+                .unwrap()
+                .with_max_step(0.2)
+                .with_project_updates(on);
+            assert!(s.set_rigid_basis(Some(Mat::zeros(2, 1))).is_err());
+            s.set_rigid_basis(Some(d.clone())).unwrap();
+            let mut x = Col::from_fn(3, |i| [0.4, -0.3, 0.2][i]);
+            for _ in 0..6 {
+                let (e, g) = f(&x);
+                x += s.propose(&x, e, &g).unwrap();
+            }
+            let along = col_norm(&(s.hessian() * d.col(0)));
+            if on {
+                assert!(along < 1e-12, "{along:e}");
+            } else {
+                assert!(along > 1e-3, "{along:e}");
+            }
+        }
     }
 }

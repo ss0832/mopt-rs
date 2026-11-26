@@ -280,6 +280,7 @@ pub fn vector_settings(config: &OptmainConfig, start: &[f64]) -> MoptResult<Vect
         exact_hessian_interval: s.exact_hessian_interval,
         ccqn,
         mode_kill: s.mode_kill,
+        project_updates: s.project_updates,
     })
 }
 

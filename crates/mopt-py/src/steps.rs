@@ -37,12 +37,20 @@ impl PyStepMethod {
 #[pymethods]
 impl PyStepMethod {
     #[new]
-    #[pyo3(signature = (method, n, *, saddle_order = 0, max_step = None))]
-    fn new(method: &str, n: usize, saddle_order: usize, max_step: Option<f64>) -> PyResult<Self> {
+    #[pyo3(signature = (method, n, *, saddle_order = 0, max_step = None, update_projection = true))]
+    fn new(
+        method: &str,
+        n: usize,
+        saddle_order: usize,
+        max_step: Option<f64>,
+        update_projection: bool,
+    ) -> PyResult<Self> {
         if n == 0 {
             return Err(PyValueError::new_err("no variables"));
         }
-        let mut stepper = Stepper::new(method, n, saddle_order).map_err(err)?;
+        let mut stepper = Stepper::new(method, n, saddle_order)
+            .map_err(err)?
+            .with_project_updates(update_projection);
         if let Some(max) = max_step {
             if !(max.is_finite() && max > 0.0) {
                 return Err(PyValueError::new_err("max_step must be positive"));
@@ -55,17 +63,48 @@ impl PyStepMethod {
         })
     }
 
-    /// Step proposed at `x` with the given value and gradient of the function.
-    fn propose(&self, x: Vec<f64>, value: f64, gradient: Vec<f64>) -> PyResult<Vec<f64>> {
+    /// Step proposed at `x` with the given value and gradient of the function. `rigid_basis`:
+    /// directions along which the function does not change at `x` (the rigid motions of
+    /// variables that describe a structure, each of `n` components; orthonormalized here),
+    /// taken out of the Hessian after its update (unless `update_projection=False`) and
+    /// given to the step generator; none by default.
+    #[pyo3(signature = (x, value, gradient, rigid_basis = None))]
+    fn propose(
+        &self,
+        x: Vec<f64>,
+        value: f64,
+        gradient: Vec<f64>,
+        rigid_basis: Option<Vec<Vec<f64>>>,
+    ) -> PyResult<Vec<f64>> {
         if x.len() != self.n || gradient.len() != self.n {
             return Err(PyValueError::new_err(format!(
                 "x and gradient must have {} components",
                 self.n
             )));
         }
+        let basis = match rigid_basis {
+            None => None,
+            Some(vectors) => {
+                if vectors.iter().any(|v| v.len() != self.n) {
+                    return Err(PyValueError::new_err(format!(
+                        "every vector of rigid_basis must have {} components",
+                        self.n
+                    )));
+                }
+                let cols: Vec<Col<f64>> = vectors
+                    .iter()
+                    .map(|v| Col::from_fn(self.n, |i| v[i]))
+                    .collect();
+                Some(mopt_rs::math::linalg::orthonormalize_columns(
+                    self.n, &cols, 1e-10,
+                ))
+            }
+        };
         let x = Col::from_fn(self.n, |i| x[i]);
         let g = Col::from_fn(self.n, |i| gradient[i]);
-        let step = self.lock()?.propose(&x, value, &g).map_err(err)?;
+        let mut stepper = self.lock()?;
+        stepper.set_rigid_basis(basis).map_err(err)?;
+        let step = stepper.propose(&x, value, &g).map_err(err)?;
         Ok(step.iter().copied().collect())
     }
 
